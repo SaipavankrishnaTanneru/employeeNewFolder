@@ -1,6 +1,8 @@
-import React from "react";
+import React,{useState} from "react";
 import FamilyInfoCard from 'widgets/InfoCard/FamilyInfoCard';
 import DocumentsWidget from 'widgets/InfoCard/DocumentsWidget';
+import EditPopup from "widgets/Popup/EditPopup";
+import FamilyInfoUpdate from "../CoDoUpdatePopup/FamilyInfoUpdate";
  
 const IconMale = () => (
   <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -24,6 +26,7 @@ const IconFemale = () => (
 );
  
 const FamilyInfoContainer = () => {
+  const [showEdit, setShowEdit] = useState(false);
   const fatherData = [
     { label: "Name", value: "Name of Father" },
     { label: "Blood Group", value: "A-" },
@@ -31,8 +34,6 @@ const FamilyInfoContainer = () => {
     { label: "Occupation", value: "IT Job" },
     { label: "Email Id", value: "Design@varsitymgmt.com" },
     { label: "Phone Number", value: "+91 9876543210" },
-    { label: "State", value: "Telangana" },
-    { label: "Country", value: "India" },
   ];
  
   const motherData = [
@@ -42,8 +43,6 @@ const FamilyInfoContainer = () => {
     { label: "Occupation", value: "IT Job" },
     { label: "Email Id", value: "Design@varsitymgmt.com" },
     { label: "Phone Number", value: "+91 9876543210" },
-    { label: "State", value: "Telangana" },
-    { label: "Country", value: "India" },
   ];
  
   return (
@@ -54,7 +53,19 @@ const FamilyInfoContainer = () => {
       motherData={motherData}
       fatherIcon={<IconMale />}
       motherIcon={<IconFemale />}
+      onEdit={() => setShowEdit(true)}
     />
+        <EditPopup
+        isOpen={showEdit}
+        title="Edit Family Information"
+        onClose={() => setShowEdit(false)}
+        onSave={() => {
+          console.log("Save Working Info");
+          setShowEdit(false);
+        }}
+      >
+        <FamilyInfoUpdate/>
+      </EditPopup>
       <DocumentsWidget
         title="Photos Uploaded"
         documents={[
@@ -71,5 +82,6 @@ const FamilyInfoContainer = () => {
 };
  
 export default FamilyInfoContainer;
+ 
  
  

@@ -1,0 +1,27 @@
+/* ================================
+   FORM GRID
+   ================================ */
+.form_grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* ✅ 2 per row */
+  gap: 20px 24px;                        /* row gap | column gap */
+}
+
+/* ================================
+   FIELD WRAPPER (OPTIONAL SAFETY)
+   ================================ */
+/* Use this only if InputBox / Dropdown
+   need consistent width control */
+.form_grid > * {
+  width: 100%;
+}
+
+/* ================================
+   RESPONSIVE (MOBILE)
+   ================================ */
+@media (max-width: 768px) {
+  .form_grid {
+    grid-template-columns: 1fr;          /* 1 per row on small screens */
+    gap: 16px;
+  }
+}

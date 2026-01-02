@@ -1,0 +1,72 @@
+.container {
+  max-height: 60vh;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.block {
+  border: 1px solid #e6e6e6;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.block_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.remove_btn {
+  background: #ffeded;
+  color: #d60000;
+  border: none;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+}
+
+.form_grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px 20px;
+}
+
+.upload_row {
+  margin-top: 12px;
+}
+
+.upload_btn {
+  padding: 8px 14px;
+  border: 1px solid #3b39ff;
+  background: #f5f6ff;
+  color: #3b39ff;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.add_btn {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px dashed #3b39ff;
+  background: transparent;
+  color: #3b39ff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+@media (max-width: 1024px) {
+  .form_grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .form_grid {
+    grid-template-columns: 1fr;
+  }
+}

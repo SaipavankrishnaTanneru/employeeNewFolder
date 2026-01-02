@@ -1,14 +1,33 @@
 import React from "react";
 import styles from "./FamilyInfoCard.module.css";
 import dividerline from "../../assets/EmployeeOnBoarding/dividerline.svg";
+import editIcon from "../../assets/icons/editIcon.svg"; // same icon
 
-const FamilyInfoCard = ({ title, fatherData, motherData, fatherIcon, motherIcon }) => {
+const FamilyInfoCard = ({
+  title,
+  fatherData,
+  motherData,
+  fatherIcon,
+  motherIcon,
+  onEdit,              // 👈 new (optional)
+}) => {
   return (
     <div className={styles.widgetContainer}>
-      {/* Header (same as BankInfoWidget) */}
+      {/* Header */}
       <div className={styles.headerRow}>
         <h4 className={styles.title}>{title}</h4>
         <img src={dividerline} alt="divider" className={styles.dividerImage} />
+
+        {onEdit && (
+          <button
+            type="button"
+            className={styles.editButton}
+            onClick={onEdit}
+          >
+            <img src={editIcon} alt="edit" />
+            <span>Edit</span>
+          </button>
+        )}
       </div>
 
       {/* Father Info */}

@@ -1,0 +1,40 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+ 
+  .block {
+    /* background: #f7f8ff; */
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 20px;
+  }
+ 
+  .block_header {
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+ 
+  .form_grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+ 
+  /* Photo upload */
+  .photo_block {
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 12px;
+  }
+ 
+  .preview img {
+    margin-top: 12px;
+    width: 200px;
+    border-radius: 8px;
+  }
+ 
+ 
+ 

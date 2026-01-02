@@ -1,0 +1,23 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+ 
+.block {
+  /* background: #f7f8ff; */
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 20px;
+}
+ 
+.block_header {
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+ 
+.form_grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}

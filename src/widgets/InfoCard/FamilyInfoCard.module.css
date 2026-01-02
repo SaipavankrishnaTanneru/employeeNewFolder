@@ -101,6 +101,33 @@
   /* Safety for long names/emails */
   word-break: break-word;
 }
+
+.editButton {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 2px solid #3b39ff;
+
+  font-size: 14px;
+  font-weight: 500;
+  color: #3b39ff;
+  cursor: pointer;
+}
+
+.editButton img {
+  width: 16px;
+  height: 16px;
+}
+
+.editButton:hover {
+  background: #f5f6ff;
+}
+
  
 /* =========================================
    4. MEDIA QUERIES (Laptop & PC Optimized)

@@ -1,0 +1,44 @@
+.container {
+  /* max-height: 60vh;
+  overflow-y: auto; */
+  padding-right: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.section_title {
+  font-size: 14px;
+  font-weight: 600;
+  border-bottom: 1px solid #e6e6e6;
+  padding-bottom: 8px;
+}
+
+.form_grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px 20px;
+}
+
+.checkbox_row {
+  display: flex;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.cheque_block {
+  border: 1px solid #e6e6e6;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.cheque_header {
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+@media (max-width: 768px) {
+  .form_grid {
+    grid-template-columns: 1fr;
+  }
+}

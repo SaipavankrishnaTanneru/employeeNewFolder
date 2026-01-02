@@ -1,0 +1,176 @@
+/* --- Main Layout --- */
+.formContainer {
+  font-family: 'Segoe UI', sans-serif;
+  overflow-y: auto;
+  height: 100%;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.section {
+  margin-bottom: 48px;
+  width:100%;
+}
+.sectionTitle {
+  display: flex;
+  width:675px;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 500;
+  color: #82808F;
+  margin: 0 0 0 0;
+  padding-bottom: 16px;
+  gap: 8px;
+}
+ 
+/* --- THIS IS THE FIX --- */
+.grid {
+  display: grid;
+ 
+  /* This line tells the grid:
+    1. auto-fit: Fit as many columns as you can.
+    2. minmax(181px, 1fr): Each column must be AT LEAST 181px wide,
+       but can stretch (1fr) to fill any extra space.
+  */
+  grid-template-columns: repeat(auto-fit, minmax(124px, 0fr));
+ 
+  row-gap: 24px;
+  column-gap: 12px; /* This is the space between the cards */
+  margin: 5px;
+}
+ 
+/* --- Document Card Styles --- */
+.card {
+  border: 1px solid #E2E8F0;
+  border-radius: 6px;
+  background-color: #FFFFFF;
+  box-shadow: 0px 0px 6.6px 0px #181D3145;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+ 
+  height: 227px;
+  /* REMOVED: width: 181px; */
+  /* The grid now controls the width */
+}
+ 
+.backgroundSvg {
+  position: absolute;
+  top: 80px;
+  right: -20px;
+  z-index: 0;
+  width: 243px;
+  height: 146px;
+}
+.cardHeader {
+  gap: 12px;
+  padding: 14px 14px 0 14px;
+  z-index: 1;
+  background-color: transparent;
+  box-sizing: border-box;
+}
+.cardTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0D1B3F;
+  margin: 0;
+}
+.cardBody {
+  flex-grow: 1;
+  background-color: transparent;
+  z-index: 1;
+  padding: 8px 14px 8px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Aligns toggle to the top */
+}
+.cardFooter {
+  padding: 10px 16px 10px 16px;
+  background-color: transparent;
+  z-index: 1;
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+}
+.uploadButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;  
+  gap: 8px;
+  width: 94px;
+  padding: 8px 13px;
+  background-color: #3425FF;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.uploadButton:hover {
+  background-color: #4338CA;
+}
+/* --- NEW STYLES FOR TOGGLE BUTTONS --- */
+.statusToggleContainer {
+  display: flex;  
+  flex-direction: column;
+  gap: 0px;
+  width: 100%;
+ 
+}
+.statusLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: #334155;
+}
+.statusButtonGroup {
+  display: flex;
+  gap: 15px;
+  width: 100%;
+  background-color: #F1F5F9;
+  border-radius: 6px;
+  padding: 4px;
+  background: transparent;
+}
+.statusButton {
+  flex: 1;
+  padding: 6px 0;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.statusButton.active {
+  background-color: #3425FF; /* Your blue color */
+  color: #FFFFFF;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  border-radius: 51px;
+  width: 70px;
+}
+.statusButton.inactive {
+  background-color: transparent;
+  color: #64748B;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  border-radius: 51px;
+  width: 60px;
+}
+ 
+/* --- NEW STYLE for "Uploaded" text --- */
+.uploadedStatus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 400;
+  color: #158C00; /* Green color */
+}
+.uploadedStatus svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0; /* Prevents the icon from shrinking */
+}
+ 

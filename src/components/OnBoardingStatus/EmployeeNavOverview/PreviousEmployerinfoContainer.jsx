@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
+import EditPopup from "widgets/Popup/EditPopup";
 import BankInfoWidget from 'widgets/InfoCard/BankInfoWidget';
 import styles from "../EmployeeNavOverview/PreviousEmployeeInfoContainer.module.css"
 import DocumentsWidget from "widgets/InfoCard/DocumentsWidget";
+import PreviousEmpUpdate from "../CoDoUpdatePopup/PreviousEmpUpdate";
 const PreviousEmployeeInfoContainer =() => {
 
     const previousEmployeeInfo =[
@@ -17,10 +19,29 @@ const PreviousEmployeeInfoContainer =() => {
         {label:"CTC",value:"9Lpa"}
     ];
 
+    const [showEdit, setShowEdit] = useState(false);
+
+
     return (
         <div className={styles.Previous_Employee_Info_Container}>
             <div className={styles.Previous_Employee_accordians}>
-                <BankInfoWidget title="Previous Employee Info" data={previousEmployeeInfo}/>
+                <BankInfoWidget
+  title="Previous Employee Info"
+  data={previousEmployeeInfo}
+  onEdit={() => setShowEdit(true)}
+/>
+<EditPopup
+  isOpen={showEdit}
+  title="Edit Previous Employment"
+  onClose={() => setShowEdit(false)}
+  onSave={() => {
+    console.log("SAVE PREVIOUS EMPLOYMENT");
+    setShowEdit(false);
+  }}
+>
+  <PreviousEmpUpdate />
+</EditPopup>
+
             </div>
                <DocumentsWidget
         title="Documents Submitted"
