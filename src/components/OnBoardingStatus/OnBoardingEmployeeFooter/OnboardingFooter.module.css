@@ -1,0 +1,135 @@
+.footerContainer {
+  display: flex;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  left: 261px;
+  right: 10px;
+  padding: 15px 40px;
+  border: none;
+  z-index: 499;
+ 
+ 
+  /* ✅ UPDATED BACKGROUND */
+  /* This creates a white tint that gets slightly more solid towards the bottom,
+     but stays transparent enough to let the blur show through. */
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.6) 0%,
+    rgba(255, 255, 255, 0.85) 100%
+  );
+ 
+  /* ✅ INCREASED BLUR */
+  /* Increased from 12px to 20px for an "excellent" creamy blur */
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+ 
+  /* Optional: A very subtle border helps define the edge on white backgrounds */
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+ 
+ 
+ 
+ 
+.center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  gap:12px;
+}
+ 
+.right {
+  position: absolute;
+  right: 40px;
+}
+ 
+.skipButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: #3425ff;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+}
+ 
+.skipIcon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  margin-top: 2px; /* ✅ adjust icon vertical alignment */
+}
+ 
+.skipText {
+  text-decoration: underline;
+  text-underline-offset: 3px; /* ✅ make underline lower */
+}
+ 
+.skipButton:hover .skipText {
+  color: #271ac7;
+}
+ 
+ 
+/* =========================================
+   2. MEDIA QUERIES (Responsive Logic)
+   ========================================= */
+ 
+/* --- Standard Laptops (1366px - 1440px) --- */
+/* Often used for 13" - 15" MacBooks and Windows Laptops */
+@media screen and (max-width: 1440px) {
+  .footerContainer {
+    padding: 12px 30px; /* Slightly reduce padding */
+    left: 261px; /* Ensure sidebar space is maintained */
+  }
+ 
+  .right {
+    right: 30px; /* Pull the right element in slightly */
+  }
+}
+ 
+/* --- Smaller Laptops / HD Screens (1024px - 1280px) --- */
+/* Common for older laptops or 13" screens at lower scaling */
+@media screen and (max-width: 1280px) {
+  .footerContainer {
+    padding: 10px 20px; /* Tighter padding to save space */
+    /* IMPORTANT: If your sidebar shrinks on small screens, change left below */
+    left: 261px;
+  }
+ 
+  .center {
+    gap: 8px; /* Reduce gap between center buttons */
+  }
+ 
+  .right {
+    right: 20px;
+  }
+}
+ 
+/* --- Tablets Landscape / Very Small Laptops (< 1024px) --- */
+/* Usually where sidebars collapse into a hamburger menu */
+@media screen and (max-width: 1024px) {
+  .footerContainer {
+    /* IF sidebar disappears here, set left to 0 */
+    left: 0;
+    right: 0;
+    padding: 10px 15px;
+    justify-content: space-between; /* Switch to flex spacing */
+  }
+ 
+  /* CRITICAL FIX: On small screens, 'absolute' positioning usually
+     causes the Right items to overlap the Center items.
+     We switch .right to relative to prevent overlap.
+  */
+  .right {
+    position: relative;
+    right: auto;
+    margin-left: auto; /* Pushes it to the right using Flexbox logic */
+  }
+ 
+  .center {
+    flex: 0 1 auto; /* Stop taking up all space, allows shrinking */
+  }
+}
+ 

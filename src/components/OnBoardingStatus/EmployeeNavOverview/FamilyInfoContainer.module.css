@@ -1,0 +1,34 @@
+.family_Info_Container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.family_accordians {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 10px 20px 30px 20px;
+  background-color: #fff;
+  border-radius: 8px;
+}
+
+/* Header */
+.headerRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #000;
+  margin: 0;
+}
+
+.dividerImage {
+  flex: 1;
+  height: 1px;
+  opacity: 0.8;
+}

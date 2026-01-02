@@ -1,0 +1,137 @@
+
+
+
+.studentCard {
+  width: 175px;
+  border-radius: 8px !important;
+  border: 1px solid #E2E2E2;
+  /* text-align: center; */
+  /* padding-top: 8px; */
+  padding: 12px 26px;
+  /* align-items: center; */
+  box-shadow: none !important;
+  background: #FFFFFF;
+
+  /* font-family: 'Inter', sans-serif; */
+}
+.studentCardContent{
+    padding: 0 !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    gap: 10px;
+}
+.studentCardContainer{
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    gap: 10px;
+
+}
+/* .studentImageStyleContainer {
+    padding: 0;
+    margin: 0;
+} */
+figure {
+  margin: 0; /* Removes all default margins */
+  padding: 0; /* Optional: if you also want to reset padding */
+}
+
+
+.studentAvatar {
+  width: 106px !important;
+  height: 106px !important;
+  border-radius: 180px !important;
+}
+.studentInfo{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.studentId {
+  color: #323232;
+  text-align: center;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.studentName {
+    color: #000;
+  font-weight: 700;
+  font-size: 18px;
+  font-style: normal;
+  line-height: normal;
+}
+
+.studentFather {
+  color: #323232;
+  text-align: center;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.studentImageStyle {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.studentChipContainer {
+  display: flex;
+  justify-content: center;
+  padding: 2px 6px !important;
+  align-items: center;
+  align-self: stretch;
+  gap: 10px;
+}
+/* 
+.studentChip {
+  border-radius: 4px !important;
+
+} */
+.studentCurrentClassBlue {
+    display: flex;
+   white-space: nowrap;
+  font-size: 12px;
+  font-weight: 500;
+  color: #3425FF;
+  border: 1PX solid #3425FF;
+  background-color: #C7C3FF; /* Primary color */
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.studentCurrentClassOrange{
+     display: flex;
+   white-space: nowrap;
+  font-size: 12px;
+  font-weight: 500;
+  color: #FF7125;
+  border: 1PX solid #FF7125;
+  background-color: #FFF0C3; /* Primary color */
+  padding: 2px 6px;
+  border-radius: 4px;
+
+}
+.studentCurrentLable{
+     font-size: 12px;
+  font-weight: 500;
+  color: #118D19;
+  border: 1PX solid #118D19;
+  background-color: #C0FAB3; /* Primary color */
+  padding: 2px 6px;
+  border-radius: 4px;
+
+}

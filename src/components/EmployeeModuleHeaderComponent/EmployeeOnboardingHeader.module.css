@@ -1,0 +1,66 @@
+.headerContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: #ffffff;
+  padding: 12px 24px;
+  box-sizing: border-box;
+}
+
+.topRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.leftSection {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.backButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-right: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.backButton svg {
+  width: 32px;
+  height: 32px;
+  transition: transform 0.2s ease;
+}
+
+.backButton:hover svg {
+  transform: translateX(-3px);
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #252c32;
+  margin: 0;
+}
+
+.rightSection {
+  display: flex;
+  align-items: center;
+}
+
+/* --- Centered Employee Preview --- */
+.centerSubHeader {
+  display: flex;
+  justify-content: center;
+  margin-top: 4px;
+}
+
+.subHeading {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000;
+  margin: 0;
+}

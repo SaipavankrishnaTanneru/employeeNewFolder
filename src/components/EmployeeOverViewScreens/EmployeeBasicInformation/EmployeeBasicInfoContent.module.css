@@ -1,0 +1,60 @@
+.container {
+  border: 2px  #E9E9E9 solid;
+  border-radius: 12px;
+  padding: 16px 24px;
+  background-color: #fff;
+  width: 100%;
+  margin: 0 auto;
+  font-family: "Inter", sans-serif;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.header h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e1e1e;
+  margin: 0;
+}
+
+.header hr {
+  flex-grow: 1;
+  border: none;
+  border-top: 1px solid #e2e2e2;
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px 32px;
+}
+
+.infoGrid .item{
+  display: flex;
+  flex-direction: column;
+  gap:8px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.item label {
+  color: #6f6f6f;
+  font-size: 12px;
+  display: block;
+}
+
+.item .value {
+  font-size: 13px;
+  color: #1f1f1f;
+  margin: 2px 0 0;
+  font-weight: bold;
+}

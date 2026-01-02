@@ -1,0 +1,66 @@
+.wrapper {
+  margin-bottom:18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.paymentModeText {
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #3C3C3C;
+}
+
+.tabsContainer {
+  display: flex;
+  gap: 6px;
+  background: #F7F7F7;
+  border: 1px solid #D2D2D2;
+  padding: 4px;
+  border-radius: 120px;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 5.2px;
+  padding:  7px 20px 7px 20px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: 40px;
+  font-size: 14px;
+  color: #555;
+}
+
+.active {
+  background: #4338f2;
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  font-size: 14px;
+}
+
+.icon svg {
+  width: 100%;
+  height: 100%;
+  transition: 0.3s ease;
+}
+
+.icon svg path {
+  fill: #000000 !important;
+}
+
+.activeIcon svg path {
+  fill: #ffffff !important;
+}

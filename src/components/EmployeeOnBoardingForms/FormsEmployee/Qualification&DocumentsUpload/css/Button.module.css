@@ -1,0 +1,73 @@
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 30px;
+    border-radius: 6px;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: background-color 0.8s ease;
+    white-space: nowrap;
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+}
+
+.link {
+    background: none;
+    color: #4F46E5;
+    font-weight: 600;
+    padding: 10px;
+}
+
+.link:hover {
+    background-color: lightblue;
+}
+
+/* Primary style for "Next" button */
+.primary {
+    background-color: #4F46E5;
+    color: white;
+    border-color: #4F46E5;
+}
+
+.primary:hover {
+    background-color: #4338CA;
+}
+
+/* Secondary style for "Back" button */
+.secondary {
+    background-color: #FFFFFF;
+    color: #475569;
+    border-color: #E2E8F0;
+}
+
+.secondary:hover {
+    background-color: #F8FAFC;
+}
+
+/* Dashed style for "Upload File" button */
+.dashed {
+    background-color: #EEF2FF;
+    color: #4F46E5;
+    border: 1px solid #3425FF;
+    font-weight: 500;
+}
+
+.dashed:hover {
+    background-color: #E0E7FF;
+}
+
+.fullWidth {
+    width: 100%;
+}
+
+.disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}

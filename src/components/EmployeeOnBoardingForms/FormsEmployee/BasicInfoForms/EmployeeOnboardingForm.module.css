@@ -1,0 +1,174 @@
+.title {
+  margin-bottom: 24px;
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+/* .sectionTitle {
+  margin: 40px 0 24px;
+  font-weight: 600;
+  font-size: 1.2rem;
+} */
+
+.buttonRow {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 32px;
+}
+
+.backButton {
+  padding: 10px 18px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: #fff;
+  cursor: pointer;
+}
+/*  */
+
+
+.submitButton {
+  padding: 10px 18px;
+  border-radius: 6px;
+  background: #3b82f6;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+/* Styles for BasicInfoFields.module.css */
+.container {
+  width: 100%;
+  padding: 10px 10px;
+  overflow-y: auto; /* Added this line */
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr; /* 3-column grid */
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Spacing between fields in a column */
+}
+
+.genderGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+.genderButtons {
+  display: flex;
+  gap: 12px;
+}
+
+.genderBtn {
+  border: 1px solid #ccc;
+  background: #fff;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-weight: 500;
+  color: #555;
+  transition: all 0.2s ease;
+  flex-grow: 1; /* Make buttons fill space */
+}
+
+.genderBtn:hover {
+  background: #f7f7f7;
+}
+
+.active {
+  background-color: #3b82f6;
+  color: white;
+  border: 1px solid #3b82f6;
+}
+
+.checkboxContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #555;
+  margin-top: 8px;
+}
+
+.checkboxContainer input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+}
+
+.profileSection {
+  text-align: center;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center profile pic in its column */
+}
+
+.imageWrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.profileImg {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ddd;
+}
+
+.editBtn {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 4px 8px;
+  font-size: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.imageNote {
+  font-size: 12px;
+  color: #888;
+  margin-top: 8px;
+}
+
+.hiddenInput {
+  display: none;
+}
+.formSectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #82808F;
+  margin: 5px 0 5px 0;
+  padding-left: 10px;
+  padding-bottom: 16px;
+}
+
+@media (max-width: 900px) {
+  .formGrid {
+    grid-template-columns: 1fr; /* Stack columns on smaller screens */
+  }
+
+  .profileSection {
+    align-items: flex-start; /* Align left on mobile */
+  }
+}

@@ -1,0 +1,67 @@
+/* Scoped styles for the main layout */
+body {
+    margin: 0;
+    background-color: #F8FAFC;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.layout {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    /* REMOVED: No gap here, so the sidebar is flush with the header */
+}
+
+.header {
+    height: 64px;
+    background-color: greenyellow;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 24px;
+    border-bottom: 1px solid #E2E8F0;
+    flex-shrink: 0;
+}
+
+.container {
+    display: flex;
+    flex-grow: 1;
+    overflow: hidden;
+    background-color: #F6F8F9;
+    /* gap: 8px; */
+}
+
+.sidebar {
+    width: 240px;
+    background-color: pink;
+    border-right: 1px solid #E2E8F0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    flex-shrink: 0; /* Ensures sidebar doesn't shrink */
+}
+
+.content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    /* ADDED: Margin to create the 8px gaps on top, right, and bottom of the content area */
+    /* margin: 8px 8px 8px 0; */
+    padding: 8px 8px 0px 8px;
+    
+}
+
+.top {
+    background-color: #FFFFFF;
+    flex-shrink: 0;
+    padding: 50px 32px;
+    border-radius: 6px 6px 0 0;
+}
+
+.bottom {
+    flex-grow: 1;
+    background-color: #FFFFFF;
+    overflow-y: auto;
+    padding: 24px 70px; 
+}

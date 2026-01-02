@@ -1,0 +1,12 @@
+.application_search_header {
+  color: #000;
+  font-weight: bold;
+  font-size: 28px;
+}
+
+.application_sub_text{
+  color: #353535;
+  font-size: 16px;
+  font-weight: 400;
+  margin-bottom:5px;
+}

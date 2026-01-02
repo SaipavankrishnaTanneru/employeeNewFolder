@@ -1,0 +1,74 @@
+.wrapper {
+  margin-top: 25px;
+  padding: 0 50px;
+}
+
+.topRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.checkboxInput {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: 2px solid #D0D5DD;
+  border-radius: 4px;
+  background-color: #FFFFFF;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.checkboxInput:checked {
+  background-color: #ffffff;
+  border-color: #3425FF;
+}
+
+.checkboxInput:checked::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  background-color: #3425FF;
+  border-radius: 2px;
+}
+.checkboxRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  color:#667085;
+}
+
+.concessionValueBox {
+  text-align: center;
+ 
+}
+
+.concessionValue {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.concessionLabel {
+  margin: 0;
+  margin-top: 1px;
+  font-size: 12px;
+  color: #667085;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px 22px;
+  margin-bottom: 18px;
+}

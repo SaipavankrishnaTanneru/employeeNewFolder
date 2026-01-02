@@ -1,0 +1,53 @@
+
+.profilePhotoUpload {
+  display: flex;
+  flex-direction: column;
+}
+
+.profilePhotoLabel {
+  cursor: pointer;
+  text-align: center;
+}
+
+.uploadCircle {
+  width: 120px;
+  height: 120px;
+  border-radius: 180px;
+  border: 2px solid #3425ff; /* Blue border */
+  background-color: #e8e6ff; /* Light blue background */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.uploadIconFigure {
+  margin-bottom: 8px; /* Space between SVG and text */
+}
+
+.uploadSvg {
+  width: 31px; /* Adjust size as needed */
+  height: 31px; /* Adjust size as needed */
+}
+
+.previewImage {
+  width: 150px; /* Match circle size */
+  height: 150px; /* Match circle size */
+  object-fit: cover; /* Ensure the image fits and covers the area */
+  border-radius: 50%; /* Maintain circular shape */
+}
+
+.uploadText {
+  font-size: 13px;
+  font-weight: 400;
+  color: #000000; /* Blue color for text */
+  /* display: flex;
+  flex-wrap: wrap; */
+}
+
+.fileSizeLimit {
+  color: #d32f2f; /* Red color for size limit */
+  font-size: 12px;
+}

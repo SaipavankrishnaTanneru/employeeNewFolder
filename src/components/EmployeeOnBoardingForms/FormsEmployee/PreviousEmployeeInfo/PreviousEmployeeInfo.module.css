@@ -1,0 +1,81 @@
+/* MAIN CONTAINER SAME AS BANK INFO */
+.formContainer {
+    background-color: #ffffff;
+    border-radius: 8px;
+    height: 100%;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+.formContainer::-webkit-scrollbar {
+    display: none;
+}
+
+/* MAIN FORM WRAPPER */
+.form_grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* SECTION HEADER (divider line + title) */
+.section_header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+    gap: 15px;
+}
+
+.section_title {
+    font-weight: 500;
+    font-size: 14px;
+    color: #82808F;
+    margin-right: 5px;
+}
+
+
+/* THREE-COLUMN GRID FOR FIELDS */
+.formGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 5px;
+    margin-bottom: 2px;
+}
+
+/* Standard item wrapper (Input / Dropdown) */
+.form_item {
+    width: 100%;
+}
+
+/* Empty column placeholder for layout alignment */
+.form_item_empty {
+    visibility: hidden;
+}
+
+/* Add Employer Button */
+.addButtonContainer {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+.addButton {
+    background: none;
+    border: none;
+    color: #4F46E5;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+/* Responsive Behaviour */
+@media (max-width: 900px) {
+    .formGrid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .form_item_empty {
+        display: none;
+    }
+}

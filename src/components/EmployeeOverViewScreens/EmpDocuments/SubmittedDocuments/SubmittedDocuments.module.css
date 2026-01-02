@@ -1,0 +1,13 @@
+.submittedDocumentsNavContent{
+    padding: 0px 39px 0px 39px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto auto;
+    /* gap: 20px; */
+    row-gap: 16px;
+}
+
+.submittedDocument{
+    display: grid;
+    gap: 5px;
+}

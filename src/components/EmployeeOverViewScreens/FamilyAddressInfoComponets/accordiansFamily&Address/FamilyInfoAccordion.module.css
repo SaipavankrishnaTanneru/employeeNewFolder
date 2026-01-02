@@ -1,0 +1,104 @@
+.header_figure {
+    display: flex;
+    flex-direction: column; /* <-- Key change: from column */
+    align-items: flex-start; /* <-- Key change: added */
+    justify-content: space-between; /* <-- Key change: added */
+    width: 100%; /* <-- Key change: added */
+    margin: 0;
+  }
+  
+  .header_left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .header_text {
+    font-size: 14px;
+    font-weight: 700;
+    color: #56555C;
+    margin: 0;
+  }
+    .accordionSummary :global(.MuiAccordionSummary-content) {
+      margin: 0px !important;
+    
+    }
+    
+    /* Header styles */
+    .headerBox {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .headerIcon {
+      color: #555; /* Grey icon color */
+      font-size: 1.5rem;
+    }
+    
+    /* Title: "Present Address" */
+    .headerTitle {
+      font-size: 14px !important;
+      font-weight: 700 !important;
+      color: #111 !important;
+    }
+    
+    /* --- Content Area --- */
+    
+    .detailsContainer {
+      /* Adds space between the header line and the content */
+      /* padding-top: 16px; */
+      border-top: 1px solid #E6E4F0;
+    }
+    
+    /* For labels: "Name", "Pin", "Address" */
+    .fieldLabel {
+      font-size: 12px !important;
+      font-weight: 600 !important;
+      color: #777777 !important; /* Grey color */
+      
+    }
+    
+    /* For values: "Suresh Raina", "500081", "Hyderabad" */
+    .fieldValue {
+      font-size: 14px !important;
+      font-weight: 700 !important; /* Bold */
+      color: #000 !important; /* Black color */
+    }
+    
+    /* --- Layout Styles --- */
+    
+    /* A single row of info */
+    .infoRow {
+      display: flex;
+      flex-wrap: nowrap; /* Prevent wrapping on large screens */
+      /* Spacing between items */
+      margin-bottom: 15px; /* Spacing between rows */
+    }
+    
+    /* A single info block (label + value) */
+    .infoItem {
+      display: flex;
+      flex-direction: column;
+      /* Flex basis is set inline in the component */
+    }
+    
+    /* --- Emergency Contact Phone Icon --- */
+    
+    .contactContainer {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    /* Responsive adjustments for smaller screens */
+    @media (max-width: 768px) {
+      .infoRow {
+        flex-wrap: wrap; /* Allow wrapping on small screens */
+        margin-bottom: 8px;
+      }
+      
+      .infoItem {
+        /* Each item takes full width on small screens */
+        flex-basis: 100% !important; 
+        margin-bottom: 16px;
+      }
+    }

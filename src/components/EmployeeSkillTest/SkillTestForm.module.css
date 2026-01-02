@@ -1,0 +1,56 @@
+/* components/EmployeeLanding/SkillTestForm.module.css */
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.fieldWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.error {
+  color: #EF4444; /* Red */
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.textButton {
+  /* Removed position: absolute, top, and right */
+  background: none;
+  border: none;
+  color: #3425FF; /* Blue */
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  
+  /* New styles to align it below and to the left */
+  padding: 0; /* Remove default button padding */
+  margin-top: 6px; /* Add a small space below the input box */
+  align-self: flex-start; /* This aligns it to the left */
+}
+
+.inputWithDisabled input {
+  background-color: #F3F4F6; /* Light gray for disabled */
+  cursor: not-allowed;
+}
+
+.groupLabel {
+  grid-column: 1 / -1; /* Makes the label span all 3 columns */
+  display: flex;
+  align-items: center;
+  margin-top: 16px;
+  margin-bottom: 8px;
+}
+  .groupLabelText {
+  font-size: 16px;
+  font-weight: 600;
+  color: #82808F;
+  margin-right: 16px;
+  white-space: nowrap;
+  display: inline-flex; 
+  align-items: center; 
+  gap: 8px; 
+}

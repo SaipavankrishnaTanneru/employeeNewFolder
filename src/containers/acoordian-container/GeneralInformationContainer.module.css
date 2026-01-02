@@ -1,0 +1,20 @@
+.bankaccordians {
+  margin-top: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.accordian_header_text {
+  color: #56555c;
+  font-size: 16px;
+  font-style: Semibold Text;
+  font-weight: 600;
+  line-height: 100%;
+}
+
+.bottom_decoration {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}

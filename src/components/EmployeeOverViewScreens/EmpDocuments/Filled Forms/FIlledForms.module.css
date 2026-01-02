@@ -1,0 +1,7 @@
+.filledFormsNavContent{
+    padding: 0px 25px 0px 25px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto auto;
+    gap: 20px;
+}

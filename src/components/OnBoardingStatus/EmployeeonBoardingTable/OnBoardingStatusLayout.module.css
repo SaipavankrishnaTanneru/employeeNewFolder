@@ -1,0 +1,223 @@
+.container {
+  background: #fff;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  font-family: "Inter", sans-serif;
+  /* margin:12px; */
+  /* max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden; */
+}
+ 
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 20px;
+  color: #222;
+  margin: 0;
+  padding: 0px 10px 10px 10px;
+}
+ 
+.header figure {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+ 
+.arrowIcon {
+  width: 18px;
+  height: 17px;
+  cursor: pointer;
+  color: #000000;
+}
+ 
+.header figcaption {
+font-weight: 700;
+font-size: 24px;
+line-height: 48px;
+ 
+}
+ 
+.tabsContainer {
+  margin: 10px 10px 10px 10px;
+}
+ 
+.filterRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  /* gap: 8px;
+  max-width: 100%; */
+  /* gap: 100px; removed to let space-between handle primary spacing */
+}
+ 
+/* .searchWrapper {
+  max-width: 100%;
+  min-width: 0;
+  flex-shrink: 1;
+} */
+ 
+.filterPopup {
+  position: absolute;
+  top: 47px;
+  right: 0;
+  width: 150px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  z-index: 10;
+}
+ 
+.filterPopup h4 {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #333;
+}
+ 
+/* 🔸 Filter Badge (the orange chip) */
+.filterBadge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #fff7ed;
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 14px;
+  font-weight: 500;
+}
+ 
+/* 🎨 Different badge colors per status */
+ 
+.completedBadge {
+  background: #E3FFD8;        /* light green background */
+  border: 1px solid #0E9519;  /* green border */
+  color: #0E9519;             /* dark green text */
+}
+ 
+.incompleteBadge {
+  background: #FFD8D8;        /* light red background */
+  border: 1px solid #950E0E;  /* red border */
+  color: #950E0E;             /* dark red text */
+}
+ 
+.pendingWithCOBadge {
+  background: #DBFFD8;        /* light yellow background */
+  border: 1px solid #61660D;  /* yellow border */
+  color: #61660D;             /* dark yellow text */
+}
+ 
+.pendingWithDOBadge {
+  background: #D8FBFF;        /* light yellow background */
+  border: 1px solid #23819B;  /* yellow border */
+  color: #23819B;             /* dark yellow text */
+}
+ 
+.skillTestApprovalBadge {
+  background: #E7D8FF;        /* light yellow background */
+  border: 1px solid #250980;  /* yellow border */
+  color: #250980;             /* dark yellow text */
+}
+ 
+.skillTestApprovedBadge {
+  background: #F8FFD8;        /* light yellow background */
+  border: 1px solid #398009;  /* yellow border */
+  color: #398009;             /* dark yellow text */
+}
+ 
+.rejectedBadge {
+  background: #FFD8EF;        /* light red background */
+  border: 1px solid #950E7C;  /* red border */
+  color: #950E7C;             /* dark red text */
+}
+ 
+.leftBadge {
+  background: #909090;        /* light yellow background */
+  border: 1px solid #000000;  /* yellow border */
+  color: #000000;             /* dark yellow text */
+}
+ 
+.closeIcon {
+  font-size: 16px;
+  cursor: pointer;
+  color: inherit;
+  line-height: 1;
+}
+ 
+ 
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #444;
+  cursor: pointer;
+}
+ 
+.checkboxLabel input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #6b7280; /* soft gray check */
+}
+ 
+.tablePlaceholder {
+  margin-top: 24px;
+  border: 1px dashed #ccc;
+  border-radius: 8px;
+  padding: 24px;
+  text-align: center;
+  color: #666;
+}
+ 
+.filterFigure {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 7px 18px;
+  background-color: #FFFFFF;
+  border: 1px solid #DDE2E4;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 15px;
+  color: #1f2937;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  margin: 0;
+}
+ 
+.filterFigure:hover {
+  background-color: #f9fafb;
+}
+ 
+.filterIcon {
+  width: 18px;
+  height: 18px;
+}
+ 
+.filterFigure figcaption {
+font-weight: 400;
+font-size: 14px;
+line-height: 24px;
+}
+ 
+.redDot {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  width: 10px;
+  height: 10px;
+  background-color: #ef4444;
+  border-radius: 50%;
+}
+ 

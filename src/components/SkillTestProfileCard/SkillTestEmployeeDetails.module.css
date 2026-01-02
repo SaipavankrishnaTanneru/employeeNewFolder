@@ -1,0 +1,51 @@
+.body {
+    padding-top: 16px;
+}
+
+.statsContainer {
+  display: flex;
+  gap: 80px;
+  justify-content: center;
+  align-items: center;
+  padding: 16px 0 10px 0;
+}
+
+.statCard {
+  width: 253px;
+  height: 67px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px 15px;
+  box-sizing: border-box;
+}
+
+.label {
+  font-size: 16px;
+  color: #7a7a7a; /* Gray text for label */
+  margin-bottom: 5px;
+}
+
+.value {
+  font-size: 18px;
+  font-weight: bold;
+  color: #000; /* Black for value */
+}
+
+/* Background colors for each card */
+.attempted {
+  background-color: #fff8e6; /* Light cream */
+}
+
+.unattempted {
+  background-color: #ffe6ff; /* Light pinkish purple */
+}
+
+.wrong {
+  background-color: #ffe6e6; /* Light pink */
+}
+
+.total {
+  background-color: #e6fff5; /* Light mint green */
+}

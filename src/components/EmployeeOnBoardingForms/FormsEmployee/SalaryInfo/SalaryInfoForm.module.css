@@ -1,0 +1,74 @@
+.container {
+  background: #ffffff;
+  border-radius: 8px;
+  height: 100%;
+  overflow-y: auto;
+  padding-bottom: 20px;
+  scrollbar-width: none;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* ---------------- SECTION HEADER ---------------- */
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.sectionTitle {
+  font-weight: 500;
+  font-size: 14px;
+  color: #82808f;
+  margin-right: 10px;
+}
+
+
+
+/* ---------------- GRID LAYOUT ---------------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+.singleRow {
+  display: grid;
+  grid-template-columns:  repeat(3, 1fr);
+    gap: 28px;
+
+}
+
+/* ---------------- CHECKBOXES ---------------- */
+.checkboxRow {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.checkboxItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #82808f;
+  font-weight: 500;
+}
+
+/* ---------------- RESPONSIVE ---------------- */
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .checkboxRow {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+}

@@ -1,0 +1,35 @@
+
+.viewButtonContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;  
+  flex: 1;
+  margin-bottom: 131px;
+  margin-left: 20px;
+}
+
+.viewProfileBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px; /* space between text and icon */
+  background-color: #3b5bfd;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.25s ease, transform 0.15s ease;
+}
+
+.viewProfileBtn:hover {
+  background-color: #2f47cc;
+  transform: translateY(-1px);
+}
+
+.icon {
+  width: 14px;
+  height: 14px;
+}

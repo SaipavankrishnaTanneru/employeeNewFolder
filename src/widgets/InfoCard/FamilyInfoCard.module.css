@@ -1,0 +1,161 @@
+/* =========================================
+   1. CONTAINER & HEADER
+   ========================================= */
+.widgetContainer {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px 20px 10px 20px;
+  width: 100%;
+ 
+}
+ 
+.headerRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+ 
+.title {
+  color: #000;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+}
+ 
+/* =========================================
+   2. FATHER & MOTHER BLOCKS
+   ========================================= */
+.sectionBlock {
+  margin-top: 15px;
+  border-radius: 6px;
+  /* Default padding for large screens */
+  padding: 15px 20px 15px 20px;
+}
+ 
+.fatherBlock {
+  background-color: #f6f7ff;
+}
+ 
+.motherBlock {
+  background-color: #fff5fa;
+  margin-top: 12px;
+}
+ 
+/* Tag Titles (e.g., "Father", "Mother") */
+.titleBoxFather,
+.titleBoxMother {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-weight: 600;
+  font-size: 13px;
+  white-space: nowrap;
+  margin-bottom: 15px; /* Increased slightly for visual separation from grid */
+  background-color: #fff; /* Optional: Makes the badge pop against the colored bg */
+}
+ 
+.titleBoxFather {
+  border: 1px solid #3240da;
+  color: #3240da;
+}
+ 
+.titleBoxMother {
+  border: 1px solid #b22686;
+  color: #b22686;
+}
+ 
+/* =========================================
+   3. INFO GRID STYLES
+   ========================================= */
+.infoGrid {
+  display: grid;
+  /* Default: 4 Columns */
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+ 
+.infoItem {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+ 
+.label {
+  color: #82808F;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+ 
+.valueBold {
+  color: #0C0C0C;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 121.101%;
+ 
+  /* Safety for long names/emails */
+  word-break: break-word;
+}
+ 
+/* =========================================
+   4. MEDIA QUERIES (Laptop & PC Optimized)
+   ========================================= */
+ 
+/* --- Standard Laptops (1200px - 1440px) --- */
+@media screen and (max-width: 1440px) {
+  .sectionBlock {
+    /* Reduce side padding inside the colored blocks to save space */
+    padding: 15px 15px;
+  }
+ 
+  .infoGrid {
+    gap: 12px;
+  }
+}
+ 
+/* --- Small Laptops / Sidebar Open (992px - 1200px) --- */
+/* CRITICAL: Switch to 3 columns here.
+   4 columns inside a padded colored block is too tight on 13" screens. */
+@media screen and (max-width: 1200px) {
+  .infoGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+ 
+/* --- Tablets / Portrait (600px - 992px) --- */
+@media screen and (max-width: 992px) {
+  .infoGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+ 
+  .sectionBlock {
+    padding: 15px 12px; /* Further reduce padding */
+  }
+}
+ 
+/* --- Mobile (< 600px) --- */
+@media screen and (max-width: 600px) {
+  .widgetContainer {
+    padding: 15px;
+  }
+ 
+  .sectionBlock {
+    padding: 15px 10px; /* Minimal padding on mobile */
+  }
+ 
+  .infoGrid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+ 
+  .titleBoxFather,
+  .titleBoxMother {
+    font-size: 12px; /* Slightly smaller badges */
+  }
+}
+ 

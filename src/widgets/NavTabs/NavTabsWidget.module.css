@@ -1,0 +1,26 @@
+/* Outer rounded container */
+.container {
+  display: flex;
+  background: #f3f3f3;
+  padding: 5px;
+  border-radius: 50px;
+  width: fit-content;
+  gap: 5px;
+}
+
+/* Individual tab */
+.tab {
+  padding: 8px 18px;
+  border-radius: 50px;
+  font-size: 14px;
+  color: #555;
+  cursor: pointer;
+  transition: 0.25s ease;
+  user-select: none;
+}
+
+/* When active (blue pill) */
+.active {
+  background: #3425ff;
+  color: white;
+}

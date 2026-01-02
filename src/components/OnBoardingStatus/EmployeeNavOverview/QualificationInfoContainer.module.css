@@ -1,0 +1,27 @@
+.qualification_Info_Container{
+    width:100%;
+}
+/* Add these styles to the bottom of your .css file */
+
+.certificate_actions {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Adds space between the icons */
+}
+
+.icon_button {
+  /* Reset button styles to look like a plain icon */
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  color: #333; /* Icon color */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon_button:hover {
+  color: #000; /* Darker color on hover */
+}

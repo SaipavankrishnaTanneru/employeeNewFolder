@@ -1,0 +1,82 @@
+.salaryAccountContainer {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px 24px;
+  width: 100%;
+  /* box-shadow: 0 1px 3px rgba(0,0,0,0.05); */
+}
+
+/* Header row with text + image divider */
+.headerRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.title {
+ font-weight: 700;
+font-style: Bold;
+font-size: 16px;
+color: #1F1F1F;
+}
+
+/* .dividerImg {
+  flex-grow: 1;
+  height: 1px;
+  object-fit: cover;
+  opacity: 0.7;
+} */
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  row-gap: 16px;
+  column-gap: 20px;
+}
+
+.infoItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+font-weight: 600;
+font-size: 12px;
+color: #777777;
+}
+
+.value {
+  font-weight: 600;
+font-size: 14px;
+color:#000000;
+}
+
+.valueBold {
+  font-size: 14px;
+  font-weight: 600;
+  color: #000;
+}
+
+/* Image icons instead of react-icons */
+.icons {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.pdfImage {
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.downloadImage {
+  width: 18px;  /* smaller width */
+  height: 18px; /* smaller height */
+}
+
+.iconImg:hover {
+  transform: scale(1.1);
+}

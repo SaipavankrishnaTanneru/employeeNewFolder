@@ -1,0 +1,19 @@
+.qualificationTabLeftSide{
+    width: 70%;
+    /* padding: 10px; */
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background-color: white;
+    border-radius: 6px;
+}
+
+.qualificationTabRightSide{
+    width: 30%;
+    background-color: white;
+    border-radius: 6px;
+    padding: 16px 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}

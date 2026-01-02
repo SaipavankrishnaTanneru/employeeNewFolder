@@ -1,0 +1,147 @@
+.studentCard {
+  width: 175px; /* instead of 175px */
+  border-radius: 8px !important;
+  border: 1px solid #E2E2E2;
+  padding: 12px 26px;
+  box-shadow: none !important;
+  background: #FFFFFF;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+ 
+/* Hover effect */
+.studentCard:hover {
+  border-color: #3425FF;
+  background-color: #F6F8FF;
+}
+ 
+.studentCardContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+}
+ 
+.studentCardContent {
+  padding: 0 !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+}
+ 
+/* Avatar */
+.studentAvatar {
+  width: 106px !important;
+  height: 106px !important;
+  border-radius: 180px !important;
+}
+ 
+/* Info section */
+.studentInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+ 
+.studentId {
+  color: #323232;
+  font-size: 14px;
+  font-weight: 400;
+  margin: 0;
+}
+ 
+.studentName {
+  color: #000;
+  font-weight: 700;
+  font-size: 18px;
+  margin: 0;
+}
+ 
+.studentFather {
+  color: #323232;
+  font-size: 14px;
+  margin: 0;
+}
+ 
+/* Decorative Image */
+figure {
+  margin: 0;
+  padding: 0;
+}
+ 
+.studentImageStyle {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+ 
+/* Chips Container */
+.studentChipContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 2px 6px;
+}
+ 
+/* Level Chip */
+.studentCurrentClassBlue {
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 500;
+  color: #3425FF;
+  border: 1px solid #3425FF;
+  background-color: #C7C3FF;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+ 
+/* Status Chips */
+.statusFullTime {
+  font-size: 12px;
+  font-weight: 500;
+  color: #118D19;
+  border: 1px solid #118D19;
+  background-color: #C0FAB3;
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+ 
+.statusContract {
+  font-size: 12px;
+  font-weight: 500;
+  color: #8D4F11;
+  border: 1px solid #8D4F11;
+  background-color: #FAE7B3;
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+ 
+.statusLeft {
+  font-size: 12px;
+  font-weight: 500;
+  color: #8D1111;
+  border: 1px solid #8D1111;
+  background-color: #FAB3B3;
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+ 
+.statusDefault {
+  font-size: 12px;
+  font-weight: 500;
+  color: #555;
+  border: 1px solid #ccc;
+  background-color: #eee;
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+ 
+ 
+ 

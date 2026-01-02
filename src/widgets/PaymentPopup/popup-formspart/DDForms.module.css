@@ -1,0 +1,54 @@
+.wrapper {
+  margin-top: 25px;
+  
+  overflow-y: auto;
+  padding:0px 50px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px 22px;
+  margin-bottom: 18px;
+  /* width:52%; */
+}
+
+.grid input,
+.grid select {
+  font-size: 14px;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cccccc;
+  border-radius: 10px;
+}
+
+
+
+
+.footerWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 25px;
+}
+
+.finishBtn {
+  background: #4338f2;
+  color: white;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s ease-in-out;
+}
+
+.finishBtn:hover {
+  background: #372dd6;
+}

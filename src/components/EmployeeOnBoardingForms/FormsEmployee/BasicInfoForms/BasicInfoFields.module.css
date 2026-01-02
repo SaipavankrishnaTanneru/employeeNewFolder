@@ -1,0 +1,240 @@
+/* ------------------------------------------------------- */
+/* MAIN CONTAINER                     */
+/* ------------------------------------------------------- */
+.container {
+  width: 100%;
+  padding: 10px;
+}
+ 
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 20px;
+  row-gap: 24px;
+  align-items: flex-start;
+}
+ 
+.formField {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+ 
+ 
+/* Force specific child widgets to fill width */
+.formField :global(.inputbox_container),
+.formField :global(.dropdown_container),
+.formField :global(.gender_selection_form_field) {
+  width: 100%;
+}
+ 
+/* ------------------------------------------------------- */
+/* EMPLOYEE TYPE TABS                    */
+/* ------------------------------------------------------- */
+.tabsRow {
+  grid-column: span 3;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+ 
+.tabsLabel {
+  font-size: 14px;
+  font-weight: 500;
+  color: #6E7C87;
+ 
+}
+ 
+/* ------------------------------------------------------- */
+/* CHECKBOX & LABEL UI                     */
+/* ------------------------------------------------------- */
+.checkboxContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+ 
+.checkboxContainer input {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+ 
+.checkboxContainer label {
+  font-size: 14px;
+  color: #555;
+  cursor: pointer;
+}
+ 
+/* ------------------------------------------------------- */
+/* PROFILE UPLOADER                      */
+/* ------------------------------------------------------- */
+.profileSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+ 
+.profileUploadCircle {
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  background-color: #ece9ff;
+  border: 4px solid #3425ff;
+ 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+ 
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+ 
+.profileUploadCircle:hover {
+  background-color: #dedbff;
+}
+ 
+.uploadText {
+  font-size: 12px;
+  font-weight: 400;
+  color: #344054;
+  margin-top: 10px;
+}
+ 
+.imageNote {
+  margin-top: 10px;
+  color: #ff6e6e;
+  font-size: 14px;
+  font-weight: 500;
+}
+ 
+/* Preview Image Wrapper */
+.imageWrapper {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+ 
+.profileImg {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 5px solid #fff;
+  box-shadow: 0 0 0 2px #3425ff;
+}
+ 
+.editBtn,
+.deleteImageBtn {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+ 
+.imageWrapper:hover .editBtn,
+.imageWrapper:hover .deleteImageBtn {
+  opacity: 1;
+  pointer-events: auto;
+}
+ 
+.editBtn {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.65);
+  padding: 6px 18px;
+  border-radius: 20px;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+}
+ 
+.deleteImageBtn {
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 20;
+}
+ 
+.deleteImageBtn svg {
+  width: 34px;
+  height: 34px;
+  fill: #ff0000;
+  /* Add drop shadow for better visibility over image */
+  filter: drop-shadow(0px 0px 2px rgba(255, 255, 255, 0.8));
+}
+ 
+.hiddenInput {
+  display: none;
+}
+ 
+/* ------------------------------------------------------- */
+/* RESPONSIVE                          */
+/* ------------------------------------------------------- */
+@media (max-width: 900px) {
+  .formGrid {
+    grid-template-columns: 1fr; /* Stack vertically on small screens */
+  }
+ 
+  .tabsRow {
+    grid-column: span 1;
+  }
+}
+ 
+/* ================= TOP SECTION ================= */
+.topSection {
+  display: grid;
+  grid-template-columns: 2.5fr 1fr;
+  gap: 32px;
+  align-items: start;
+  margin-bottom: 30px;
+}
+ 
+.nameGenderSection {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+ 
+.twoCol {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+ 
+.genderRow {
+  width: 100%;
+}
+ 
+/* ================= MAIN GRID ================= */
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+ 
+/* ================= RESPONSIVE ================= */
+@media (max-width: 900px) {
+  .topSection {
+    grid-template-columns: 1fr;
+  }
+ 
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+}
+ 
+ 

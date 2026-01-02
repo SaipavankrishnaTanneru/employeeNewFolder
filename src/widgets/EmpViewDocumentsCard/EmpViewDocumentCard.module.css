@@ -1,0 +1,95 @@
+.empViewDocumentCard {
+  padding: 13px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 36px;
+  box-shadow: 0px 0px 6.6px 0 #181D3145;
+  border-radius: 6px;
+  background-image: url("../../assets/EmployeeQu/documentcardbgjpg.jpg");
+  background-size: 100%; 
+  background-repeat: no-repeat;
+  background-position: bottom;
+}
+
+
+.documentCardTop {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 5px;
+}
+
+.documentCardIconHeading {
+  display: flex;
+  flex-direction: column;
+  height: 68px;
+}
+
+.documentCardHeading {
+  font-size: 16px;
+  font-weight: 700;
+  color: #000000;
+}
+
+.lastViewHeading {
+  font-size: 11px;
+  font-weight: 600;
+  color: #575757;
+}
+
+.lastViewValue {
+  font-size: 11px;
+  font-weight: 600;
+  color: #202020;
+}
+
+.documentCardLastViewOpenButton{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.documentCardOpenButton button{
+    border: none;
+    color: #041A6A;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    background: none;
+}
+
+.documentcardbottom{
+    display: flex;
+    justify-content: space-between;
+}
+
+.documentStatus{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4px 9px;
+    gap: 4px;
+    border-radius: 53px;
+    border: 1px solid #42D157;
+}
+
+/* .documentStatus figure{
+    margin: 0;
+} */
+
+.documentStatus p{
+    font-size: 10px;
+    font-weight: 700;
+    color: #42D157;
+}
+
+
+@media screen and (max-width: 1300px) {
+  .documentCardIconHeading {
+    height: 90px; /* or whatever height you want */
+  }
+}

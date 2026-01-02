@@ -1,0 +1,12 @@
+.accordian_container {
+  width: 100%;
+}
+.cheque_Info{
+  display: flex;
+flex-direction: column;
+align-items: flex-start;
+gap: 33px;
+flex: 1 0 0;
+margin-left: 25px;
+}
+ 

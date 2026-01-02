@@ -1,0 +1,61 @@
+/* MAIN CONTAINER */
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding-bottom: 10px;
+}
+
+/* HEADER (optional if used) */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #5c5c6b;
+}
+
+/* GRID layout matching Father + Family Info */
+.formGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* Three-column layout */
+.row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;   /* Matches FatherInfo & FamilyInfo */
+}
+
+/* NAME + CHECKBOX WRAPPER */
+.nameField {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+/* Checkbox row (Late) */
+.checkboxRow {
+  display: flex;
+  align-items: center; /* vertically center checkbox + label */
+  gap: 8px;
+  margin-top: 0; /* remove negative offset */
+}
+
+.checkboxLabel {
+  font-size: 14px;
+  color: #82808F;
+  display: inline-block;
+  line-height: 1;
+}
+
+/* Checkbox input size */
+.checkboxLabel input {
+  width: 16px;
+  height: 16px;
+}

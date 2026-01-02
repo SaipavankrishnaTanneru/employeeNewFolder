@@ -1,0 +1,68 @@
+.widgetContainer {
+    /* background: #fff;
+    border-radius: 12px; */
+    padding: 16px 20px;
+    /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06); */
+  }
+  .headerRow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+ 
+  .title {
+font-weight: 400;
+font-size: 12px;
+color:#000000;
+  }
+ 
+  .docsRow {
+    display: flex;
+    /* flex-direction: column; */
+    gap: 112px;
+    flex-wrap: wrap;
+    /* margin-top: 5px; */
+    padding: 16px;
+   
+  }
+ 
+  .docItem {
+    display: flex;
+    flex-direction: column;
+    gap:5px;
+    min-width: 180px;
+  }
+ 
+  .docLabel {
+font-weight: 500;
+font-size: 14px;
+color: #82808F;
+  }
+ 
+  .actionRow {
+    display: flex;
+    align-items: center;
+    gap: 55px;
+  }
+ 
+  .verifiedIcon {
+    font-size: 20px;
+  }
+
+  .viewImage {
+  height: 28px;
+  cursor: pointer;
+}
+
+.viewImage:hover {
+  opacity: 0.9;
+}
+
+.verifiedIcon {
+  font-size: 18px;
+  color: #4d6cff;
+}
+
+
+
+ 

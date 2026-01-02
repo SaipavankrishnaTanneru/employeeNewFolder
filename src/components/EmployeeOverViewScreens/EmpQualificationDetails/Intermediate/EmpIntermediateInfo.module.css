@@ -1,0 +1,38 @@
+.empIntermediateInfoNavContent{
+    padding: 0px 36px 0px 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.bachelors_heading{
+    font-size: 12px;
+    font-weight: 600;
+    color: #777777;
+}
+
+.bachelors_value{
+    font-weight: 700;
+    font-size: 14px;
+    color: #000000;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.bachelorsYear_Spec,
+.bachelorsCollege_Board_Cer{
+    display: flex;
+
+}
+
+.bachelors_year,.bachelors_spec,.bachelors_college,.bachelors_board, .bachelors_certificates{
+    width: 33.3%;
+}
+
+.icons{
+    padding: 3px 0px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}

@@ -1,0 +1,44 @@
+.stickyNav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: 10px 32px;
+}
+
+.content {
+  margin: 24px;
+  padding: 24px;
+  border-radius: 8px;
+}
+
+
+/* EmployeeOnBoardingContainer.module.css */
+.layout {
+  position: relative;
+}
+
+.layout.withBackButton {
+  margin-top: 20px; /* Extra space only when back button is shown */
+}
+
+.backButton {
+  position: absolute;
+  top: -24px; /* Positions it above/outside the header (adjust as needed) */
+  left: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+  padding: 4px; /* Clean fit for image */
+  border-radius: 4px;
+  transition: opacity 0.2s ease;
+  width: 24px; /* Image/button size */
+  height: 24px;
+  opacity: 1;
+}
+
+.backArrowImg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Scales image nicely without distortion */
+}

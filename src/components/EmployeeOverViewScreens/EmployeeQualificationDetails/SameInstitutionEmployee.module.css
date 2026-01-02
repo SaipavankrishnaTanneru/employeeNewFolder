@@ -1,0 +1,75 @@
+.header_figure {
+  display: flex;
+  flex-direction: column; /* <-- Key change: from column */
+  align-items: flex-start; /* <-- Key change: added */
+  justify-content: space-between; /* <-- Key change: added */
+  width: 100%; /* <-- Key change: added */
+  margin: 0;
+}
+ 
+.header_left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+ 
+.header_right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+ 
+.header_text {
+  font-size: 14px;
+  font-weight: 400;
+  color: #2D2D2D;
+  margin: 0;
+}
+ 
+.driver_cards_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* adjust the gap as needed */
+}
+ 
+ 
+.EmployeeDetailsCard{
+    padding: 10px;
+}
+ 
+.pagination_wrapper {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  padding: 6px 12px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  background: #fff;
+}
+ 
+.page_btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 18px;
+  color: #111827;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+ 
+.page_btn:hover {
+  color: #3425FF;
+}
+ 
+.page_text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #000000;
+}
+ 

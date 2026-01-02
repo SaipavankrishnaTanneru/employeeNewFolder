@@ -1,0 +1,37 @@
+.moduleWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: #fafbff;
+
+}
+
+/* Main section containing both profile and nav */
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 12px 12px 60px 12px;
+  background-color: #ffff;
+}
+
+/* Stepper area should align right below profile card */
+.navSection {
+  width: 100%;
+  /* border: 1px solid #eee;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  padding: 20px 32px; */
+}
+/* .widthpp{
+    width: 100%;
+} */
+
+.widthpptable{
+ 
+  background-color: #f6f8f9;
+  padding: 8px;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}

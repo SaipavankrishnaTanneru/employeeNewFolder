@@ -1,0 +1,171 @@
+.header_figure {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0;
+}
+ 
+.header_left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+ 
+.header_right {
+  display: flex;
+  align-items: center;
+}
+ 
+.header_text {
+  font-size: 14px;
+  font-weight: 400;
+  color: #2D2D2D;
+  margin: 0;
+}
+ 
+.driver_cards_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.header_right {
+  display: flex;
+  gap: 0px;
+}
+ 
+.addressContainer{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.addressDetails {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;    
+}
+ 
+.addressTitle {
+  font-size: 12px;
+  color: #5A5A5A;
+  margin-bottom: 2px;
+  font-weight: 600;
+}
+.employeeInfoContent {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  /* padding:0px 10px 10px 10px */
+}
+.employeedetails {
+  font-weight: 700;
+  color: #000000;
+  font-size: 12px;
+}
+ 
+.employeelabel {
+  font-size: 12px;
+  color: #777777;
+  font-weight: 600;
+}
+.employeeInfo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* column-gap: 50px;    */
+  row-gap: 20px;      /* ⬅️ vertical spacing */
+}
+ 
+.employeeInfo > .item:nth-child(even) {
+  align-items: flex-end;      /* ⬅️ push content to right */
+  text-align: right;          /* ⬅️ align text properly */
+}
+ 
+ 
+.item {
+  display: flex;
+  flex-direction: column;
+}
+.divider {
+  border: none;
+  border-top: 1px solid #e0e0e0;
+  margin: 12px 0;
+}
+ 
+.campusInfoConatiner {
+  position: relative;
+  padding: 7px 7px;
+  border: 1px solid #e20606;
+  border-radius: 12px;
+  background-color: #fff;
+  overflow: hidden; /* 🔑 VERY IMPORTANT */
+ 
+  box-shadow:
+    4px -4px 16px rgba(245, 61, 64, 0.4),
+   -4px  4px 16px rgba(67, 50, 255, 0.4);
+ 
+  background-image:
+    url("../../../assets/RightSideInformation Icons/BaackgroundImage.svg"),
+    url("../../../assets/RightSideInformation Icons/backgroundImage1.svg");
+ 
+  background-repeat: no-repeat, no-repeat;
+ 
+  /* 🔑 Push images outside */
+  background-position:
+    right top,
+    left -12px bottom 0px;
+ 
+  background-size:
+    52px auto,
+    62px auto;
+}
+ 
+ 
+ 
+ 
+.addressContainer1 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+ 
+ 
+.addressDetails {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;    
+}
+ 
+.companyname {
+  font-weight: 600;
+  font-size: 13px;
+  color: #262626;
+ 
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;   /* 🔑 prevents overflow */
+}
+ 
+.fullAddress {
+  font-size: 11px;
+  color: #555;
+  line-height: 1.4;
+}
+ 
+.rightIcons {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: 6px;
+}
+ 
+.rightIcons img {
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+}
+ 
+ 
+ 

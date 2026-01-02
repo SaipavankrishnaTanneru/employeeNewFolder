@@ -1,0 +1,75 @@
+/* components/InputBox.module.css */
+
+.inputbox_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.inputbox_wrapper label {
+  display: block;
+  font-weight: 400;
+  color: #2E2E2E;
+  font-size: 12px;
+}
+
+/* --- NEW: Wraps the input and the icon together --- */
+.input_container_relative {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.input_box {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 13px;
+  box-sizing: border-box;
+  background-color: #fff;
+  color: #101828;
+  outline: none; /* Added to prevent default browser outline overlapping your focus border */
+}
+
+/* --- NEW: Added conditionally when an icon exists --- */
+/* This ensures text doesn't type *underneath* the icon */
+.has_icon {
+  padding-right: 40px !important; 
+}
+
+/* --- NEW: Positions the icon absolutely inside the input --- */
+.right_icon_wrapper {
+  position: absolute;
+  right: 14px; /* Aligned with your input padding */
+  top: 50%;
+  transform: translateY(-50%); /* Centers vertically */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none; /* Ensures clicks go through to the input */
+  z-index: 2;
+}
+
+.input_box[readonly] {
+  background-color: #F3F3F3;
+  cursor: default;
+}
+
+.input_box::placeholder {
+  color: #101828;
+  font-size: 12px;
+  font-weight: 400;
+  opacity: 1; /* Ensures color applies correctly in Firefox */
+}
+
+.input_box:focus {
+  border: 1px solid #424242;
+}
+
+.errormessage {
+  color: red;
+  font-size: 12px; /* Added font size to match label style consistency */
+  margin-top: 2px;
+}

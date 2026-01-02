@@ -1,0 +1,54 @@
+.documentsTopNNavtab{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.documentsIconHeading{
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.documentsLeftTop{
+    display: block;
+    padding: 10px;
+}
+
+.documentsTabHeading{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+
+.heading{
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.description{
+    color: #575757;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.documentsNavTabNContent{
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.documentsNavTabs{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.documentsNavContent{
+    padding: 0px 15px 0px 15px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto auto;
+    gap: 20px;
+}

@@ -1,0 +1,68 @@
+.employeeprofileContainer{
+  display: flex;
+  flex-direction: row;
+  gap:18px;
+}
+
+.employeeProfile{
+  height:182px;
+  width:128px;
+  border: 3px solid #F2F2F2;
+  box-shadow: 0px 0px 4px 0px #00000040;
+  border-radius: 9px;
+  background-color: #C7C3FF;
+  /* border-radius: 50%;
+  border:1px solid #0c0c0c;
+   padding:5px; */
+}
+
+.emp_img{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 30px;
+}
+.infoSection {
+  display: flex;
+  flex-direction: column;
+  gap:5px;
+}
+.empId span {
+  font-weight: 600;
+  color: #333;
+}
+.icon {
+  width: 14px;
+  height: 14px;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+.details {
+  display: flex;        
+  align-items: center;  
+  font-size: 12px;
+  font-weight: 600;
+  gap: 12px;
+}
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 40px;
+  height: 43.5px;
+  width: 156.5px;
+  border-radius: 4px;
+  padding: 10px;
+  /* border: 2px solid #3425FF; */
+  background-color: #F5F4FF
+}
+.designation {
+  background-color: #C7C3FF;
+  font-size: 13px;
+  color:#3425FF;
+  border: 2px solid #3425FF;
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+}

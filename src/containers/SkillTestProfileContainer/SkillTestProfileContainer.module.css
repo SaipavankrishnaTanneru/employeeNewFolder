@@ -1,0 +1,20 @@
+.emp_profile_container {
+    /* height: 100%; */
+    width: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    gap: 50px;
+    background-color: #fff;
+    background-image: url('../../assets/EmployeeProfileCrad/application_search_background.png');
+    background-repeat: no-repeat;
+    background-position: fixed;
+    background-size: 100% 100%;
+
+}
+.emp_outlayout{
+    padding-top: 15px;
+}
+

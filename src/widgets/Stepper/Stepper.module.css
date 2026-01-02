@@ -1,0 +1,79 @@
+/* --- Stepper.module.css --- */
+.stepperContainer {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+ 
+}
+.step {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.stepContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  width: 40px;
+  height: 40px;
+}
+.stepCompleted .stepContent {
+  background-color: #3425FF; /* Blue */
+  color: white;
+}
+.stepInactive .stepContent {
+  background-color: #ECECEC; /* Grey */
+  color: #333;
+}
+.stepActive .stepContent {
+  background-color: #3425FF; /* Blue */
+  color: white;
+  width: auto;
+  padding: 8px 16px;
+  box-shadow: 0 4px 10px rgba(79, 70, 229, 0.4);
+}
+.stepIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.stepIcon svg {
+  width: 20px;
+  height: 20px;
+}
+.stepLabel {
+  margin-left: 8px;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+ 
+/* --- LOGIC CORRECTED HERE --- */
+ 
+/* 1. This sets ALL lines to grey by default */
+.step:not(:last-child)::after {
+  content: '';
+  position: relative;
+  display: block;
+  width: 40px;
+  height: 2px;
+  background-color: #ECECEC; /* Default grey line */
+  margin: 0 8px;
+  transition: background-color 0.3s ease;
+}
+ 
+/* 2. This (new) selector is more specific and overrides the grey line */
+.step.stepCompleted:not(:last-child)::after {
+  background-color: #3425FF; /* Blue override */
+}
+ 
+/* 3. We can remove the old, less specific rule */
+/*
+.stepCompleted::after {
+  background-color: #4f46e5;
+}
+*/

@@ -1,0 +1,142 @@
+/* MAIN CONTAINER */
+.container {
+ 
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #fff;
+}
+ 
+/* SECTION TITLE (Father / Mother) */
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #82808F;
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+
+.sectionTitle span{
+    font-size: 14px;
+  color: #82808F;
+  font-weight: 400;
+  margin-bottom: 8px;
+
+}
+ 
+/* "Is in Organization?" Row */
+.orgRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: -10px;
+  margin-bottom: -5px;
+}
+ 
+.orgLabel {
+  font-size: 14px;
+  color: #82808F;
+  line-height: 1.5;
+}
+ 
+/* 3 COLUMN GRID (Matches Parent) */
+.row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;          /* Matches father/mother spacing */
+}
+ 
+/* BLOCK WRAPPER FOR DYNAMIC MEMBER UI */
+.sectionBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+ 
+/* UPLOAD PHOTO */
+.uploadWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -5px;
+  gap: 8px;
+}
+ 
+.uploadLabel {
+  font-size: 13px;
+  color: #82808F;
+}
+ 
+.uploadButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 28px;
+  background: #EEF2FF;
+  border: 1px solid #3425FF;
+  border-radius: 8px;
+  color: #3425FF;
+  font-weight: 500;
+  cursor: pointer;
+}
+ 
+/* ADD MEMBER */
+.addFamilyWrapper {
+  text-align: center;
+  margin-top: 28px;
+}
+ 
+.addFamilyBtn {
+  background: none;
+  color: #4c4cff;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+}
+ 
+.checkbox_section {
+  margin-bottom: 10px;
+}
+ 
+.checkbox_wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  margin-bottom: 15px;
+}
+
+/* Generic labels inside this component */
+.container label {
+  display: block;
+  margin-top: 5px;
+  font-size: 12px;
+  font-weight: 400;
+  color: #344054; /* subtle dark-gray */
+}
+
+/* Checkbox label text used in JSX */
+.checkbox_label {
+  font-size: 14px;
+  color: #82808F;
+  font-weight: 400;
+}
+
+/* Ensure upload label matches other label styles (optional override) */
+.uploadLabel {
+  font-size: 13px;
+  color: #82808F;
+}
+
+/* Spacing for required asterisk if present inside labels */
+.container label > svg,
+.container label > .asterisk {
+  margin-left: 6px;
+  vertical-align: middle;
+}
+ 
+ 

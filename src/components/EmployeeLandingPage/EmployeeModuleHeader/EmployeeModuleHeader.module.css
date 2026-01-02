@@ -1,0 +1,31 @@
+.search_header_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  max-width: 100%;
+  background-image: url("../../../assets/application-analytics/application_search_background.png");
+  background-size: cover;
+  background-position: center;
+  border-radius: 8px;
+  padding: 24px;
+  border: 1px solid #DDDDDD;
+}
+ 
+/* BLUR LAYER */
+.blurOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(227, 221, 221, 0.2);
+  backdrop-filter: blur(0.8px);
+  z-index: 100;
+}
+ 
+/* FILTER ABOVE BLUR */
+.filterWrapper {
+  position: absolute;
+  top: 180px;        /* adjust to align under search */
+  left: 40px;        /* adjust as needed */
+  z-index: 101;
+}
+ 
+ 

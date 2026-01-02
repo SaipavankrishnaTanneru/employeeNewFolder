@@ -1,0 +1,31 @@
+.searchContainerWithDropdown {
+   width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+}
+
+/* ⭐ Full-screen blur overlay for background blur effect */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(8px); /* ⭐ Adjust blur intensity (e.g., 5px-12px) to match your image */
+  background: rgba(255, 255, 255, 0.1); /* ⭐ Slight white tint for a soft, light blur like in the screenshot; adjust opacity/color as needed */
+  z-index: 999; /* Below search container (z-1000) but above page content */
+}
+
+.backdrop_overlay {
+  position: fixed;
+  top: 0;
+  left: 17%;
+  right: 0;
+  bottom: 0;
+  background: #fff;
+  opacity: 0.5;
+  z-index: 500; /* Below search bar & filter dropdown */
+  cursor: pointer;
+}

@@ -1,0 +1,65 @@
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.stepContainer {
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.stepLabel {
+  font-size: 12px;
+  color: #82808F;
+  font-weight: 500;
+}
+
+.stepNumber {
+  font-size: 12px;
+  color: #3425FF;
+  font-weight: 700;
+}
+
+.progressBar {
+  width: 110px;
+  height: 8px;
+  display: flex;
+  margin-top: 3px;
+}
+
+.segment {
+  flex: 1;
+  height: 100%;
+  background: #E5E7EB;
+  clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
+  transition: background 0.3s ease;
+}
+
+.segment:first-child {
+  clip-path: polygon(0 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
+  border-radius: 10px 0 0 10px;
+}
+
+.segment:last-child {
+  clip-path: polygon(4px 0, 100% 0, 100% 100%, 0 100%);
+  border-radius: 0 10px 10px 0;
+}
+
+.segmentActive {
+  background: #3425FF;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+}

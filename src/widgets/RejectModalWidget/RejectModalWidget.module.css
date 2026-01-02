@@ -1,0 +1,91 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  backdrop-filter: blur(5px);
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1300;
+}
+ 
+.modal {
+  background: #fff;
+  width: 480px;
+  border-radius: 20px;
+  padding: 35px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  position: relative;
+}
+ 
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+ 
+.title {
+  font-weight: 700;
+  font-size: 18px;
+  color:#393939;
+}
+ 
+.subtitle {
+  font-weight: 400;
+  font-size: 12px;
+  color: #575757;
+}
+ 
+.closeWrapper {
+  cursor: pointer;
+}
+ 
+.closeIcon {
+  width: 18px;
+  height: 18px;
+}
+ 
+.closeText {
+  font-size: 24px;
+  line-height: 18px;
+  font-weight: 600;
+  color: #222;
+}
+ 
+.body {
+  margin-top: 20px;
+}
+ 
+.label {
+  display: block;
+  font-weight: 400;
+  font-size: 12px;
+  color: #344054;
+  margin-bottom: 5px;
+}
+ 
+.textarea {
+  width: 95%;
+  height: 100px;
+  resize: none;
+  border: 1px solid #C3C3C3;
+  border-radius: 8px;
+  padding: 10px;
+  font-weight: 400;
+  font-size: 12px;
+  color: #344054;
+}
+ 
+.textarea::placeholder {
+  font-weight: 400;
+  font-size: 13px;
+  color: #101828;
+}
+ 
+.footer {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 80px;
+}
+ 

@@ -1,0 +1,131 @@
+/* Container */
+.wrapper_container {
+  width: 100%;
+  padding: 10px 0;
+  height: 89vh;
+}
+ 
+.heading {
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 12px;
+}
+ 
+/* Card Layout */
+.cardContainer {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+ 
+/* Base Card */
+.card {
+  width: 310px;
+  min-height: 197px;
+  background: #fff;
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  cursor: pointer;
+  transition: 0.25s ease;
+  position: relative;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.06);
+  border: 1px solid #dddddd;
+  overflow: hidden;
+}
+ 
+/* Hover */
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+ 
+/* Right Border Accent */
+.card::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 6px;
+  height: 100%;
+  border-top-right-radius: 14px;
+  border-bottom-right-radius: 14px;
+}
+ 
+/* Pink */
+.cardPink::after {
+  background: linear-gradient(to bottom, #ff2525, #9830ba);
+}
+ 
+/* Blue */
+.cardBlue::after {
+  background: linear-gradient(to bottom, #3425ff, #3425ff);
+}
+ 
+/* Green */
+.cardGreen::after {
+  background: linear-gradient(to bottom, #48a924, #48a924);
+}
+ 
+/* Header */
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+ 
+/* Body */
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+ 
+.cardContent h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #222;
+}
+ 
+.cardContent p {
+  margin: 0;
+  font-size: 14px;
+  color: #323232;
+  width: 260px;
+}
+/* .employeeGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(137px, 1fr));
+  gap: 30px;
+} */
+ 
+ 
+/* .employeeGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(137px, 1fr));
+  gap: 30px;
+  margin: 20px 10px 36px;
+  justify-items: center;
+} */
+ 
+.employeeGrid {
+  display: flex;
+  flex-wrap: wrap;          /* allows multiple rows */
+  gap: 10px;                /* space between cards */
+  margin: 0px 0 36px;
+  align-items: stretch;
+}
+ 
+.recentSearchTitle {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: 700;
+}
+ 
+ 
+ 

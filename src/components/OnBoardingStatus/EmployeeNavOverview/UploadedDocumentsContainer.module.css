@@ -1,0 +1,101 @@
+.container {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 20px 25px;
+}
+ 
+/* ---------------- HEADER ---------------- */
+ 
+.headerRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+ 
+.title {
+  font-size: 12px;
+  font-weight: 400;
+  color: #000;
+}
+ 
+ 
+/* ---------------- GRID ---------------- */
+ 
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 48px;
+  row-gap: 28px;
+  padding: 0 25px;
+}
+ 
+/* ---------------- ITEM ---------------- */
+ 
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+ 
+/* ---------------- LABEL ---------------- */
+ 
+.label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #82808f;
+}
+ 
+/* ---------------- ICON GROUP ---------------- */
+ 
+.iconGroup {
+  display: flex;
+  align-items: center;
+}
+ 
+.iconBtn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+ 
+  width: 20px;
+  height: 20px;
+ 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+ 
+  margin-right: 6px;
+}
+ 
+.iconBtn svg {
+  width: 16px;
+  height: 16px;
+}
+ 
+.verified {
+  display: flex;
+  align-items: center;
+  margin-left: 14px;
+}
+ 
+.verified svg {
+  width: 18px;
+  height: 18px;
+}
+ 
+/* ---------------- RESPONSIVE ---------------- */
+ 
+@media (max-width: 992px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+ 
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+ 

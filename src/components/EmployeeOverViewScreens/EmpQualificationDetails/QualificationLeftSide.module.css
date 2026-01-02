@@ -1,0 +1,57 @@
+.qualificationTopNNavtab{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    /* padding: 10px; */
+}
+
+.qualificationIconHeading{
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.qualificationLeftTop{
+    display: block;
+    padding: 10px;
+}
+
+.qualificationTabHeading{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+
+.heading{
+     font-size: 18px;
+    font-weight: 700;
+    color:#393939;
+}
+
+.description{
+    color: #575757;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.qualificationNavTabNContent{
+    display: flex;
+    flex-direction: column;
+    gap: 62px;
+}
+
+
+.qualificationNavTabs{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* .qualificationNavContent{
+    padding: 0px 26px 0px 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+} */
+

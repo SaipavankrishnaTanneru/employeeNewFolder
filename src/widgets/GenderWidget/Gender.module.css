@@ -1,0 +1,38 @@
+.gender_wrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.gender_label{
+    display: block;
+    font-weight: 400;
+    color: #344054;
+    font-size: 12px;
+}
+
+.gender_content{
+    display: flex;
+     gap: 15px;
+}
+
+.gender_option{
+    padding:9px 23px;
+    border: 2px solid #EBEBEB;
+    border-radius: 51px;
+    font-weight: 400;
+    font-size: 13px;
+    display: flex;
+    color: #727F96;
+    cursor: pointer;
+    text-align: center;
+}
+
+.gender_option.active{
+    background-color: #3425FF;
+    color: #fff;
+    font-weight: 600;
+    font-size: 13px;
+    padding:9px 23px;
+    text-align: center;
+}

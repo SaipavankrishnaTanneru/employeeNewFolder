@@ -1,0 +1,92 @@
+/* MODAL OVERLAY */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+/* MODAL BOX */
+.modalBox {
+  background: #fff;
+  width: 480px;
+  padding: 40px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+/* PAGE MODE WRAPPER */
+.pageWrapper {
+  width: 100%;
+  height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pageContent {
+  text-align: center;
+}
+
+/* Lottie Container */
+.lottieContainer {
+  width: 180px;
+  height: 180px;
+  margin: 0 auto;
+}
+
+/* Text */
+.successText {
+  font-size: 22px;
+  font-weight: 700;
+  color: #111827;
+  margin-top: 12px;
+}
+
+/* BUTTONS */
+.buttonRow {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+}
+
+.closeBtn {
+  display: flex;
+  padding: 8px 34px;
+  align-items: center; /* Changed to center */
+  justify-content: center;
+  gap: 4px;
+  border-radius: 6px;
+  border: 1px solid #3425FF;
+  background-color: #fff;
+  color: #3425FF;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.proceedBtn {
+  display: flex;
+  padding: 8px 34px;
+  align-items: center; /* FIX: Use center to align text and svg */
+  justify-content: center;
+  gap: 8px;
+  border-radius: 6px;
+  background: #3425FF;
+  color: #fff;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.arrowIcon {
+  /* Since it's an SVG now, we set width/height directly */
+  width: 18px;
+  height: 18px;
+  /* No need for object-fit or margin-left if gap is used in parent */
+}

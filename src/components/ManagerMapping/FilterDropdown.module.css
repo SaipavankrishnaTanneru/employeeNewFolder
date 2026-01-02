@@ -1,0 +1,41 @@
+/***************************************************
+  WRAPPER
+***************************************************/
+.dropdownWrapper {
+  position: absolute;
+  top: 44px;
+  left: 0;
+  width: 26%;
+  background: white;
+  border-radius: 16px;
+  padding: 10px 20px 20px 20px;
+  box-shadow: 0 0 4px rgba(0,0,0,0.10);
+  transition: all 0.4s ease;
+  z-index: 999;
+  overflow: visible;
+}
+
+/***************************************************
+  TOP DECOR
+***************************************************/
+.topDecoration {
+  text-align: center;
+}
+
+.topDecoration img {
+  width: 170px;
+  opacity: 0.9;
+}
+
+/***************************************************
+  BUTTON WRAPPER
+***************************************************/
+.buttonWrapper {
+  margin-top: 14px;
+  display: flex;
+  justify-content: center;
+}
+
+.buttonWrapper > button {
+  border-radius: 12px !important;
+}

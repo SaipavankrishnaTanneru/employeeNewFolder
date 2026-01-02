@@ -1,0 +1,82 @@
+/* Field wrapper */
+.field_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* Error message styling */
+.error_message {
+  color: #dc3545;
+  font-size: 12px;
+  margin-top: 4px;
+  font-weight: 400;
+}
+
+/* Phone Input Styles for FormField component */
+.phone_input_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.phone_input_wrapper label {
+  display: block;
+  font-weight: 400;
+  color: #344054;
+  font-size: 12px;
+}
+
+.phone_input_container {
+  position: relative;
+  width: 100%;
+}
+
+.phone_input {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 13px;
+  box-sizing: border-box;
+  background-color: #fff;
+  color: #101828;
+  outline: none;
+}
+
+.phone_input::placeholder {
+  color: #101828;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.phone_input:focus {
+  border: 1px solid #424242;
+  outline: none;
+}
+
+.phone_input:disabled {
+  background-color: #f5f5f5;
+  color: #999;
+  cursor: not-allowed;
+}
+
+/* Added an explicit error_input class so styles.error_input is defined */
+.error_input {
+  border-color: #dc3545;
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+/* keep the compound rule too (optional) */
+.phone_input.error_input {
+  border-color: #dc3545;
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+.phone_icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}

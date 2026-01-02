@@ -1,0 +1,218 @@
+import React, { useEffect, useMemo } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import Stepper from 'widgets/Stepper/Stepper';
+import navStyles from './OnBoardingEmployeeNav.module.css';
+import OnboardingFooter from '../OnBoardingEmployeeFooter/OnboardingFooter';
+
+// Import tab content
+import WorkingInfo from '../EmployeeNavOverview/WorkingInfoContainer';
+import FamilyInfo from '../EmployeeNavOverview/FamilyInfoContainer';
+import AccountInfoContainer from '../EmployeeNavOverview/AccountInfoContainer';
+import CategoryInfo from '../EmployeeNavOverview/CategoryInfoContainer';
+import QualificationInfo from '../EmployeeNavOverview/QualificationInfoContainer';
+import UploadedDocuments from '../EmployeeNavOverview/UploadedDocumentsContainer';
+import PreviousEmployerInfo from '../EmployeeNavOverview/PreviousEmployerinfoContainer';
+import SalaryInfoReadOnly from '../EmployeeNavOverview/SalaryInfo';
+import AgreementInfoView from '../EmployeeNavOverview/AgreementInfoView';
+
+// --- Icon components ---
+const IconSalary = () => (
+  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M5.5 9.16602H9.16667" stroke="black" strokeWidth="1.375" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M19.0969 10.084H16.7118C15.0755 10.084 13.75 11.3151 13.75 12.834C13.75 14.3529 15.0764 15.584 16.7108 15.584H19.0969C19.1739 15.584 19.2115 15.584 19.2436 15.5822C19.7386 15.5519 20.1327 15.1862 20.1648 14.7269C20.1667 14.6976 20.1667 14.6618 20.1667 14.5912V11.0767C20.1667 11.0062 20.1667 10.9704 20.1648 10.9411C20.1318 10.4818 19.7386 10.1161 19.2436 10.0858C19.2115 10.084 19.1739 10.084 19.0969 10.084Z" stroke="currentColor" strokeWidth="1.375"/>
+    <path d="M19.2186 10.0833C19.1471 8.36733 18.9179 7.315 18.1763 6.57433C17.1029 5.5 15.3741 5.5 11.9173 5.5H9.16732C5.71057 5.5 3.98173 5.5 2.90832 6.57433C1.8349 7.64867 1.83398 9.37658 1.83398 12.8333C1.83398 16.2901 1.83398 18.0189 2.90832 19.0923C3.98265 20.1657 5.71057 20.1667 9.16732 20.1667H11.9173C15.3741 20.1667 17.1029 20.1667 18.1763 19.0923C18.9179 18.3517 19.148 17.2993 19.2186 15.5833" stroke="currentColor" strokeWidth="1.375"/>
+    <path d="M5.5 5.49995L8.92375 3.22937C9.40536 2.91651 9.96736 2.75 10.5417 2.75C11.116 2.75 11.678 2.91651 12.1596 3.22937L15.5833 5.49995" stroke="currentColor" strokeWidth="1.375" strokeLinecap="round"/>
+    <path d="M16.4922 12.834H16.5022" stroke="currentColor" strokeWidth="1.83333" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+const SalaryInfoRead = () => (
+  <div className='sale'>
+    <SalaryInfoReadOnly />
+  </div>
+);
+const IconWorkingInfo = () => (
+  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M8.90144 3.93008C9.16958 4.19891 9.60488 4.19948 9.87371 3.93134C10.1425 3.66321 10.1431 3.22791 9.87498 2.95907L9.38821 3.44457L8.90144 3.93008ZM5.49879 1.83399L5.49776 2.52149L5.49983 2.52149L5.49879 1.83399ZM1.12261 2.95907C0.854471 3.22791 0.855037 3.66321 1.12387 3.93134C1.39271 4.19948 1.82801 4.19891 2.09614 3.93008L1.60938 3.44457L1.12261 2.95907ZM3.06833 4.90368C2.79989 5.1722 2.79995 5.60751 3.06848 5.87595C3.33701 6.14439 3.77231 6.14433 4.04075 5.8758L3.55454 5.38974L3.06833 4.90368ZM5.49879 4.58399L5.49894 3.89649H5.49864L5.49879 4.58399ZM6.95683 5.8758C7.22528 6.14433 7.66058 6.14439 7.9291 5.87595C8.19763 5.60751 8.1977 5.1722 7.92925 4.90368L7.44304 5.38974L6.95683 5.8758ZM14.6655 4.58399V3.89649V4.58399ZM14.6655 13.7507V14.4382L14.6664 14.4382L14.6655 13.7507ZM11.8046 13.3673C11.4298 13.4286 11.1757 13.782 11.237 14.1567C11.2982 14.5314 11.6516 14.7856 12.0264 14.7243L11.9155 14.0458L11.8046 13.3673ZM19.5877 14.7285L19.324 15.3635L19.5877 14.7285ZM9.39338 13.5178L10.0456 13.3004L9.39338 13.5178ZM9.38821 3.44457L9.87498 2.95907C9.3008 2.3834 8.6185 1.92691 7.8673 1.61584L7.60427 2.25104L7.34124 2.88623C7.92501 3.12797 8.45524 3.48272 8.90144 3.93008L9.38821 3.44457ZM7.60427 2.25104L7.8673 1.61584C7.1161 1.30477 6.31082 1.14527 5.49776 1.14649L5.49879 1.83399L5.49983 2.52149C6.13167 2.52054 6.75747 2.64449 7.34124 2.88623L7.60427 2.25104ZM5.49879 1.83399L5.49983 1.14649C4.68677 1.14527 3.88149 1.30477 3.13028 1.61584L3.39331 2.25104L3.65634 2.88623C4.24012 2.64449 4.86591 2.52054 5.49776 2.52149L5.49879 1.83399ZM3.39331 2.25104L3.13028 1.61584C2.37908 1.92691 1.69678 2.3834 1.12261 2.95907L1.60938 3.44457L2.09614 3.93008C2.54234 3.48272 3.07257 3.12797 3.65634 2.88623L3.39331 2.25104ZM3.55454 5.38974L4.04075 5.8758C4.42745 5.48898 4.95197 5.27161 5.49894 5.27149L5.49879 4.58399L5.49864 3.89649C4.58704 3.89669 3.71284 4.25898 3.06833 4.90368L3.55454 5.38974ZM5.49879 4.58399L5.49864 5.27149C6.04561 5.27161 6.57013 5.48898 6.95683 5.8758L7.44304 5.38974L7.92925 4.90368C7.28475 4.25898 6.41055 3.89669 5.49894 3.89649L5.49879 4.58399ZM14.6655 18.334V17.6465H10.9988V18.334V19.0215H14.6655V18.334ZM10.9988 18.334V17.6465H4.38622V18.334V19.0215H10.9988V18.334ZM3.43753 17.6502L4.08975 17.4328L2.92309 13.9328L2.27087 14.1502L1.61865 14.3676L2.78531 17.8676L3.43753 17.6502ZM3.21955 12.834V13.5215H8.4447V12.834V12.1465H3.21955V12.834ZM9.39338 13.5178L8.74116 13.7352L10.3466 18.5514L10.9988 18.334L11.651 18.1166L10.0456 13.3004L9.39338 13.5178ZM17.8738 7.79232H17.1863C17.1863 8.46089 16.9207 9.10207 16.448 9.57482L16.9341 10.061L17.4202 10.5471C18.1508 9.81648 18.5613 8.82556 18.5613 7.79232H17.8738ZM16.9341 10.061L16.448 9.57482C15.9752 10.0476 15.334 10.3132 14.6655 10.3132V11.0007V11.6882C15.6987 11.6882 16.6896 11.2777 17.4202 10.5471L16.9341 10.061ZM14.6655 11.0007V10.3132C13.9969 10.3132 13.3557 10.0476 12.883 9.57482L12.3968 10.061L11.9107 10.5471C12.6413 11.2777 13.6322 11.6882 14.6655 11.6882V11.0007ZM12.3968 10.061L12.883 9.57482C12.4102 9.10207 12.1446 8.46089 12.1446 7.79232H11.4571H10.7696C10.7696 8.82556 11.1801 9.81648 11.9107 10.5471L12.3968 10.061ZM11.4571 7.79232H12.1446C12.1446 7.12376 12.4102 6.48257 12.883 6.00983L12.3968 5.52369L11.9107 5.03755C11.1801 5.76816 10.7696 6.75908 10.7696 7.79232H11.4571ZM12.3968 5.52369L12.883 6.00983C13.3557 5.53708 13.9969 5.27149 14.6655 5.27149V4.58399V3.89649C13.6322 3.89649 12.6413 4.30694 11.9107 5.03755L12.3968 5.52369ZM14.6655 4.58399V5.27149C15.334 5.27149 15.9752 5.53708 16.448 6.00983L16.9341 5.52369L17.4202 5.03755C16.6896 4.30694 15.6987 3.89649 14.6655 3.89649V4.58399ZM16.9341 5.52369L16.448 6.00983C16.9207 6.48257 17.1863 7.12376 17.1863 7.79232H17.8738H18.5613C18.5613 6.75908 18.1508 5.76816 17.4202 5.03755L16.9341 5.52369ZM16.4988 18.334V19.0215H19.1655V18.334V17.6465H16.4988V18.334ZM20.1655 17.334H20.853V15.6178H20.1655H19.478V17.334H20.1655ZM19.5877 14.7285L19.8514 14.0936C18.2095 13.4117 16.4467 13.0607 14.6645 13.0632L14.6655 13.7507L14.6664 14.4382C16.2668 14.4359 17.8497 14.7512 19.324 15.3635L19.5877 14.7285ZM14.6655 13.7507V13.0632C14.1443 13.0632 13.4172 13.1427 12.8481 13.2164C12.5576 13.2541 12.2976 13.2917 12.1102 13.3198C12.0164 13.3339 11.9405 13.3457 11.8879 13.354C11.8616 13.3582 11.841 13.3614 11.8269 13.3637C11.8199 13.3648 11.8144 13.3657 11.8107 13.3663C11.8088 13.3666 11.8073 13.3669 11.8063 13.367C11.8058 13.3671 11.8054 13.3672 11.8051 13.3672C11.805 13.3673 11.8048 13.3673 11.8048 13.3673C11.8047 13.3673 11.8047 13.3673 11.8046 13.3673C11.8046 13.3673 11.8046 13.3673 11.9155 14.0458C12.0264 14.7243 12.0263 14.7243 12.0263 14.7243C12.0263 14.7243 12.0263 14.7243 12.0263 14.7243C12.0264 14.7243 12.0264 14.7243 12.0265 14.7243C12.0266 14.7243 12.0269 14.7242 12.0272 14.7242C12.0279 14.7241 12.0291 14.7239 12.0307 14.7236C12.0338 14.7231 12.0386 14.7223 12.045 14.7213C12.0578 14.7192 12.077 14.7162 12.1019 14.7123C12.1517 14.7044 12.2243 14.6931 12.3146 14.6796C12.4953 14.6524 12.7458 14.6162 13.0247 14.58C13.5946 14.5062 14.2425 14.4382 14.6655 14.4382V13.7507ZM20.1655 15.6178H20.853C20.853 14.9736 20.4825 14.3557 19.8514 14.0936L19.5877 14.7285L19.324 15.3635C19.4062 15.3976 19.478 15.4896 19.478 15.6178H20.1655ZM19.1655 18.334V19.0215C20.0974 19.0215 20.853 18.266 20.853 17.334H20.1655H19.478C19.478 17.5066 19.338 17.6465 19.1655 17.6465V18.334ZM8.4447 12.834V13.5215C8.57921 13.5215 8.69863 13.6076 8.74116 13.7352L9.39338 13.5178L10.0456 13.3004C9.81591 12.6113 9.17105 12.1465 8.4447 12.1465V12.834ZM2.27087 14.1502L2.92309 13.9328C2.85564 13.7305 3.00625 13.5215 3.21955 13.5215V12.834V12.1465C2.06774 12.1465 1.25441 13.2749 1.61865 14.3676L2.27087 14.1502ZM4.38622 18.334V17.6465C4.25171 17.6465 4.13229 17.5604 4.08975 17.4328L3.43753 17.6502L2.78531 17.8676C3.01501 18.5567 3.65987 19.0215 4.38622 19.0215V18.334Z" fill="currentColor" />
+  </svg>
+);
+const IconPersonal = () => (
+  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M4.58203 8.70703C4.58203 8.70703 2.22482 9.6237 1.83203 12.832M17.4154 8.70703C17.4154 8.70703 19.7726 9.6237 20.1654 12.832M8.2487 8.70703C8.2487 8.70703 10.4487 9.24191 10.9987 11.9154C11.5487 9.24191 13.7487 8.70703 13.7487 8.70703M9.16536 15.582C9.16536 15.582 7.24036 15.9258 6.41536 18.332M12.832 15.582C12.832 15.582 14.757 15.9258 15.582 18.332" stroke="currentColor" strokeWidth="1.38" strokeLinecap="round" />
+    <path d="M10.9987 16.4993C12.2644 16.4993 13.2904 15.4733 13.2904 14.2077C13.2904 12.942 12.2644 11.916 10.9987 11.916C9.73305 11.916 8.70703 12.942 8.70703 14.2077C8.70703 15.4733 9.73305 16.4993 10.9987 16.4993Z" stroke="currentColor" strokeWidth="1.38" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M15.582 9.16602C17.1008 9.16602 18.332 7.9348 18.332 6.41602C18.332 4.89723 17.1008 3.66602 15.582 3.66602C14.0632 3.66602 12.832 4.89723 12.832 6.41602C12.832 7.9348 14.0632 9.16602 15.582 9.16602Z" stroke="currentColor" strokeWidth="1.38" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M6.41406 9.16602C7.93285 9.16602 9.16406 7.9348 9.16406 6.41602C9.16406 4.89723 7.93285 3.66602 6.41406 3.66602C4.89528 3.66602 3.66406 4.89723 3.66406 6.41602C3.66406 7.9348 4.89528 9.16602 6.41406 9.16602Z" stroke="currentColor" strokeWidth="1.38" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+const IconContact = () => (
+  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M5.95573 8.25H5.03906M9.6224 8.25H8.70573M5.95573 5.5H5.03906M9.6224 5.5H8.70573M16.9557 13.75H16.0391M16.9557 10.0833H16.0391" stroke="currentColor" strokeWidth="1.375" strokeLinecap="round" />
+    <path d="M12.832 7.33398V20.1673H16.4987C18.2275 20.1673 19.091 20.1673 19.6282 19.6302C20.1654 19.093 20.1654 18.2295 20.1654 16.5007V11.0007C20.1654 9.27182 20.1654 8.40832 19.6282 7.87115C19.091 7.33398 18.2275 7.33398 16.4987 7.33398H1Two.jsZM12.832 7.33398C12.832 4.74165 12.832 3.44457 12.0263 2.63973C11.2214 1.83398 9.92436 1.83398 7.33203 1.83398C4.7397 1.83398 3.44261 1.83398 2.63778 2.63973C1.83203 3.44457 1.83203 4.74165 1.83203 7.33398V9.16732" stroke="currentColor" strokeWidth="1.375" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M7.35586 12.7933C7.36119 13.0374 7.3177 13.2802 7.22793 13.5073C7.13816 13.7344 7.00392 13.9413 6.83309 14.1158C6.66227 14.2903 6.4583 14.4289 6.23316 14.5235C6.00802 14.6181 5.76625 14.6668 5.52205 14.6667C5.27784 14.6665 5.03612 14.6176 4.81108 14.5228C4.58603 14.428 4.3822 14.2892 4.21155 14.1145C4.0409 13.9398 3.90687 13.7328 3.81732 13.5056C3.72778 13.2784 3.68453 13.0356 3.69011 12.7914C3.70106 12.3124 3.8991 11.8567 4.24183 11.5219C4.58456 11.1871 5.04475 10.9998 5.52388 11C6.00301 11.0002 6.46301 11.188 6.80541 11.5232C7.14781 11.8584 7.34539 12.3142 7.35586 12.7933ZM1.89711 18.527C2.86694 17.0347 4.40786 16.4755 5.52252 16.4764C6.63719 16.4774 8.13227 17.0347 9.10302 18.527C9.16536 18.6233 9.18277 18.7424 9.12594 18.8424C8.89952 19.2448 8.19461 20.0432 7.68677 20.0964C7.10102 20.1587 5.57202 20.1679 5.52344 20.1679C5.47486 20.1679 3.89819 20.1587 3.31427 20.0964C2.80461 20.0423 2.10061 19.2448 1.87327 18.8424C1.84777 18.7927 1.8365 18.737 1.8407 18.6813C1.84491 18.6257 1.86443 18.5723 1.89711 18.527Z" stroke="currentColor" strokeWidth="1.375" strokeLinecap="round" />
+  </svg>
+);
+const IconEducation = () => (
+  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path fillRule="evenodd" clipRule="evenodd" d="M2.64506 6.56549C2.45219 6.65867 2.28911 6.8063 2.17488 6.99113C2.06066 7.17597 2 7.39037 2 7.6093C2 7.82822 2.06066 8.04262 2.17488 8.22746C2.28911 8.41229 2.45219 8.55992 2.64506 8.6531L4.25263 9.43249V13.9587C4.25263 14.8155 4.52355 15.7715 5.31384 16.3604C6.30986 17.0994 8.12427 18 11.0021 18C13.88 18 15.6899 17.0936 16.6904 16.3604C17.4807 15.7738 17.7517 14.8247 17.7517 13.9587V9.43249L18.8758 8.88634V13.9553C18.8758 14.1084 18.935 14.2552 19.0405 14.3635C19.1459 14.4718 19.2888 14.5326 19.4379 14.5326C19.587 14.5326 19.73 14.4718 19.8354 14.3635C19.9408 14.2552 20 14.1084 20 13.9553V7.60468C20 7.38601 19.9396 7.17182 19.8258 6.98703C19.712 6.80225 19.5494 6.65446 19.357 6.56087L12.9267 3.44332C12.3257 3.15141 11.6692 3 11.0044 3C10.3396 3 9.68305 3.15141 9.08206 3.44332L2.65181 6.56087L2.64506 6.56549ZM5.3768 13.9553V9.97171L9.07531 11.773C9.67631 12.0649 10.3328 12.2163 10.9976 12.2163C11.6624 12.2163 12.319 12.0649 12.92 11.773L16.6185 9.97171V13.9553C16.6185 14.5972 16.4161 15.1215 16.0227 15.4101C15.2088 16.014 13.6282 16.8419 10.9976 16.8419C8.36709 16.8419 6.78201 16.0198 5.97261 15.4101C5.58027 15.1191 5.3768 14.5915 5.3768 13.9553ZM9.55871 4.48712C10.0085 4.26829 10.5 4.15477 10.9976 4.15477C11.4953 4.15477 11.9868 4.26829 12.4366 4.48712L18.8668 7.60468L12.4366 10.7222C11.9868 10.9411 11.4953 11.0546 10.9976 11.0546C10.5 11.0546 10.0085 10.9411 9.55871 10.7222L3.12846 7.60468L9.55871 4.48712Z" fill="currentColor" />
+  </svg>
+);
+const IconDocuments = () => (
+  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M6.81008 10.9993H12.0482M6.81008 13.0946H14.1434M6.81008 15.1898H9.95294M17.2863 16.2374V8.90411L12.0482 3.66602H6.81008C6.25439 3.66602 5.72146 3.88676 5.32852 4.2797C4.93559 4.67263 4.71484 5.20556 4.71484 5.76125V16.2374C4.71484 16.7931 4.93559 17.3261 5.32852 17.719C5.72146 18.1119 6.25439 18.3327 6.81008 18.3327H15.191C15.7467 18.3327 16.2797 18.1119 16.6726 17.719C17.0655 17.3261 17.2863 16.7931 17.2863 16.2374Z" stroke="currentColor" strokeWidth="1.38" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M12.0469 3.66602V6.80887C12.0469 7.36456 12.2676 7.8975 12.6606 8.29043C13.0535 8.68336 13.5864 8.90411 14.1421 8.90411H17.285" stroke="currentColor" strokeWidth="1.38" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+const IconReview = () => (
+  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M15.5859 9.16602C17.1047 9.16602 18.3359 7.9348 18.3359 6.41602C18.3359 4.89723 17.1047 3.66602 15.5859 3.66602C14.0672 3.66602 12.8359 4.89723 12.8359 6.41602C12.8359 7.9348 14.0672 9.16602 15.5859 9.16602Z" stroke="currentColor" strokeWidth="1.38" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M6.41797 18.332C7.93675 18.332 9.16797 17.1008 9.16797 15.582C9.16797 14.0632 7.93675 12.832 6.41797 12.832C4.89919 12.832 3.66797 14.0632 3.66797 15.582C3.66797 17.1008 4.89919 18.332 6.41797 18.332Z" stroke="currentColor" strokeWidth="1.38" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M12.8346 12.8327H18.3346V17.416C18.3346 17.6591 18.2381 17.8923 18.0662 18.0642C17.8942 18.2361 17.6611 18.3327 17.418 18.3327H13.7513C13.5082 18.3327 13.275 18.2361 13.1031 18.0642C12.9312 17.8923 12.8346 17.6591 12.8346 17.416V12.8327ZM3.66797 3.66602H9.16797V8.24935C9.16797 8.49246 9.07139 8.72562 8.89948 8.89753C8.72757 9.06944 8.49442 9.16602 8.2513 9.16602H4.58464C4.34152 9.16602 4.10836 9.06944 3.93645 8.89753C3.76455 8.72562 3.66797 8.49246 3.66797 8.24935V3.66602Z" stroke="currentColor" strokeWidth="1.38" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+const IconPrint = () => (
+  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M6.41406 5.95898V4.12565C6.41406 3.88254 6.51064 3.64938 6.68255 3.47747C6.85446 3.30556 7.08761 3.20898 7.33073 3.20898H19.2474C19.4905 3.20898 19.7237 3.30556 19.8956 3.47747C20.0675 3.64938 20.1641 3.88254 20.1641 4.12565V12.3757C20.1641 12.6188 20.0675 12.8519 19.8956 13.0238C19.7237 13.1957 19.4905 13.2923 19.2474 13.2923H18.3307" stroke="currentColor" strokeWidth="1.38" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M14.6654 8.70898H2.7487C2.24244 8.70898 1.83203 9.11939 1.83203 9.62565V17.8757C1.83203 18.3819 2.24244 18.7923 2.7487 18.7923H14.6654C15.1716 18.7923 15.582 18.3819 15.582 17.8757V9.62565C15.582 9.11939 15.1716 8.70898 14.6654 8.70898Z" stroke="currentColor" strokeWidth="1.38" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M1.83203 12.8346H15.582M15.582 10.543V16.043M1.83203 10.543V16.043M5.04036 15.5846H8.70703M11.457 15.5846H12.3737" stroke="currentColor" strokeWidth="1.38" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+const Agreementicon = () => (
+  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.416 1.83398H4.58268C4.07642 1.83398 3.66602 2.24439 3.66602 2.75065V19.2507C3.66602 19.7569 4.07642 20.1673 4.58268 20.1673H17.416C17.9223 20.1673 18.3327 19.7569 18.3327 19.2507V2.75065C18.3327 2.24439 17.9223 1.83398 17.416 1.83398Z" stroke="currentColor" strokeWidth="1.46667" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M7.33203 1.83398H11.457V9.16732L9.39453 7.33398L7.33203 9.16732V1.83398Z" stroke="currentColor" strokeWidth="1.46667" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M7.33203 12.834H11.9154M7.33203 15.584H14.6654" stroke="currentColor" strokeWidth="1.46667" strokeLinecap="round"/>
+  </svg>
+);
+// --- End of Icon components ---
+
+const baseTabs = [
+  { label: 'Working Info', path: 'working-info', icon: <IconWorkingInfo />, content: <WorkingInfo /> },
+  { label: 'Family Info', path: 'family-info', icon: <IconPersonal />, content: <FamilyInfo /> },
+  { label: 'Previous Employer Info', path: 'previous-employer-info', icon: <IconContact />, content: <PreviousEmployerInfo /> },
+  { label: 'Qualification Info', path: 'qualification-info', icon: <IconEducation />, content: <QualificationInfo /> },
+  { label: 'Uploaded Documents', path: 'documents', icon: <IconDocuments />, content: <UploadedDocuments /> },
+  { label: 'Category', path: 'category', icon: <IconReview />, content: <CategoryInfo /> },
+  { label: 'Agreement Info', path: 'agreement', icon: <Agreementicon />, content: <AgreementInfoView /> },
+  { label: 'Account Info', path: 'account-info', icon: <IconPrint />, content: <AccountInfoContainer /> },
+];
+function OnBoardingEmployeeNav({ role, onFinish ,onBack}) {
+  const navigate = useNavigate();
+  // Get parameters from URL
+  const { employeeId, stepId } = useParams(); 
+
+  // Define the steps array based on Role
+  const allSteps = useMemo(() => {
+    const salaryTab = {
+      label: 'Salary Info',
+      path: 'salary-info',
+      icon: <IconSalary />,
+      content: <SalaryInfoRead />
+    };
+    
+    // CO and HR include Salary tab
+    if (role === 'CO' || role === 'HR') {
+      return [...baseTabs, salaryTab];
+    }
+    // DO sees only base tabs
+    return baseTabs;
+  }, [role]);
+
+  // Determine Current Step Index based on URL 'stepId'
+  const currentStepIndex = useMemo(() => {
+    const index = allSteps.findIndex(step => step.path === stepId);
+    return index >= 0 ? index : 0;
+  }, [stepId, allSteps]);
+
+  // --- 🔴 FIXED NAVIGATION LOGIC ---
+  const navigateToStep = (index) => {
+    const targetStep = allSteps[index];
+    if (targetStep) {
+      // ⚠️ IMPORTANT: We must explicitly include 'onboarding/' 
+      // because relative path '..' goes to the parent route (:employeeId), 
+      // skipping the 'onboarding' segment entirely.
+      navigate(`../onboarding/${targetStep.path}`);
+    }
+  };
+
+  const handleStepClick = (index) => {
+    navigateToStep(index);
+  };
+
+  const handleNext = () => {
+    const nextIndex = currentStepIndex + 1;
+    if (nextIndex < allSteps.length) {
+      navigateToStep(nextIndex);
+    } else {
+      // Finish Logic (Navigate to Salary/Checklist)
+      if (onFinish) onFinish();
+    }
+  };
+
+ const handlePrev = () => {
+    const prevIndex = currentStepIndex - 1;
+    
+    if (prevIndex >= 0) {
+      // If there is a previous step, go to it
+      navigateToStep(prevIndex);
+    } else {
+      // If we are at the first step (Index 0), go back to Table via parent prop
+      if (onBack) {
+        onBack();
+      } else {
+        // Fallback if no prop provided (e.g. go up two levels to table)
+        navigate('../../onboarding');
+      }
+    }
+  };
+  // Sync: Ensure URL is valid on mount
+  useEffect(() => {
+    const isValidStep = allSteps.some(s => s.path === stepId);
+    if (!stepId || !isValidStep) {
+       navigate(`../onboarding/${allSteps[0].path}`, { replace: true });
+    }
+  }, [stepId, employeeId, allSteps, navigate]);
+
+  const renderStepContent = () => {
+    return allSteps[currentStepIndex]?.content || allSteps[0].content;
+  };
+
+  const shouldHideSkip = () => {
+    if (role === "DO") {
+      return allSteps[currentStepIndex]?.label === "Account Info";
+    }
+    return false;
+  };
+
+  const shouldShowEdit = () => {
+    const currentLabel = allSteps[currentStepIndex]?.label;
+    return ["Salary Info"].includes(currentLabel);
+  };
+
+  return (
+    <div className={navStyles.navContainer}>
+      <Stepper
+        steps={allSteps}
+        currentStepIndex={currentStepIndex}
+        onStepClick={handleStepClick}
+      />
+
+      <div className={navStyles.stepContent}>
+        {renderStepContent()}
+      </div>
+
+      <OnboardingFooter
+        currentStep={currentStepIndex}
+        totalSteps={allSteps.length}
+        onNext={handleNext}
+        onBack={handlePrev}
+        
+        allSteps={allSteps}
+        role={role}
+        onFinish={onFinish}
+        hideSkip={shouldHideSkip()}
+        showEdit={shouldShowEdit()}
+      />
+    </div>
+  );
+}
+
+export default OnBoardingEmployeeNav;

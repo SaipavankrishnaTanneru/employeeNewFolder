@@ -1,0 +1,86 @@
+.agreementsContainer {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px 24px;
+  width: 100%;
+}
+
+/* Main Header Row */
+.headerRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+/* GAP BETWEEN AGREEMENTS & CHEQUE DETAILS */
+.chequeHeader {
+  margin-top: 32px; /* Adjust gap as needed */
+}
+
+.title {
+  font-weight: 700;
+  font-size: 16px;
+  color: #1f1f1f;
+}
+
+.dividerImage {
+  flex-grow: 1;
+  object-fit: cover;
+  opacity: 0.9;
+}
+
+.subSectionTitle {
+  font-weight: 700;
+  color: #000;
+  font-size: 14px;
+  margin: 15px 0 8px 0;
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 20px;
+  row-gap: 16px;
+}
+
+.infoItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-weight: 600;
+  font-size: 12px;
+  color: #777;
+}
+
+.value {
+  font-weight: 600;
+  font-size: 14px;
+  color: #000;
+}
+
+.valueBold {
+  font-size: 14px;
+  font-weight: 700;
+  color: #000;
+}
+
+.icons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pdfImage {
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+}
+
+.downloadImage {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}

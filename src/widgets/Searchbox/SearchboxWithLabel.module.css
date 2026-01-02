@@ -1,0 +1,49 @@
+.searchBoxLabel{
+      display: block;
+  font-weight: 400;
+  color: #344054;
+  font-size: 12px;
+}
+
+  /* Searchbox.module.css */
+
+.searchboxwrapper {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.searchiconwithlabel {
+  position: absolute;
+  top: 30px;
+  left: 10px; /* Adjusted left position to align with input padding */
+  z-index: 1;
+}
+
+.searchboxwrapper .searchinput {
+  padding: 10px 40px; /* Padding on the left side to make space for the icon */
+  border: 1px solid #DCDCDC;
+  background: #FFF;
+  position: relative;
+  font-size: 14px;
+  width: 100%;
+}
+
+.searchboxwrapper .searchinput::placeholder{
+  font-size: 12px;
+  color: black;
+  font-weight: 400;
+}
+
+/* For the rectangle style */
+.rectangle {
+  border-radius: 6px;
+  width: 331px;
+}
+
+/* For the round style */
+.round {
+  border-radius: 30px;
+  width: 331px;
+}

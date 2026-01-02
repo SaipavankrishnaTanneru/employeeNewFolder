@@ -1,0 +1,18 @@
+.emp_profile_container {
+  border: 1px solid rgba(0, 0, 0, 0.1); /* soft border */
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  gap: 10px;
+  background-color: #fff;
+
+  /* Multiple layered backgrounds */
+  background-image: 
+    url("../../../assets/EmployeeProfileCrad/fulltime.svg"),
+    url("../../../assets/EmployeeProfileCrad/application_search_background.png");
+
+  background-repeat: no-repeat, no-repeat;
+  background-position: right bottom, center;
+  background-size: auto, 100% 100%;  /* second image fills container */
+}

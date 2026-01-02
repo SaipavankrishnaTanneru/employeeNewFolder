@@ -1,0 +1,211 @@
+/* ----------------------------------------------------------
+   Base Container
+-----------------------------------------------------------*/
+.formContainer {
+  width: 100%;
+  max-width: 2000px;
+  margin: 0 auto;
+  height: 100%;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.formContainer::-webkit-scrollbar {
+  display: none;
+}
+
+/* ----------------------------------------------------------
+   Section Title
+-----------------------------------------------------------*/
+.formSectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #82808F;
+  margin: 0 0 16px 0;
+ 
+}
+
+/* ----------------------------------------------------------
+   First Block (no border)
+-----------------------------------------------------------*/
+.firstQualificationBlock {
+  margin-bottom: 24px;
+}
+
+/* ----------------------------------------------------------
+   Additional Qualification Block (with border)
+-----------------------------------------------------------*/
+.qualificationBlock {
+  position: relative;
+  border: 2px solid #dcdcdc;
+  border-radius: 8px;
+  padding: 15px;
+  background: #fff;
+  width: 100%;
+  margin: 30px 0;
+}
+
+/* Title inside bordered block */
+.qualificationTag {
+  font-weight: 600;
+  font-size: 16px;
+  color: #333;
+}
+
+/* ----------------------------------------------------------
+   Action Buttons (Clear + Close)
+-----------------------------------------------------------*/
+.actionBtns {
+  position: absolute;
+  top: -30px;
+  right: 0;
+  display: flex;
+  gap: 15px;
+}
+
+.clearBtn {
+  border: 1px solid #3425ff !important;
+  background: #3425ff !important;
+  color: #fff !important;
+  border-radius: 51px !important;
+  padding: 0 12px !important;
+  height: 28px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+
+.closeBtn {
+  width: 28px !important;
+  height: 28px !important;
+  background: red !important;
+  color: white !important;
+  border-radius: 50% !important;
+  border: none;
+  font-size: 18px !important;
+  font-weight: bold;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.closeBtn:hover {
+  background: darkred !important;
+}
+
+/* ----------------------------------------------------------
+   Grid Layout
+-----------------------------------------------------------*/
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 40px;
+  row-gap: 15px;
+  padding-top: 10px;
+}
+
+/* ----------------------------------------------------------
+   File Upload
+-----------------------------------------------------------*/
+.formGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.formGroup label {
+  font-size: 12px;
+  color: #344054;
+  margin-bottom: 5px;
+}
+
+.uploadButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 28px;
+  background: #EEF2FF;
+  border: 1px solid #3425FF;
+  border-radius: 6px;
+  color: #3425FF;
+  font-weight: 500;
+  cursor: pointer;
+  width: fit-content;
+}
+
+.fileName {
+  font-size: 12px;
+  color: #475569;
+  margin-top: 6px;
+}
+
+/* ----------------------------------------------------------
+   Add Button
+-----------------------------------------------------------*/
+.addButtonContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  padding-bottom: 20px;
+}
+
+.addButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  color: #4F46E5;
+  font-weight: 600;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* ----------------------------------------------------------
+   Error
+-----------------------------------------------------------*/
+.error {
+  color: #DC2626;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* ----------------------------------------------------------
+   Navigation (Optional)
+-----------------------------------------------------------*/
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid #E2E8F0;
+}
+
+.backButton,
+.nextButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid #E2E8F0;
+  cursor: pointer;
+}
+
+.backButton {
+  background: white;
+  color: #475569;
+}
+
+.nextButton {
+  background: #4F46E5;
+  color: #fff;
+  border-color: #4F46E5;
+}

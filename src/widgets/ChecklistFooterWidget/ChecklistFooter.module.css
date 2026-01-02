@@ -1,0 +1,57 @@
+.footerContainer {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px 0;
+ /* background: linear-gradient(
+    to top,
+    rgba(255, 255, 255, 0.8),  
+    rgba(255, 255, 255, 0.5), 
+    rgba(255, 255, 255, 0.2)  
+  ); */
+background: #fff;
+  position: fixed;
+  bottom: 0;
+  left: 18%;
+ right:10px;
+  z-index: 499;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.backBtn {
+  border: 1px solid #dcdcdc;
+  background: #fff;
+  color: #1e1eec;
+}
+
+.forwardBtn {
+  background: #1e1eec;
+  color: #fff;
+}
+
+.rejectBtn {
+  background: #a31515;
+  color: #fff;
+}
+
+.iconRight {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  margin-left: 6px; /* Adds space between text and icon */
+}
+
+.btn:hover {
+  transform: scale(1.02);
+}

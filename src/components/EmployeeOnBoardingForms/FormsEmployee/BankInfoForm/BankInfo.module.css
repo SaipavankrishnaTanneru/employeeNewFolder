@@ -1,0 +1,81 @@
+.bank_info_container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    height: 100%;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+ 
+/* Main Form Layout */
+.form_grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+ 
+/* Group of fields */
+.form_group {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 31px;
+  margin-bottom: 24px;
+}
+ 
+/* Header for each section */
+.section_header {
+    display: flex;
+    align-items: center;
+    gap:10px;
+     margin-bottom: 16px; 
+}
+ 
+.section_title {
+    font-weight: 500;
+    font-size: 14px;
+    color: #82808F;
+    margin-right: 8px;
+}
+ 
+/* Form item layout */
+.form_item {
+    width: 100%;
+    
+}
+ 
+.form_item_empty {
+    visibility: hidden;
+}
+ 
+.checkbox_item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.95rem;
+    color: #555;
+    margin-bottom: 20px;
+}
+ 
+.checkbox_label {
+    color: #82808F;
+    font-weight: 500;
+    font-size: 12px;
+}
+ 
+/* Wrapper for Salary Account Info rows with reduced gap */
+.salary_account_rows {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+ 
+@media (max-width: 900px) {
+    .form_group {
+        grid-template-columns: 1fr;
+    }
+ 
+    .form_item_empty {
+        display: none;
+    }
+}
+ 

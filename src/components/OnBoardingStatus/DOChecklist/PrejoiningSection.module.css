@@ -1,0 +1,88 @@
+.prejoinSection {
+  width: 100%;
+  padding: 20px 20px 20px 5px;
+}
+
+.prejoinHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.prejoinTitle {
+  font-weight: 700;
+  font-size: 16px;
+  color: #000000;
+  white-space: nowrap;
+}
+
+.prejoinList {
+  display: flex;
+  flex-direction: column;
+}
+
+.prejoinItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #b6b6b6;
+}
+
+.prejoinItem:last-child {
+  border-bottom: none;
+}
+
+.prejoinText {
+  font-weight: 600;
+  font-size: 14px;
+  color: #000000;
+}
+
+.declarationText {
+  margin-top: 12px;
+  font-weight: 400;
+  font-size: 13px;
+  color: #000000;
+}
+
+.statusIcon {
+  display: flex;
+  align-items: center;
+}
+
+.checked {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-color: #33A81E;
+  position: relative;
+}
+
+.checked::after {
+  content: "✓";
+  color: #fff;
+  font-weight: 700;
+  position: absolute;
+  top: 48%;
+  left: 50%;
+  transform: translate(-50%, -55%);
+  font-size: 13px;
+}
+
+.unchecked {
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid #959595;
+  border-radius: 50%;
+}
+
+
+.noticePeriodContainer {
+  width: 328px;
+  padding: 5px 0 0 0 ;
+  left: 50%;
+  transform: translateX(100%);
+}
+

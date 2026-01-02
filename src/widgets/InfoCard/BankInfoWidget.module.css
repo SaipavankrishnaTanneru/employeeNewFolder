@@ -1,0 +1,104 @@
+/* =========================================
+   1. BASE STYLES
+   ========================================= */
+.widgetContainer {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px 20px 10px 20px;
+  width: 100%;
+ 
+}
+ 
+.headerRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px; /* Added spacing between header and grid */
+}
+ 
+.title {
+  color: #000;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+}
+ 
+.infoGrid {
+  display: grid;
+  /* Default: 4 Columns for Large Screens */
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  padding: 15px 25px 5px 25px;
+}
+ 
+.infoItem {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+ 
+.label {
+  color: #82808F;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+ 
+.valueBold {
+  color: #0C0C0C;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 121.101%;
+ 
+  /* Optional: Handle long text (like emails/IDs) safely */
+  word-break: break-word;
+}
+ 
+/* =========================================
+   2. MEDIA QUERIES (Laptop & PC Optimized)
+   ========================================= */
+ 
+/* --- Standard Laptops (1200px - 1440px) --- */
+/* On a 13-14 inch laptop with a sidebar, 4 columns is often too crowded.
+   We switch to 3 columns here to keep data readable. */
+@media screen and (max-width: 1440px) {
+  .infoGrid {
+    padding: 15px 15px; /* Reduce horizontal padding to maximize space */
+    gap: 12px;
+  }
+}
+ 
+/* --- Small Laptops / Compact Screens (992px - 1200px) --- */
+/* This is a new breakpoint. Instead of jumping straight to 2 columns,
+   we try 3 columns first to use the space efficiently. */
+@media screen and (max-width: 1200px) {
+  .infoGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+ 
+/* --- Tablets / Portrait Mode (600px - 992px) --- */
+/* Your original breakdown to 2 columns */
+@media screen and (max-width: 992px) {
+  .infoGrid {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 15px 10px; /* Minimal padding */
+  }
+}
+ 
+/* --- Mobile / Very Small Screens (< 600px) --- */
+@media screen and (max-width: 600px) {
+  .widgetContainer {
+    padding: 15px; /* Reduce outer container padding */
+  }
+ 
+  .infoGrid {
+    grid-template-columns: 1fr;
+    padding: 0; /* Remove grid padding on mobile for full width */
+    gap: 20px; /* Increase gap slightly for vertical separation */
+  }
+}
+ 

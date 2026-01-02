@@ -1,0 +1,16 @@
+.rightSideTop{
+    display: flex;
+    gap: 5px;
+}
+
+.rightSideHeading{
+    font-size: 16px;
+    font-weight: 600;
+    color: #56555C;
+}
+
+.qualificationAcardions{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}

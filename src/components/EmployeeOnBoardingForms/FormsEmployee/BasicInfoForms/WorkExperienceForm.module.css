@@ -1,0 +1,45 @@
+.WorkExperience_container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.WorkExperience_box {
+  border-radius: 8px;
+  background: #fff;
+ 
+}
+
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: 20px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 40px;
+  row-gap: 15px;
+  padding-left: 10px;
+  align-items: start;
+}
+
+/* For smaller screens */
+@media (max-width: 1200px) {
+  .row {
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .WorkExperience_box {
+    padding: 20px;
+  }
+
+  .row {
+    grid-template-columns: 1fr;
+  }
+}

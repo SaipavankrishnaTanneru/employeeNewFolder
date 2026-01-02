@@ -1,0 +1,21 @@
+.agreements_details_info_container {
+  width: 100%;
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.agreements_left_component {
+  width: 70%;
+  background-color: white;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.agreements_right_component {
+  width: 30%;
+  background-color: white;
+  padding: 15px;
+  backdrop-filter: blur(2.35px);
+  border-radius: 8px;
+}

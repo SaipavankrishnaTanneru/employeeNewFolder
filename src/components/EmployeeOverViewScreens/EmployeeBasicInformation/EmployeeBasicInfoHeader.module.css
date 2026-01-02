@@ -1,0 +1,25 @@
+.container {
+  display: flex;
+  align-items: center;       
+  gap: 5px;                 
+ 
+}
+
+.icon img {
+  width: 44px;
+  height: 42px;
+}
+
+.text h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #393939;
+  margin: 0;
+}
+
+.text p {
+  color: #575757d3;
+  font-size: 12px;
+  font-weight: 400;
+  margin: 4px 0 0;
+}

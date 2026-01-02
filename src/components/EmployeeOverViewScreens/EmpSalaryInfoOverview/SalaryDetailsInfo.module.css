@@ -1,0 +1,42 @@
+
+.bankdetails_header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+figure {
+  display: flex;
+  align-items: center;
+  margin:0;
+  gap:10px;
+}
+
+.bank_header_textpart {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.bank_header_text {
+  color: #393939;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  text-transform: capitalize;
+  /* margin-bottom: 4px; */
+  margin-top:10px;
+}
+
+.address_header_subtext {
+  color: #575757;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-transform: capitalize;
+  margin-top:0;
+  font-family: "Segoe UI";
+  
+}

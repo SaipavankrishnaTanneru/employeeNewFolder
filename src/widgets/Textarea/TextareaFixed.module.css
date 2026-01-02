@@ -1,0 +1,45 @@
+.textarea_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.textarea_wrapper label {
+  display: block;
+  font-weight: 400;
+  color: #2E2E2E;
+  font-size: 12px;
+}
+
+.textarea_box {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 13px;
+  box-sizing: border-box;
+  background-color: #fff;
+  color: #101828;
+  resize: none;
+  font-family: 'Segoe UI';
+  min-height: 200px;
+}
+
+.textarea_box[readonly] {
+  background-color: #F3F3F3;
+  cursor: default;
+}
+
+.textarea_box::placeholder {
+  color: #101828;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.textarea_box:focus {
+  border: 1px solid #424242;
+}
+
+.errormessage {
+  color: red;
+}

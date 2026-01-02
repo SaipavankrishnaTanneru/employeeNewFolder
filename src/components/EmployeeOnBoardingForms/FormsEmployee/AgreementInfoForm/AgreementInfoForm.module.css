@@ -1,0 +1,99 @@
+/* ------------------- MAIN CONTAINER ------------------- */
+.formContainer {
+    background-color: #ffffff;
+    border-radius: 8px;
+    width: 100%;
+    /* padding: 20px 24px; */
+    box-sizing: border-box;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+.formContainer::-webkit-scrollbar {
+    display: none;
+}
+
+/* ------------------- SECTION HEADER + DIVIDER ------------------- */
+.section_header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.section_title {
+    font-weight: 500;
+    font-size: 14px;
+    color: #82808F;
+    margin-right: 8px;
+    gap: 15px;
+}
+
+
+
+/* ------------------- GRID LAYOUTS ------------------- */
+.formGridTwo {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 31px;
+    margin-bottom: 20px;
+}
+
+.formGridThree {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 31px;
+    margin-bottom: 12px;
+}
+
+/* Cell wrapper for each field */
+.cell {
+    width: 100%;
+}
+
+/* ------------------- CHECKBOX ------------------- */
+.checkboxContainer {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    gap:6px;
+}
+
+.checkboxContainer span{
+font-weight: 500;
+font-size: 12px;
+color:#82808F;
+}
+
+/* ------------------- CHEQUE BLOCK SPACING ------------------- */
+.chequeBlockContainer {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+/* ------------------- ADD BUTTON ------------------- */
+.addButtonContainer {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0 10px;
+}
+
+.addButton {
+    background: none;
+    border: none;
+    color: #3425ff;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.addButton:hover {
+    text-decoration: underline;
+}
+
+/* ------------------- RESPONSIVE ------------------- */
+@media (max-width: 900px) {
+    .formGridTwo,
+    .formGridThree {
+        grid-template-columns: 1fr;
+    }
+}

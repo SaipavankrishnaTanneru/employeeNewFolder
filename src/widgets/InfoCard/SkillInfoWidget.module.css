@@ -1,0 +1,62 @@
+.widgetContainer {
+  background-color: #F5F5F5;
+  border-radius: 8px;
+  padding: 15px 14.5px 15px 12.5px;
+  width: 100%;
+}
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.title {
+margin:0;
+font-weight: 400;
+font-size: 12px;
+color: #000000;
+}
+
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap:16px;
+  /* padding: 15px 25px 5px 25px; */
+  padding-top: 15px;
+}
+
+.infoItem {
+  display: flex;
+  flex-direction: column;
+  gap:5px;
+}
+
+.label {
+font-weight: 500;
+font-size: 14px;
+color: #82808F;
+margin:0;
+}
+
+.valueBold {
+font-weight: 700;
+font-style: Bold;
+font-size: 14px;
+  color: #000;
+  margin:0;
+}
+
+/* Responsive tweaks */
+@media (max-width: 992px) {
+  .infoGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .infoGrid {
+    grid-template-columns: 1fr;
+  }
+}

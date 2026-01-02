@@ -1,0 +1,14 @@
+.stickyNav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: 10px 32px;
+}
+
+.content {
+  margin: 24px;
+  padding: 24px;
+  border-radius: 8px;
+}
+
+

@@ -1,0 +1,26 @@
+.salary_details_info_container{
+ 
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    margin-top: 10px
+ 
+}
+.salary_details_left_component{
+ 
+    width: 70%;
+    background-color: white;
+    padding: 10px;
+    border-radius: 8px;
+}
+.salary_details_right_component{
+ 
+    width: 30%;
+    background-color: white;
+    padding: 15px;
+    backdrop-filter: blur(2.3499999046325684px);
+    border-radius: 8px;
+}
+ 
+ 

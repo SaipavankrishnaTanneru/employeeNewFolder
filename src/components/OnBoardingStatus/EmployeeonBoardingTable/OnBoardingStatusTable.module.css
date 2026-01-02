@@ -1,0 +1,236 @@
+/* .tableWrapper {
+  max-width: 100%;
+  overflow-x: hidden;
+} */
+ 
+.tableContainer {
+  /* max-width: 100%; */
+  overflow-x: auto;
+  overflow-y: visible;
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+ 
+.tableContainer::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+ 
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+  border: 1px solid #E6E4F0;
+  border-radius: 6px;
+  min-width: max-content; /* Ensures table maintains its minimum width */
+}
+ 
+.table th,
+.table td {
+  text-align: left;
+  padding: 10px 30px;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+  color: #252C32;
+  font-weight: 400;
+  font-size: 14px;
+}
+ 
+.table th {
+  color: #84919A;
+  font-weight: 600;
+  font-weight: 600;
+  font-size: 12px;
+}
+ 
+.table tbody tr:nth-child(odd) {
+  background-color: #F9FAFB;
+}
+ 
+.table tbody tr:nth-child(even) {
+  background-color: #FFFFFF;
+}
+ 
+.statusBadge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+ 
+/* Status Badge Colors - Matching StatusFilterPopup */
+.statusCompleted {
+  background: #0E9519;
+  color: #FFFFFF;
+}
+ 
+.statusIncomplete {
+  background: #950E0E;
+  color: #FFFFFF;
+}
+ 
+.statusPendingWithCO {
+  background: #61660D;
+  color: #FFFFFF;
+}
+ 
+.statusPendingWithDO {
+  background: #23819B;
+  color: #FFFFFF;
+}
+ 
+.statusSkillTestApproval {
+  background: #250980;
+  color: #FFFFFF;
+}
+ 
+.statusSkillTestApproved {
+  background: #398009;
+  color: #FFFFFF;
+}
+ 
+.statusRejected {
+  background: #950E7C;
+  color: #FFFFFF;
+}
+ 
+.statusLeft {
+  background: #000000;
+  color: #FFFFFF;
+}
+ 
+.statusDefault {
+  background: #F9FAFB;
+  border: 1px solid #DDE2E4;
+  color: #252C32;
+}
+ 
+.sortableHeader {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 4px;
+  white-space: nowrap;
+}
+ 
+.sortIcons {
+  display: flex;
+  flex-direction: column;
+  margin-left: 2px;
+  line-height: 1;
+}
+ 
+.arrowUp,
+.arrowDown {
+  width: 8px;  /* adjust as needed */
+  height: 8px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+ 
+.arrowUp:hover,
+.arrowDown:hover {
+  opacity: 1;
+}
+ 
+ 
+.arrowIcon {
+  cursor: pointer;
+  width: 17px;
+  height: 13px;
+}
+ 
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  color: #57606A;
+  font-size: 12px;
+}
+ 
+.paginationText {
+  font-weight: 400;
+}
+ 
+.paginationRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+ 
+.paginationInfo {
+  margin-right: 12px;
+}
+ 
+.paginationButtons {
+  display: flex;
+}
+ 
+.prevBtn,
+.nextBtn {
+  padding: 6px 17px;
+  border: 1px solid #1B1F2426;
+  background-color: #3425FF;
+  color: #F6F8F9;
+  font-size: 14px;
+  font-weight: 600;
+}
+ 
+.prevBtn {
+  border-radius: 6px 0px 0px 6px;
+}
+ 
+.nextBtn {
+  border-radius: 0px 6px 6px 0px;
+}
+ 
+.btnDisabled {
+  opacity: 0.5;
+  pointer-events: none;
+  color: #3425FF;
+  background-color: #F6F8FA;
+}
+
+.paginationFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  margin-top: 10px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.pageInfo {
+  font-size: 14px;
+  color: #666;
+}
+
+.paginationButtons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.pageBtn {
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  background-color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.pageBtn:disabled {
+  background-color: #f5f5f5;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+.pageNumber {
+  font-size: 14px;
+  font-weight: 500;
+}
+ 
+ 
