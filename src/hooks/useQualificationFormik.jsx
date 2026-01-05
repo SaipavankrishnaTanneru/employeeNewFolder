@@ -1,10 +1,10 @@
 // hooks/useQualificationFormik.js
-
+ 
 import { useFormik } from "formik";
-import { useAuth } from "useAuth"; 
+import { useAuth } from "useAuth";
 import * as Yup from "yup";
 import { postQualificationInfo } from "api/onBoardingForms/postApi/useQualificationQueries";
-
+ 
 const initialQualification = {
   qualificationId: "",       // Stores ID (e.g., 1 for B.Tech)
   qualificationDegreeId: "", // Stores ID (e.g., 5 for CSE)
@@ -12,10 +12,12 @@ const initialQualification = {
   university: "",
   institute: "",
   passedOutYear: "",
-  certificateFile: null,     // Holds File object
-  certificatePath: "string", // Placeholder string for API
+  isSubmittedCertificate: false, // Checkbox state
+  certificateFiles: [],          // Array of File objects for multiple uploads
+  certificateFile: null,         // Holds File object (kept for backward compatibility)
+  certificatePath: "string",     // Placeholder string for API
 };
-
+ 
 const validationSchema = Yup.object().shape({
   qualifications: Yup.array().of(
     Yup.object().shape({
@@ -29,11 +31,11 @@ const validationSchema = Yup.object().shape({
     })
   ),
 });
-
+ 
 export const useQualificationFormik = ({ tempId, onSuccess }) => {
   const { user } = useAuth();
   const hrEmployeeId = user?.employeeId || 5109;
-
+ 
   const formik = useFormik({
     initialValues: {
       qualifications: [initialQualification],
@@ -44,9 +46,9 @@ export const useQualificationFormik = ({ tempId, onSuccess }) => {
         alert("Temporary ID is missing.");
         return;
       }
-
+ 
       console.log("🚀 Submitting Qualification Info...");
-
+ 
       // --- DATA TRANSFORMATION ---
       const formattedQualifications = values.qualifications.map((q) => ({
         qualificationId: Number(q.qualificationId) || 0,
@@ -56,15 +58,15 @@ export const useQualificationFormik = ({ tempId, onSuccess }) => {
         institute: q.institute || "",
         passedOutYear: Number(q.passedOutYear) || 0,
         // Since we don't have file upload API yet, sending placeholder
-        certificateFile: "string", 
+        certificateFile: "string",
       }));
-
+ 
       const apiPayload = {
         qualifications: formattedQualifications,
         createdBy: hrEmployeeId,
         updatedBy: hrEmployeeId,
       };
-
+ 
       try {
         const response = await postQualificationInfo(tempId, apiPayload);
         console.log("✅ Qualification Info Saved:", response);
@@ -74,7 +76,7 @@ export const useQualificationFormik = ({ tempId, onSuccess }) => {
       }
     },
   });
-
+ 
   return {
     formik,
     values: formik.values,
@@ -84,3 +86,4 @@ export const useQualificationFormik = ({ tempId, onSuccess }) => {
     initialQualification,
   };
 };
+ 

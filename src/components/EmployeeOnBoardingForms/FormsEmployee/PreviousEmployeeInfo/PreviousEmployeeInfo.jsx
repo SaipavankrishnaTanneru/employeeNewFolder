@@ -1,27 +1,34 @@
-// components/EmployeeOnBoardingForms/FormsEmployee/PreviousEmployerInfo/PreviousEmployerInfo.jsx
 
-import React, { forwardRef, useImperativeHandle } from "react";
+ 
+import React, { forwardRef, useImperativeHandle, useState } from "react";
 import { FieldArray, FormikProvider, Field } from "formik";
 import styles from "./PreviousEmployeeInfo.module.css";
-
+ 
 // Assets & Widgets
 import dividerline from 'assets/Qualification/border.svg';
+import UploadBeforeImg from 'assets/EmployeeOnBoarding/UploadBeforeImg.svg';
+import UploadAfterImg from 'assets/EmployeeOnBoarding/UploadAfterImg.svg';
+import SuccessUploadedImg from 'assets/EmployeeOnBoarding/SuccessUploadTick.svg';
+import BeforeUploadedImg from 'assets/EmployeeOnBoarding/BeforeUploadEmptyC.svg';
 import AddFieldWidget from "widgets/AddFieldWidget/AddFieldWidget";
 import Inputbox from "widgets/Inputbox/InputBox";
-
+import DocumentUploadModal from "./DocumentUploadModal";
+ 
 // Hook
 import { usePreviousEmployerFormik } from "../../../../hooks/usePreviousEmployerFormik";
-
+ 
+ 
 const PreviousEmployerInfo = forwardRef(({ tempId, onSuccess }, ref) => {
-  
+ 
   const { formik, initialEmployer } = usePreviousEmployerFormik({ tempId, onSuccess });
-  const { values, handleChange } = formik;
-
+  const { values, handleChange, setFieldValue } = formik;
+  const [openModalIndex, setOpenModalIndex] = useState(null);
+ 
   // Expose submitForm to parent component via ref
   useImperativeHandle(ref, () => ({
     submitForm: () => formik.submitForm(),
   }));
-
+ 
   return (
     <div className={styles.formContainer}>
       <FormikProvider value={formik}>
@@ -31,7 +38,7 @@ const PreviousEmployerInfo = forwardRef(({ tempId, onSuccess }, ref) => {
             <h3 className={styles.section_title}>Previous Employer Details</h3>
             <img src={dividerline} alt="divider" className={styles.dividerImage} />
           </div>
-
+ 
           <FieldArray name="previousEmployers">
             {({ push, remove, replace }) => (
               <>
@@ -46,7 +53,7 @@ const PreviousEmployerInfo = forwardRef(({ tempId, onSuccess }, ref) => {
                     onClear={() => replace(index, initialEmployer)}
                   >
                     <div className={styles.formGrid}>
-                      
+                     
                       {/* Row 1 */}
                       <Inputbox
                         label="Company Name"
@@ -62,7 +69,7 @@ const PreviousEmployerInfo = forwardRef(({ tempId, onSuccess }, ref) => {
                         onChange={handleChange}
                         placeholder="Enter Designation"
                       />
-                      
+                     
                       {/* Dates: Changed to type="date" for correct ISO conversion */}
                       <Inputbox
                         type="date"
@@ -78,7 +85,7 @@ const PreviousEmployerInfo = forwardRef(({ tempId, onSuccess }, ref) => {
                         value={item.toDate}
                         onChange={handleChange}
                       />
-
+ 
                       {/* Row 2 */}
                       <Inputbox
                         label="Leaving Reason"
@@ -108,7 +115,7 @@ const PreviousEmployerInfo = forwardRef(({ tempId, onSuccess }, ref) => {
                         onChange={handleChange}
                         placeholder="Enter Duties"
                       />
-
+ 
                       {/* Row 3 - Salary Fields */}
                       <Inputbox
                         type="number"
@@ -126,11 +133,58 @@ const PreviousEmployerInfo = forwardRef(({ tempId, onSuccess }, ref) => {
                         onChange={handleChange}
                         placeholder="Enter CTC"
                       />
-
+                     
+                      {/* Upload Documents Button */}
+                     
+                      <div className={styles.uploadDocumentsContainer}>
+                        {(() => {
+                          const documents = item.documents || {};
+                          const hasFiles = Object.values(documents).some(
+                            (files) => files && files.length > 0
+                          );
+                         
+                          return (
+                            <>
+                            <label className={styles.fieldLabel}>
+                               <span>Upload Documents</span>
+                           </label>
+                           
+                            <button
+                              type="button"
+                              label="Upload Documents"
+                              className={`${styles.uploadDocumentsButton} ${hasFiles ? styles.uploadDocumentsButtonSuccess : ''}`}
+                              onClick={() => setOpenModalIndex(index)}
+                            >
+                              {hasFiles ? (
+                                <>
+                                  <div className={styles.uploadIconCircle}>
+                                    <img src={UploadAfterImg} alt="upload" className={styles.uploadIcon} />
+                                  </div>
+                                  <span>Successfully Uploaded</span>
+                                  <div className={styles.checkmarkCircle}>
+                                    <img src={SuccessUploadedImg} alt="upload" className={styles.uploadIcon} />
+                                  </div>
+                                </>
+                              ) : (
+                                <>
+                                 <img src={UploadBeforeImg} alt="upload" className={styles.uploadIcon} />
+                                  <span>Click Here To Upload </span>
+                                  <div className={styles.checkmarkCircle}>
+                                    <img src={BeforeUploadedImg} alt="upload" className={styles.uploadIcon} />
+                                  </div>
+                                </>
+                              )}
+                            </button>
+                          </>);
+                        })()}
+                       
+                      </div>
+ 
                     </div>
+                   
                   </AddFieldWidget>
                 ))}
-
+ 
                 {/* ADD BUTTON */}
                 <div className={styles.addButtonContainer}>
                   <button
@@ -144,11 +198,28 @@ const PreviousEmployerInfo = forwardRef(({ tempId, onSuccess }, ref) => {
               </>
             )}
           </FieldArray>
-
+ 
         </form>
       </FormikProvider>
+     
+      {/* Document Upload Modals */}
+      {values.previousEmployers.map((item, index) => (
+        <DocumentUploadModal
+          key={index}
+          isOpen={openModalIndex === index}
+          onClose={() => setOpenModalIndex(null)}
+          companyName={item.companyName || `Company ${index + 1}`}
+          documents={item.documents || {}}
+          onDocumentsChange={(newDocuments) => {
+            setFieldValue(`previousEmployers.${index}.documents`, newDocuments);
+          }}
+        />
+      ))}
     </div>
   );
 });
-
+ 
+ 
+ 
 export default PreviousEmployerInfo;
+ 

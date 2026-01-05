@@ -1,0 +1,255 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color:#00000085;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(16.4px);
+  padding: 20px;
+  /* border-radius: 26px; */
+}
+ 
+.modalContent {
+  background-color: #ffffff;
+  border-radius: 8px;
+  max-width: 800px;
+  /* width: 100%; */
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  border-radius: 26px;
+  padding-top: 36px;
+  padding-left: 19.5px;
+  padding-right: 19.5px;
+ 
+}
+.my-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+ 
+ 
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px 24px;
+  /* border-bottom: 1px solid #E2E8F0; */
+}
+ 
+.modalTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: #393939;
+  margin: 0 0 4px 0;
+}
+ 
+.modalSubtitle {
+  font-size: 14px;
+  color: #393939;
+  font-weight: 400;
+  margin: 0;
+}
+ 
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #64748B;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+ 
+.closeButton:hover {
+  background-color: #F1F5F9;
+}
+ 
+.documentGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+  padding: 8px;
+  overflow-y: auto;
+  background-color: #F5F5F5;
+  flex: 1;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+ 
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
+}
+ 
+.documentCard {
+  border: 1px solid #E2E8F0;
+  border-radius: 6px;
+  background-color: #FFFFFF;
+  background-image: url('assets/Qualification/BackgroundCard.svg');
+  /* background-size: cover; */
+  background-position: bottom;
+  background-repeat: no-repeat;
+  /* box-shadow: 0px 0px 6.6px 0px rgba(24, 29, 49, 0.27); */
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  padding: 16px;
+  min-height: 227px;
+  width: 181px;
+  box-shadow: 0px 0px 6.6px 0px #181D3145;
+}
+ 
+ 
+.cardTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0D1B3F;
+  margin: 0 0 12px 0;
+}
+ 
+.fileList {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+  max-height: 100px;
+  overflow-y: auto;
+}
+ 
+.fileItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3px 8px;
+  background-color: #F8F9FA;
+  border-radius: 19px;
+  gap: 8px;
+  border: 1px solid #DFDEDE;
+  box-shadow: 0px 0px 3.7px 0px #0000001A;
+ 
+}
+ 
+.fileName {
+  font-size: 12px;
+  color: #334155;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+ 
+.removeFileBtn {
+  background: none;
+  border: none;
+  color: #EF4444;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  transition: background-color 0.2s;
+}
+ 
+/* .removeFileBtn:hover {
+  background-color: #FEE2E2;
+} */
+ 
+.cardFooter {
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  padding-top: 8px;
+}
+ 
+.uploadButton,
+.reUploadButton {
+  display:flex;
+  align-items: center;
+  justify-content: start;
+  gap: 8px;
+  padding: 8px 16px;
+  background-color: #3425FF;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 12px;
+  cursor: pointer;
+  /* transition: background-color 0.2s; */
+  /* width: 100%; */
+}
+ 
+/* .uploadButton:hover,
+.reUploadButton:hover {
+  background-color: #4338CA;
+} */
+ 
+.modalFooter {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding: 20px 24px;
+  /* border-top: 1px solid #E2E8F0; */
+}
+ 
+.cancelButton {
+  padding: 10px 20px;
+  background-color: #FFFFFF;
+  color: #64748B;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+ 
+.cancelButton:hover {
+  background-color: #F8F9FA;
+}
+ 
+.uploadMoreButton {
+  padding: 10px 20px;
+  background-color: #3425FF;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+ 
+.uploadMoreButton:hover {
+  background-color: #4338CA;
+}
+ 
+@media (max-width: 768px) {
+  .documentGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+ 
+@media (max-width: 480px) {
+  .documentGrid {
+    grid-template-columns: 1fr;
+  }
+}
+ 
+ 

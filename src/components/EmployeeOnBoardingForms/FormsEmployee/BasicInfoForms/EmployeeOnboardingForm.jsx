@@ -10,11 +10,12 @@ import dividerLine from "assets/EmployeeOnBoarding/dividerline.svg";
 
 import {
   generateTempPayrollId,
+  updateBasicInfo, // Imported the new Update function
 } from "api/onBoardingForms/dropDownApi/useEmployeeFormData";
 
 import { useAuth } from "useAuth";
 
-/* ================= 🟢 FIX: INITIAL VALUES MOVED OUTSIDE ================= */
+/* ================= INITIAL VALUES ================= */
 const initialValues = {
   empId: 0,
   modeOfHiringId: "",
@@ -56,16 +57,15 @@ const EmployeeOnboardingForm = forwardRef(({ onTempIdGenerated, tempId, isEditMo
 
   const formikRef = useRef(null);
 
-  /* ================= FOOTER REF ================= */
+  /* ================= EXPOSE SUBMIT TO PARENT ================= */
   useImperativeHandle(ref, () => ({
     submitForm: () => {
       formikRef.current?.submitForm();
     },
   }));
 
-  /* ================= AUTO-POPULATE LOGIC ================= */
+  /* ================= AUTO-POPULATE (FETCH DATA) ================= */
   useEffect(() => {
-    // Only fetch if we have a valid tempId (Edit Mode)
     if (tempId) {
       const fetchBasicInfo = async () => {
         try {
@@ -75,13 +75,13 @@ const EmployeeOnboardingForm = forwardRef(({ onTempIdGenerated, tempId, isEditMo
           );
           
           if (response.data && formikRef.current) {
-            console.log("✅ Data Fetched:", response.data);
+            console.log("✅ Basic Info Data Fetched:", response.data);
             
             // Merge fetched data into Formik
             formikRef.current.setValues({
-              ...initialValues, // Fallback defaults
-              ...response.data, // Backend data
-              tempPayrollId: tempId, // Ensure ID is preserved
+              ...initialValues,
+              ...response.data,
+              tempPayrollId: tempId,
               
               // Ensure Dates are YYYY-MM-DD
               dateOfBirth: response.data.dateOfBirth ? response.data.dateOfBirth.split('T')[0] : "",
@@ -89,7 +89,7 @@ const EmployeeOnboardingForm = forwardRef(({ onTempIdGenerated, tempId, isEditMo
               contractStartDate: response.data.contractStartDate ? response.data.contractStartDate.split('T')[0] : "",
               contractEndDate: response.data.contractEndDate ? response.data.contractEndDate.split('T')[0] : "",
               
-              // Ensure IDs are Numbers for Dropdowns
+              // Ensure IDs are Numbers
               genderId: Number(response.data.genderId) || "",
               campusId: Number(response.data.campusId) || "",
               buildingId: Number(response.data.buildingId) || "",
@@ -113,7 +113,7 @@ const EmployeeOnboardingForm = forwardRef(({ onTempIdGenerated, tempId, isEditMo
 
       fetchBasicInfo();
     }
-  }, [tempId]); // initialValues is now stable, so no warning needed
+  }, [tempId]); 
 
   return (
     <Formik
@@ -124,25 +124,32 @@ const EmployeeOnboardingForm = forwardRef(({ onTempIdGenerated, tempId, isEditMo
       enableReinitialize={true} 
       onSubmit={async (values, { setSubmitting, setFieldValue }) => {
         try {
-          console.log("🚀 FINAL PAYLOAD TO BACKEND", values);
+          // 1. UPDATE MODE (If tempId exists)
+          if (tempId) {
+             console.log("📝 Updating Basic Info...");
+             
+             const updatePayload = {
+               ...values,
+               updatedBy: hrEmployeeId,
+             };
 
-          // If Edit Mode, update; else Create
-          if (isEditMode || tempId) {
-             console.log("Updating existing record...");
-             // You can add an axios.put() here if needed later
+             await updateBasicInfo(tempId, updatePayload);
+             console.log("✅ Basic Info Updated Successfully");
+             
              if (onTempIdGenerated) onTempIdGenerated(tempId);
-          } else {
-             // Create New
-             const payloadWithCreatedBy = {
+
+          } 
+          // 2. CREATE MODE (If no tempId)
+          else {
+             console.log("🆕 Creating New Application...");
+             
+             const createPayload = {
                ...values,
                createdBy: hrEmployeeId,
                updatedBy: hrEmployeeId,
              };
 
-             const response = await generateTempPayrollId(
-               hrEmployeeId,
-               payloadWithCreatedBy
-             );
+             const response = await generateTempPayrollId(hrEmployeeId, createPayload);
 
              console.log("✅ Temp Payroll ID Generated:", response);
              setFieldValue("tempPayrollId", response.tempPayrollId);

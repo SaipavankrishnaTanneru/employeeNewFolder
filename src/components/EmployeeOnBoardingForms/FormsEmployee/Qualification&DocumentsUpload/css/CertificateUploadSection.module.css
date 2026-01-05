@@ -1,0 +1,197 @@
+/* --- Base Container Styles --- */
+.checkboxContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.checkboxLabel {
+  font-size: 14px;
+  font-weight: 500;
+  color: #0D1B3F;
+  cursor: pointer;
+  user-select: none;
+}
+
+.certificateSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.uploadSection {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  border-radius: 8px;
+  border: 1px solid #C3C3C3;
+  background: #FFF;
+  box-shadow: 0 1px 2px 0 rgba(16, 24, 40, 0.05);
+  padding: 13px 14px;
+}
+
+.uploadLabel {
+  font-size: 14px;
+  font-weight: 500;
+  color: #344054;
+  margin: 0;
+}
+
+/* --- STACKED PILLS LAYOUT --- */
+
+.filesStackContainer {
+  position: relative;
+  /* Fixed height ensures container holds the absolute children */
+  height: 50px; 
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.fileCapsule {
+  position: absolute;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+  background-color: #FFFFFF; /* White background to cover cards behind it */
+  border: 1px solid #E2E8F0;
+  border-radius: 20px; /* Pill shape */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
+  
+  height: 40px;
+  /* Width calc leaves room for the View All icon on the right */
+  width: calc(100% - 50px); 
+  max-width: 400px; /* Prevent it from getting too wide on large screens */
+  
+  transition: all 0.2s ease;
+  cursor: pointer; /* Indicates clickable */
+}
+
+/* Hover Effect */
+.fileCapsule:hover {
+  transform: translateY(-2px);
+  z-index: 100 !important; /* Bring hovered card to the very front */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  border-color: #cbd5e1;
+}
+
+/* --- File Content (Icon + Text) --- */
+.fileContent {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  overflow: hidden; /* Ensures text truncates */
+  margin-right: 8px;
+}
+
+.fileIconWrapper {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.fileIcon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+.fileName {
+  font-size: 13px;
+  color: #1E293B;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+}
+
+/* --- Remove Button (Inside Capsule) --- */
+.removeButton {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.removeButton:hover {
+  background-color: #F1F5F9;
+}
+
+.removeButton img {
+  width: 10px;
+  height: 10px;
+  opacity: 0.6;
+}
+
+/* --- View All Icon (Floating Right) --- */
+.viewAllIcon {
+  position: absolute;
+  right: 0;
+  top: 4px; /* Align vertically with the capsules */
+  
+  width: 32px;
+  height: 32px;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 50%;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 200; /* Ensure it stays above the stack */
+  transition: all 0.2s;
+}
+
+.viewAllIcon:hover {
+  background-color: #F8F9FA;
+  transform: scale(1.05);
+}
+
+/* --- Upload Actions --- */
+.uploadActions {
+  display: flex;
+  width: 100%;
+  margin-top: 5px;
+}
+
+.uploadButton, 
+.uploadMoreButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  width: 100%;
+}
+
+.uploadButton {
+  background: #EEF2FF;
+  border: 1px dashed #4F46E5;
+  color: #4F46E5;
+}
+
+.uploadMoreButton {
+  background: linear-gradient(180deg, #F5F3FF 0%, #EDE9FE 100%);
+  border: 1px solid #C4B5FD;
+  color: #7C3AED;
+}
+
+.uploadMoreButton:hover {
+  background: linear-gradient(180deg, #EDE9FE 0%, #DDD6FE 100%);
+}

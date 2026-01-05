@@ -96,7 +96,7 @@ export const useAddressFormik = ({ tempId, onSuccess }) => {
 
       try {
         await postAddressInfo(tempId, payload);
-        onSuccess?.();
+        if (onSuccess) onSuccess();
       } catch (e) {
         console.error("❌ Address submit failed", e);
       }
@@ -111,32 +111,36 @@ export const useAddressFormik = ({ tempId, onSuccess }) => {
   const { data: savedData } = useAddressGetQuery(tempId);
 
   useEffect(() => {
-    if (!savedData) return;
+    if (savedData) {
+      console.log("✅ Address Data Fetched:", savedData);
 
-    const curr = savedData.CURR?.[0] || {};
-    const perm = savedData.PERM?.[0] || {};
-    const isSame = !!savedData.permanentAddressSameAsCurrent;
+      // Backend returns arrays CURR: [], PERM: []
+      const curr = Array.isArray(savedData.CURR) ? savedData.CURR[0] : {};
+      const perm = Array.isArray(savedData.PERM) ? savedData.PERM[0] : {};
+      
+      const isSame = !!savedData.permanentAddressSameAsCurrent;
 
-    const normalize = (addr) => ({
-      ...initialAddress,
-      ...addr,
-      pin: addr.pin || "",
-      cityId: addr.cityId ? Number(addr.cityId) : "",
-      districtId: addr.districtId ? Number(addr.districtId) : "",
-      stateId: addr.stateId ? Number(addr.stateId) : "",
-      countryId: addr.countryId ? Number(addr.countryId) : 1,
-    });
+      const normalize = (addr) => ({
+        ...initialAddress,
+        ...addr,
+        pin: addr.pin || addr.pincode || "", // handle both naming conventions
+        cityId: addr.cityId ? Number(addr.cityId) : "",
+        districtId: addr.districtId ? Number(addr.districtId) : "",
+        stateId: addr.stateId ? Number(addr.stateId) : "",
+        countryId: addr.countryId ? Number(addr.countryId) : 1,
+      });
 
-    const currentAddress = normalize(curr);
-    const permanentAddress = isSame
-      ? { ...currentAddress }
-      : normalize(perm);
+      const currentAddress = normalize(curr || {});
+      const permanentAddress = isSame
+        ? { ...currentAddress }
+        : normalize(perm || {});
 
-    setValues({
-      permanentAddressSame: isSame,
-      currentAddress,
-      permanentAddress,
-    });
+      setValues({
+        permanentAddressSame: isSame,
+        currentAddress,
+        permanentAddress,
+      });
+    }
   }, [savedData, setValues]);
 
   /* ======================================================================

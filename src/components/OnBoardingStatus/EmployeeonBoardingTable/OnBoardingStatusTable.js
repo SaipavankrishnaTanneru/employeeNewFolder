@@ -58,7 +58,15 @@ const OnBoardingStatusTable = ({ selectedStatus, role, onEmployeeSelect }) => {
   const handleRowClick = (row) => {
     const currentStatus = (row.status || "").toLowerCase().trim();
     
-    // 1. Determine Role Prefix for URL (do, hr, co, admin)
+    // 🔴 1. Extract TEMP ID specifically
+    const activeId = row.tempPayroll; 
+
+    if (!activeId) {
+        console.error("No TempPayroll ID found for row:", row);
+        return;
+    }
+
+    // 2. Determine Role Prefix for URL (do, hr, co, admin)
     let rolePrefix = "do";
     if (role === "HR") rolePrefix = "hr";
     if (role === "CO") rolePrefix = "co";
@@ -69,7 +77,7 @@ const OnBoardingStatusTable = ({ selectedStatus, role, onEmployeeSelect }) => {
         const targetPath = `/scopes/employee/${rolePrefix}-new-employee-onboarding/basic-info`;
         navigate(targetPath, { 
             state: { 
-                tempId: row.tempPayroll, 
+                tempId: activeId, // Using Temp ID
                 isEditMode: true 
             } 
         });
@@ -78,8 +86,8 @@ const OnBoardingStatusTable = ({ selectedStatus, role, onEmployeeSelect }) => {
 
     // 🔴 CASE B: PENDING (DO/CO) -> Go to REVIEW SCREEN
     if (currentStatus.includes("pending")) {
-        // Navigates to the review module container
-        const targetPath = `/scopes/employee/${rolePrefix}-review/${row.id}/onboarding/working-info`;
+        // Navigates to the review module container using TEMP ID in URL
+        const targetPath = `/scopes/employee/${rolePrefix}-review/${activeId}/onboarding/working-info`;
         navigate(targetPath);
         return;
     }

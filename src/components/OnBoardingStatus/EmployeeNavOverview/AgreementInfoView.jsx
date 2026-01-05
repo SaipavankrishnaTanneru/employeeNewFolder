@@ -1,56 +1,70 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import BankInfoWidget from "widgets/InfoCard/BankInfoWidget";
 import EditPopup from "widgets/Popup/EditPopup";
 import AgreementInfoUpdate from "../CoDoUpdatePopup/AgreementInfoUpdate";
 import styles from "./AgreementInfoView.module.css";
 
-const AgreementInfoView = () => {
+// 1. Import the API Hook
+import { useAgreementChequeDetails } from "../../../api/do/getpapis/useAgreementQueries"; 
+
+// Pass tempId as a prop (e.g., "TEMP5540050")
+const AgreementInfoView = ({ tempId }) => {
   const [showEdit, setShowEdit] = useState(false);
 
-  /* ================= DATA ================= */
+  // 2. Fetch Data
+  const { data, isLoading } = useAgreementChequeDetails(tempId);
 
-  const agreementInfo = [
-    { label: "Agreement Company", value: "Varsity Management" },
-    { label: "Agreement Type", value: "Document" },
-  ];
+  /* ================= DATA MAPPING ================= */
 
-  // 🔑 ONLY THIS decides cheque UI
-  const cheques = [
-    {
-      chequeNo: "8272651416282623",
-      bank: "ICICI Bank",
-      ifsc: "SBIN0001282FD",
-    },
-    {
-      chequeNo: "9988776655443322",
-      bank: "HDFC Bank",
-      ifsc: "HDFC0001234",
-    },
-  ];
+  // Memoize data to prevent unnecessary re-renders
+  const { agreementInfo, cheques, chequeCountInfo } = useMemo(() => {
+    if (!data) return { agreementInfo: [], cheques: [], chequeCountInfo: [] };
 
-  const chequeCountInfo = [
-    { label: "No of Cheques Submitted", value: cheques.length.toString() },
-  ];
+    // Map Agreement Details
+    const info = [
+      { label: "Agreement Company", value: data.agreementCompany || "N/A" },
+      { label: "Agreement Type", value: data.agreementType || "N/A" },
+    ];
+
+    // Map Cheques Array (Handles multiple cheques automatically)
+    // Assuming API returns a 'cheques' array inside the response
+    const chequeList = Array.isArray(data.chequeList) ? data.chequeList.map(c => ({
+      chequeNo: c.chequeNumber || c.chequeNo || "N/A",
+      bank: c.bankName || c.bank || "N/A",
+      ifsc: c.ifscCode || c.ifsc || "N/A",
+    })) : [];
+
+    // Cheque Count Info
+    const countInfo = [
+      { label: "No of Cheques Submitted", value: chequeList.length.toString() },
+    ];
+
+    return { agreementInfo: info, cheques: chequeList, chequeCountInfo: countInfo };
+  }, [data]);
 
   /* ================= VIEW ================= */
+
+  if (isLoading) return <div>Loading Agreement Info...</div>;
 
   return (
     <div className={styles.accordian_container}>
       <div className={styles.accordians}>
-        {/* Agreement Info */}
+        {/* Agreement Info Section */}
         <BankInfoWidget
           title="Agreement Info"
           data={agreementInfo}
           onEdit={() => setShowEdit(true)}
         />
 
-        {/* Cheque Count (ONLY if cheques exist) */}
+        {/* Cheque Count Section (Only if cheques exist) */}
         {cheques.length > 0 && (
           <BankInfoWidget title="Cheque Info" data={chequeCountInfo} />
         )}
       </div>
 
-      {/* Individual Cheque Widgets */}
+      {/* DYNAMIC CHEQUE RENDERING 
+          This .map() will automatically render a widget for EVERY cheque in the array 
+      */}
       {cheques.length > 0 && (
         <div className={styles.cheque_Info}>
           {cheques.map((cheque, index) => (
@@ -77,7 +91,7 @@ const AgreementInfoView = () => {
           setShowEdit(false);
         }}
       >
-        <AgreementInfoUpdate />
+        <AgreementInfoUpdate data={data} /> {/* Pass existing data to update form */}
       </EditPopup>
     </div>
   );

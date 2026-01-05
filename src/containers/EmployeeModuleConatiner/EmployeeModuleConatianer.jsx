@@ -100,9 +100,11 @@ const EmployeeModuleContainer = ({ role }) => {
 
   // 🔴 HANDLE ROW CLICKS BASED ON STATUS
   const handleEmployeeSelect = (employee) => {
-    const empId = employee.id || employee._id || employee.employeeId;
+    // 🔴 CHANGE: Prioritize tempPayroll (Temp ID)
+    const empId = employee.tempPayroll || employee.id || employee._id;
+    
     if (!empId) {
-      console.error("Employee ID missing:", employee);
+      console.error("Employee Temp ID missing:", employee);
       return;
     }
 
@@ -120,7 +122,7 @@ const EmployeeModuleContainer = ({ role }) => {
     if (status === "incompleted" || status === "incomplete") {
         navigate(`/scopes/employee/${rolePrefix}-new-employee-onboarding/basic-info`, { 
             state: { 
-                tempId: empId, 
+                tempId: empId, // Sending tempPayroll
                 isEditMode: true 
             } 
         });
@@ -128,16 +130,14 @@ const EmployeeModuleContainer = ({ role }) => {
     }
 
     // 3. "Pending" -> Go to REVIEW SCREENS (DO/CO Screens)
-    // Both 'Pending at DO' and 'Pending at CO' go to the review page.
-    // The content displayed there is handled by the sub-components.
     if (status.includes("pending") || status.includes("pending at do") || status.includes("pending at co")) {
+        // Uses tempPayroll in URL
         navigate(`${basePath}/${empId}/onboarding/working-info`);
         return;
     }
 
-    // 4. "Completed/Confirm" -> No Action (or View Only if desired)
+    // 4. "Completed/Confirm" -> Fallback
     if (status === "confirm" || status === "completed") {
-        // Optional: remove this if you want them to view completed forms too
         return; 
     }
 
