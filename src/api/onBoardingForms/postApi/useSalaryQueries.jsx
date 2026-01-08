@@ -1,61 +1,73 @@
-// modules/employeeModule/api/onBoardingForms/postApi/useSalaryQueries.js
+// import axios from "axios";
+// import { useQuery } from "@tanstack/react-query";
+
+// const API_DROPDOWNS = "http://localhost:8080/api/employeeModule";
+// const API_BASE = "http://localhost:8080/api/employee";
+
+// /* --- DROPDOWNS --- */
+// // (Keep your dropdown queries: useGrades, useCostCenters, etc. here)
+// export const useGrades = () => useQuery({ queryKey: ["grades"], queryFn: async () => (await axios.get(`${API_DROPDOWNS}/grade`)).data });
+// export const useCostCenters = () => useQuery({ queryKey: ["costCenters"], queryFn: async () => (await axios.get(`${API_DROPDOWNS}/costcenters`)).data });
+// export const useStructures = () => useQuery({ queryKey: ["structures"], queryFn: async () => (await axios.get(`${API_DROPDOWNS}/structures`)).data });
+// export const useOrganizations = () => useQuery({ queryKey: ["organizations"], queryFn: async () => (await axios.get(`${API_DROPDOWNS}/organizations/active`)).data });
+
+// /* --- POST: Forward to DO (Standard) --- */
+// export const postSalaryInfo = async (tempPayrollId, payload) => {
+//   const url = `${API_BASE}/tab/forward-to-divisional-office/${tempPayrollId}`;
+//   console.log("📡 POST Forward to DO:", url);
+//   const response = await axios.post(url, payload);
+//   return response.data;
+// };
+
+// /* --- POST: Forward to Central Office (DO Logic) --- */
+// export const postForwardToCO = async (tempPayrollId, payload) => {
+//   // Matches your requirement: /Do Controller/forward-to-central-office/{id}
+//   const url = `${API_BASE}/Do Controller/forward-to-central-office/${tempPayrollId}`;
+//   console.log("📡 POST Forward to CO:", url);
+//   const response = await axios.post(url, payload);
+//   return response.data;
+// };
 
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 
 const API_DROPDOWNS = "http://localhost:8080/api/employeeModule";
 const API_BASE = "http://localhost:8080/api/employee";
+const API_CO_DO_BASE = "http://localhost:8080/api/EmpDetailsFORCODO"; 
 
-/* --- 1. GET DROPDOWNS --- */
+/* --- DROPDOWNS --- */
+export const useGrades = () => useQuery({ queryKey: ["grades"], queryFn: async () => (await axios.get(`${API_DROPDOWNS}/grade`)).data });
+export const useCostCenters = () => useQuery({ queryKey: ["costCenters"], queryFn: async () => (await axios.get(`${API_DROPDOWNS}/costcenters`)).data });
+export const useStructures = () => useQuery({ queryKey: ["structures"], queryFn: async () => (await axios.get(`${API_DROPDOWNS}/structures`)).data });
+export const useOrganizations = () => useQuery({ queryKey: ["organizations"], queryFn: async () => (await axios.get(`${API_DROPDOWNS}/organizations/active`)).data });
 
-export const useGrades = () =>
+/* --- GET SALARY INFO (For View/Edit) --- */
+export const useSalaryDetails = (tempId) =>
   useQuery({
-    queryKey: ["grades"],
+    queryKey: ["salaryDetails", tempId],
     queryFn: async () => {
-      const { data } = await axios.get(`${API_DROPDOWNS}/grade`);
-      return Array.isArray(data) ? data : [];
+      // URL: http://localhost:8080/api/employee/Do Controller/by-temp-payroll-id?tempPayrollId=TEMP5370038
+      const url = `http://localhost:8080/api/employee/Do Controller/by-temp-payroll-id`; 
+      const { data } = await axios.get(url, {
+          params: { tempPayrollId: tempId }
+      });
+      return data;
     },
+    enabled: !!tempId,
   });
 
-export const useCostCenters = () =>
-  useQuery({
-    queryKey: ["costCenters"],
-    queryFn: async () => {
-      const { data } = await axios.get(`${API_DROPDOWNS}/costcenters`);
-      return Array.isArray(data) ? data : [];
-    },
-  });
-
-export const useStructures = () =>
-  useQuery({
-    queryKey: ["structures"],
-    queryFn: async () => {
-      const { data } = await axios.get(`${API_DROPDOWNS}/structures`);
-      return Array.isArray(data) ? data : [];
-    },
-  });
-
-export const useOrganizations = () =>
-  useQuery({
-    queryKey: ["organizations"],
-    queryFn: async () => {
-      // Maps to "orgId" in payload
-      const { data } = await axios.get(`${API_DROPDOWNS}/organizations/active`);
-      return Array.isArray(data) ? data : [];
-    },
-  });
-
-/* --- 2. POST API (Forward to DO) --- */
-
+/* --- POST: Forward to DO (Standard) --- */
 export const postSalaryInfo = async (tempPayrollId, payload) => {
-  // URL: http://localhost:8080/api/employee/tab/forward-to-divisional-office/222
-  if (!tempPayrollId) throw new Error("Missing Temp Payroll ID");
-
   const url = `${API_BASE}/tab/forward-to-divisional-office/${tempPayrollId}`;
-  
-  console.log("📡 POST Salary/Forward URL:", url);
-  console.log("📦 Payload:", JSON.stringify(payload, null, 2));
+  console.log("📡 POST Forward to DO:", url);
+  const response = await axios.post(url, payload);
+  return response.data;
+};
 
+/* --- POST: Forward to Central Office (DO Logic) --- */
+export const postForwardToCO = async (tempPayrollId, payload) => {
+  const url = `${API_BASE}/Do Controller/forward-to-central-office/${tempPayrollId}`;
+  console.log("📡 POST Forward to CO:", url);
   const response = await axios.post(url, payload);
   return response.data;
 };

@@ -1,228 +1,138 @@
 import React from "react";
-import { Formik, Form } from "formik";
+import { Form, FormikProvider } from "formik";
 import styles from "./AddSalaryDetails.module.css";
 import Dropdown from 'widgets/Dropdown/Dropdown';
 import Inputbox from 'widgets/Inputbox/InputBox';
 import dividerline from 'assets/EmployeeOnBoarding/dividerline.svg';
 import FormCheckbox from 'widgets/FormCheckBox/FormCheckBox';
 import OnboardingFooter from "../OnBoardingEmployeeFooter/OnboardingFooter";
+import { useParams } from "react-router-dom";
 
-const AddSalaryDetails = ({ onBack, onSubmitComplete }) => {
-  const initialValues = {
-    monthlyCTC: "",
-    ctcInWords: "",
-    yearlyCTC: "",
-    grade: "",
-    structure: "",
-    costCenter: "",
-    companyName: "",
-    includePF: false,
-    includeESI: false,
-    pfNumber: "",
-    esiNumber: "",
-    uanNumber: "",
-    pfJoinDate: "",
-  };
+import { useSalaryInfoFormik } from "hooks/useSalaryInfoFormik";
+import { 
+  useGrades, 
+  useCostCenters, 
+  useStructures, 
+  useOrganizations 
+} from "api/onBoardingForms/postApi/useSalaryQueries";
 
-  const gradeOptions = ["Select Grade", "A", "B", "C"];
-  const structureOptions = ["Select Structure", "Standard", "Custom"];
-  const costCenterOptions = ["Select Cost Center", "Finance", "HR", "Tech"];
+const AddSalaryDetails = ({ onBack, onSubmitComplete, role }) => {
+  const { employeeId } = useParams();
+  const tempId = employeeId; 
+  
+  const { data: grades = [] } = useGrades();
+  const { data: structures = [] } = useStructures();
+  const { data: costCenters = [] } = useCostCenters();
+  const { data: organizations = [] } = useOrganizations();
 
+  // 1. Hook handles logic: For DO, it passes data to onSuccess; For others, it posts.
+  const { formik } = useSalaryInfoFormik({ 
+    tempId, 
+    onSuccess: (data) => {
+        // Pass data (payload) to the parent handler
+        if (onSubmitComplete) onSubmitComplete(data);
+    },
+    role: role
+  });
+
+  const { values, setFieldValue, handleSubmit, isSubmitting } = formik;
   const salarySteps = [{ label: "Salary Details" }];
 
-  const handleSalarySubmit = (values, { setSubmitting }) => {
-    console.log("✅ Salary Info Submitted:", values);
-    setSubmitting(false);
-
-    if (onSubmitComplete) {
-      console.log("✅ Calling onSubmitComplete()");
-      onSubmitComplete(); // trigger checklist navigation
-    } else {
-      console.warn("❌ onSubmitComplete is undefined");
-    }
-  };
+  const getName = (selectedId, list) => list.find(item => item.id === Number(selectedId))?.name || "";
+  const getId = (selectedName, list) => list.find(item => item.name === selectedName)?.id || "";
 
   return (
     <div className={styles.bank_info_container}>
-      <Formik initialValues={initialValues} onSubmit={handleSalarySubmit}>
-        {({ values, setFieldValue, handleSubmit, isSubmitting }) => (
-          <Form className={styles.form_grid}>
-            {/* ===================== SALARY INFO ===================== */}
-            <div className={styles.section_header}>
-              <h3 className={styles.section_title}>Salary Info</h3>
-              <img src={dividerline} alt="divider" className={styles.dividerImage} />
-            </div>
+      <FormikProvider value={formik}>
+        <Form className={styles.form_grid} onSubmit={handleSubmit}>
+          
+          {/* ... [Input Fields Same as Before] ... */}
+          <div className={styles.section_header}>
+            <h3 className={styles.section_title}>Salary Info</h3>
+            <img src={dividerline} alt="divider" className={styles.dividerImage} />
+          </div>
 
+          <div className={styles.form_group}>
+            <div className={styles.form_item}>
+              <Inputbox label="Monthly Take Home" name="monthlyTakeHome" placeholder="Enter Amount" value={values.monthlyTakeHome} onChange={(e) => setFieldValue("monthlyTakeHome", e.target.value)} />
+            </div>
+            <div className={styles.form_item}>
+              <Inputbox label="Yearly CTC" name="yearlyCtc" placeholder="Enter Amount" value={values.yearlyCtc} onChange={(e) => setFieldValue("yearlyCtc", e.target.value)} />
+            </div>
+            <div className={styles.form_item}>
+              <Inputbox label="CTC In Words" name="ctcWords" placeholder="Rupees..." value={values.ctcWords} onChange={(e) => setFieldValue("ctcWords", e.target.value)} />
+            </div>
+          </div>
+
+          <div className={styles.form_group}>
+            <div className={styles.form_item}>
+              <Dropdown dropdownname="Grade" value={getName(values.gradeId, grades)} results={grades.map(g => g.name)} onChange={(e) => setFieldValue("gradeId", getId(e.target.value, grades))} />
+            </div>
+            <div className={styles.form_item}>
+              <Dropdown dropdownname="Structure" value={getName(values.empStructureId, structures)} results={structures.map(s => s.name)} onChange={(e) => setFieldValue("empStructureId", getId(e.target.value, structures))} />
+            </div>
+            <div className={styles.form_item}>
+              <Dropdown dropdownname="Cost Center" value={getName(values.costCenterId, costCenters)} results={costCenters.map(c => c.name)} onChange={(e) => setFieldValue("costCenterId", getId(e.target.value, costCenters))} />
+            </div>
+          </div>
+
+          <div className={styles.form_group}>
+            <div className={styles.form_item}>
+              <Dropdown dropdownname="Company Name" value={getName(values.orgId, organizations)} results={organizations.map(o => o.name)} onChange={(e) => setFieldValue("orgId", getId(e.target.value, organizations))} />
+            </div>
+          </div>
+
+          <div className={styles.section_header}>
+            <h3 className={styles.section_title}>PF & ESI Info</h3>
+            <img src={dividerline} alt="divider" className={styles.dividerImage} />
+          </div>
+
+          <div className={styles.checkbox_row}>
+            <div className={styles.checkbox_item}>
+              <FormCheckbox name="isPfEligible" checked={values.isPfEligible} onChange={(val) => setFieldValue("isPfEligible", val)} />
+              <span className={styles.checkbox_label}>Include in PF Scheme</span>
+            </div>
+            <div className={styles.checkbox_item}>
+              <FormCheckbox name="isEsiEligible" checked={values.isEsiEligible} onChange={(val) => setFieldValue("isEsiEligible", val)} />
+              <span className={styles.checkbox_label}>Include in ESI Scheme</span>
+            </div>
+          </div>
+
+          {values.isPfEligible && (
             <div className={styles.form_group}>
               <div className={styles.form_item}>
-                <Inputbox
-                  label="Monthly CTC"
-                  id="monthlyCTC"
-                  name="monthlyCTC"
-                  placeholder="Enter CTC"
-                  value={values.monthlyCTC}
-                  onChange={(e) => setFieldValue("monthlyCTC", e.target.value)}
-                />
+                <Inputbox label="PF Number" name="pfNo" placeholder="Enter PF Number" value={values.pfNo} onChange={(e) => setFieldValue("pfNo", e.target.value)} />
               </div>
-
               <div className={styles.form_item}>
-                <Inputbox
-                  label="CTC In Words"
-                  id="ctcInWords"
-                  name="ctcInWords"
-                  placeholder="CTC in Words"
-                  value={values.ctcInWords}
-                  onChange={(e) => setFieldValue("ctcInWords", e.target.value)}
-                />
+                <Inputbox label="UAN Number" name="uanNo" placeholder="Enter UAN" value={values.uanNo} onChange={(e) => setFieldValue("uanNo", e.target.value)} />
               </div>
-
               <div className={styles.form_item}>
-                <Inputbox
-                  label="Yearly CTC"
-                  id="yearlyCTC"
-                  name="yearlyCTC"
-                  placeholder="Yearly CTC"
-                  value={values.yearlyCTC}
-                  onChange={(e) => setFieldValue("yearlyCTC", e.target.value)}
-                />
+                <Inputbox label="PF Join Date" name="pfJoinDate" type="date" value={values.pfJoinDate} onChange={(e) => setFieldValue("pfJoinDate", e.target.value)} />
               </div>
             </div>
+          )}
 
+          {values.isEsiEligible && (
             <div className={styles.form_group}>
               <div className={styles.form_item}>
-                <Dropdown
-                  dropdownname="Grade"
-                  name="grade"
-                  results={gradeOptions}
-                  value={values.grade}
-                  onChange={(e) => setFieldValue("grade", e.target.value)}
-                />
-              </div>
-
-              <div className={styles.form_item}>
-                <Dropdown
-                  dropdownname="Structure"
-                  name="structure"
-                  results={structureOptions}
-                  value={values.structure}
-                  onChange={(e) => setFieldValue("structure", e.target.value)}
-                />
-              </div>
-
-              <div className={styles.form_item}>
-                <Dropdown
-                  dropdownname="Cost Center"
-                  name="costCenter"
-                  results={costCenterOptions}
-                  value={values.costCenter}
-                  onChange={(e) => setFieldValue("costCenter", e.target.value)}
-                />
+                <Inputbox label="ESI Number" name="esiNo" placeholder="Enter ESI Number" value={values.esiNo} onChange={(e) => setFieldValue("esiNo", e.target.value)} />
               </div>
             </div>
+          )}
 
-            <div className={styles.form_group}>
-              <div className={styles.form_item}>
-                <Inputbox
-                  label="Company Name"
-                  id="companyName"
-                  name="companyName"
-                  placeholder="Enter Company Name"
-                  value={values.companyName}
-                  onChange={(e) => setFieldValue("companyName", e.target.value)}
-                />
-              </div>
-            </div>
-
-            {/* ===================== PF INFO ===================== */}
-            <div className={styles.section_header}>
-              <h3 className={styles.section_title}>PF Info</h3>
-              <img src={dividerline} alt="divider" className={styles.dividerImage} />
-            </div>
-
-            <div className={styles.checkbox_row}>
-              <div className={styles.checkbox_item}>
-                <FormCheckbox
-                  name="includePF"
-                  checked={values.includePF}
-                  onChange={(val) => setFieldValue("includePF", val)}
-                />
-                <span className={styles.checkbox_label}>Include in PF Scheme</span>
-              </div>
-
-              <div className={styles.checkbox_item}>
-                <FormCheckbox
-                  name="includeESI"
-                  checked={values.includeESI}
-                  onChange={(val) => setFieldValue("includeESI", val)}
-                />
-                <span className={styles.checkbox_label}>Include in ESI Scheme</span>
-              </div>
-            </div>
-
-            <div className={styles.form_group}>
-              <div className={styles.form_item}>
-                <Inputbox
-                  label="PF Number"
-                  id="pfNumber"
-                  name="pfNumber"
-                  placeholder="Enter PF Number"
-                  value={values.pfNumber}
-                  onChange={(e) => setFieldValue("pfNumber", e.target.value)}
-                />
-              </div>
-
-              <div className={styles.form_item}>
-                <Inputbox
-                  label="ESI Number"
-                  id="esiNumber"
-                  name="esiNumber"
-                  placeholder="Enter ESI Number"
-                  value={values.esiNumber}
-                  onChange={(e) => setFieldValue("esiNumber", e.target.value)}
-                />
-              </div>
-
-              <div className={styles.form_item}>
-                <Inputbox
-                  label="PF Join Date"
-                  id="pfJoinDate"
-                  name="pfJoinDate"
-                  type="date"
-                  placeholder="Select Date"
-                  value={values.pfJoinDate}
-                  onChange={(e) => setFieldValue("pfJoinDate", e.target.value)}
-                />
-              </div>
-            </div>
-
-            <div className={styles.form_group}>
-              <div className={styles.form_item}>
-                <Inputbox
-                  label="Enter UAN Number"
-                  id="uanNumber"
-                  name="uanNumber"
-                  placeholder="Enter UAN Number"
-                  value={values.uanNumber}
-                  onChange={(e) => setFieldValue("uanNumber", e.target.value)}
-                />
-              </div>
-            </div>
-
-            {/* ===================== FOOTER ===================== */}
-            <OnboardingFooter
-              currentStep={1}
-              totalSteps={1}
-              onNext={() => {}}
-              onBack={onBack}
-              onFinish={handleSubmit} // ✅ FIXED
-              allSteps={salarySteps}
-              isSubmitting={isSubmitting}
-              primaryButtonLabel={isSubmitting ? "Processing..." : "Proceed to Checklist"}
-              hideSkip={true}
-            />
-          </Form>
-        )}
-      </Formik>
+          <OnboardingFooter
+            currentStep={0} 
+            totalSteps={1}
+            onBack={onBack}
+            onFinish={handleSubmit} 
+            allSteps={salarySteps}
+            isSubmitting={isSubmitting}
+           primaryButtonLabel={role?.toUpperCase() === "DO" ? "Proceed to Checklist" : "Submit"}
+            hideSkip={true}
+            onNext={() => {}} 
+          />
+        </Form>
+      </FormikProvider>
     </div>
   );
 };

@@ -13,6 +13,7 @@ import FormCheckbox from 'widgets/FormCheckBox/FormCheckBox';
 import AddFieldWidget from "widgets/AddFieldWidget/AddFieldWidget";
 import Inputbox from "widgets/Inputbox/InputBox";
 import Dropdown from "widgets/Dropdown/Dropdown";
+import FormValidationAlert from "utils/FormValidationAlert"; // 🔴 Import Alert
 
 // Sub-components
 import FatherInfo from "./FatherInfo";
@@ -20,26 +21,21 @@ import MotherInfo from "./FatherInfo"; // Reusing structure
 
 const FamilyInfo = forwardRef(({ tempId, onSuccess }, ref) => {
   
-  // 1. Fetch Dropdowns (Safety Check Added)
+  // 1. Fetch Dropdowns
   const { dropdowns, isLoading } = useEmployeeFormQueries();
-  
-  // Safely map options (Defaults to empty array if loading)
-  const bloodGroupOptions = dropdowns?.bloodGroups?.map(bg => bg.name) || []; 
+  const bloodGroupOptions = dropdowns?.bloodGroups?.map(bg => bg.name) || [];
+  const relationNames = dropdowns?.emergencyRelations?.map(r => r.name) || [];
 
   // 2. Init Formik Hook
-  // We pass 'dropdowns' so the hook can map "A+" -> ID 5 during submit
   const { formik } = useFamilyInfoFormik({ 
     tempId, 
     onSuccess, 
     dropdownData: dropdowns 
   });
   
-  const { values, setFieldValue, handleChange, submitForm } = formik;
-
-  // 3. Photo Upload State
+  const { values, setFieldValue, handleChange, submitForm, errors, touched } = formik;
   const [photoPreview, setPhotoPreview] = useState(null);
 
-  // 4. Expose Submit to Parent (Added dependency array)
   useImperativeHandle(ref, () => ({
     submitForm: () => submitForm(),
   }), [submitForm]);
@@ -53,33 +49,32 @@ const FamilyInfo = forwardRef(({ tempId, onSuccess }, ref) => {
   const handlePhotoUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
+      // 🔴 Image Validation
+      const validTypes = ["image/jpeg", "image/jpg", "image/png"];
+      if (!validTypes.includes(file.type)) {
+        alert("Only JPEG, JPG, and PNG files are allowed.");
+        return;
+      }
       setFieldValue("familyGroupPhotoFile", file); 
       setPhotoPreview(URL.createObjectURL(file));
     }
   };
 
   const initialOtherMember = {
-    fullName: "",
-    relationId: "",
-    bloodGroupId: "",
-    genderId: "", 
-    dateOfBirth: "", 
-    nationality: "Indian",
-    email: "",
-    phoneNumber: "",
-    occupation: "",
-    isSriChaitanyaEmp: false,
-    parentEmpId: ""
+    fullName: "", relationId: "", bloodGroupId: "", genderId: "", 
+    dateOfBirth: "", nationality: "Indian", email: "", 
+    phoneNumber: "", occupation: "", isSriChaitanyaEmp: false, parentEmpId: "",
+    isLate: false
   };
 
-  // Prevent rendering until dropdowns are ready
-  if (isLoading || !dropdowns) {
-    return <div>Loading form data...</div>;
-  }
+  if (isLoading || !dropdowns) return <div>Loading form data...</div>;
 
   return (
     <div className={styles.container}>
       <FormikProvider value={formik}>
+        {/* 🔴 Validation Alert */}
+        <FormValidationAlert />
+
         <form>
           
           {/* ================= FATHER SECTION ================= */}
@@ -98,13 +93,16 @@ const FamilyInfo = forwardRef(({ tempId, onSuccess }, ref) => {
                 />
              </div>
           </div>
+
           <FatherInfo formik={formik} prefix="father" bloodGroupOptions={bloodGroupOptions} />
+
 
           {/* ================= MOTHER SECTION ================= */}
           <div className={styles.sectionTitle}>
              <span>Mother Information</span> 
              <img src={BorderIcon} alt="border" />
           </div>
+
           <div className={styles.checkbox_section}>
              <div className={styles.checkbox_wrapper}>
                 <span className={styles.checkbox_label}>Is in Organization?</span>
@@ -115,7 +113,9 @@ const FamilyInfo = forwardRef(({ tempId, onSuccess }, ref) => {
                 />
              </div>
           </div>
+
           <MotherInfo formik={formik} prefix="mother" bloodGroupOptions={bloodGroupOptions} />
+
 
           {/* ================= PHOTO UPLOAD ================= */}
           <div className={styles.sectionTitle}>
@@ -128,25 +128,31 @@ const FamilyInfo = forwardRef(({ tempId, onSuccess }, ref) => {
                type="file" 
                id="familyPhoto" 
                hidden 
-               accept="image/*"
+               accept="image/png, image/jpeg, image/jpg"
                onChange={handlePhotoUpload}
              />
              <label htmlFor="familyPhoto" className={styles.uploadButton}>
                <UploadIcon /> {photoPreview ? "Change Photo" : "Upload Photo"}
              </label>
              {photoPreview && (
-               <div className={styles.previewContainer}>
-                 <img src={photoPreview} alt="Preview" className={styles.photoPreview} />
-                 <span className={styles.fileName}>{values.familyGroupPhotoFile?.name}</span>
+               <div style={{ marginTop: '10px' }}> {/* Simple wrapper for preview */}
+                 <img src={photoPreview} alt="Preview" style={{ height: '80px', borderRadius: '4px', objectFit: 'cover' }} />
+                 <div className={styles.checkbox_label} style={{fontSize: '12px'}}>{values.familyGroupPhotoFile?.name}</div>
                </div>
              )}
           </div>
+
 
           {/* ================= DYNAMIC MEMBERS ================= */}
           <FieldArray name="otherMembers">
             {({ push, remove, replace }) => (
               <>
-                {values.otherMembers.map((member, index) => (
+                {values.otherMembers.map((member, index) => {
+                  const fieldName = `otherMembers.${index}`;
+                  const memberErrors = errors.otherMembers?.[index] || {};
+                  const memberTouched = touched.otherMembers?.[index] || {};
+
+                  return (
                   <AddFieldWidget
                     key={index}
                     index={index}
@@ -154,72 +160,115 @@ const FamilyInfo = forwardRef(({ tempId, onSuccess }, ref) => {
                     forceFieldset={true} 
                     enableFieldset={true}
                     onRemove={() => remove(index)}
-                    onClear={() => replace(index, initialOtherMember)} 
+                    onClear={() => replace(index, initialOtherMember)}
                   >
                     <div className={styles.sectionBlock}>
+                      
+                      {/* LATE CHECKBOX for Member */}
+                      <div className={styles.checkbox_section} style={{marginBottom:'10px'}}>
+                         <div className={styles.checkbox_wrapper}>
+                            <FormCheckbox
+                               name={`${fieldName}.isLate`}
+                               checked={member.isLate}
+                               onChange={(e) => handleOrgCheck(`${fieldName}.isLate`, e)}
+                            />
+                            <span className={styles.checkbox_label}>Late?</span>
+                         </div>
+                      </div>
+
+                      {/* Row 1: Name, Relation, Blood Group */}
                       <div className={styles.row}>
                         <Inputbox
                           label="Name *"
-                          name={`otherMembers.${index}.fullName`}
+                          name={`${fieldName}.fullName`}
                           value={member.fullName}
                           onChange={handleChange}
                           placeholder="Enter Name"
+                          error={memberTouched.fullName && memberErrors.fullName}
                         />
                         
                         <Dropdown
-                           dropdownname="Relation"
-                           name={`otherMembers.${index}.relationId`}
-                           results={["Brother", "Sister", "Spouse", "Child"]} 
-                           value={member.relationId}
-                           onChange={handleChange}
+                            dropdownname="Relation *"
+                            value={dropdowns?.emergencyRelations?.find((r) => Number(r.id) === Number(member.relationId))?.name || ""}
+                            results={relationNames}
+                            onChange={(e) => {
+                                const selected = dropdowns?.emergencyRelations?.find((r) => r.name === e.target.value);
+                                setFieldValue(`${fieldName}.relationId`, selected ? Number(selected.id) : "");
+                            }}
+                            error={memberTouched.relationId && memberErrors.relationId}
                         />
                         
                         <Dropdown
                            dropdownname="Blood Group"
-                           name={`otherMembers.${index}.bloodGroupId`}
+                           name={`${fieldName}.bloodGroupId`}
                            results={bloodGroupOptions} 
                            value={member.bloodGroupId} 
                            onChange={handleChange}
                         />
                       </div>
 
-                      {/* GENDER & DOB ROW */}
+                      {/* Row 2: Gender, Aadhaar, DOB */}
                       <div className={styles.row}>
-                         <div className={styles.genderWrapper}>
-                            <label>Gender: </label>
-                            {/* Ensure values are compared as strings or numbers consistently */}
-                            <label><input type="radio" name={`otherMembers.${index}.genderId`} value="1" onChange={handleChange} checked={String(member.genderId) === "1"}/> Male</label>
-                            <label><input type="radio" name={`otherMembers.${index}.genderId`} value="2" onChange={handleChange} checked={String(member.genderId) === "2"}/> Female</label>
-                         </div>
+                          <div style={{display:'flex', flexDirection:'column', gap:'5px'}}>
+                             <label className={styles.checkbox_label} style={{fontSize:'12px'}}>Gender *</label>
+                             <div style={{display:'flex', gap:'15px', marginTop:'5px'}}>
+                                <label style={{display:'flex', alignItems:'center', gap:'5px', cursor:'pointer'}}>
+                                    <input type="radio" name={`${fieldName}.genderId`} value="1" onChange={handleChange} checked={String(member.genderId) === "1"}/> 
+                                    Male
+                                </label>
+                                <label style={{display:'flex', alignItems:'center', gap:'5px', cursor:'pointer'}}>
+                                    <input type="radio" name={`${fieldName}.genderId`} value="2" onChange={handleChange} checked={String(member.genderId) === "2"}/> 
+                                    Female
+                                </label>
+                             </div>
+                             {memberTouched.genderId && memberErrors.genderId && <div style={{color:'red', fontSize:'10px'}}>{memberErrors.genderId}</div>}
+                          </div>
 
-                         <Inputbox
-                            type="date"
-                            label="DOB *"
-                            name={`otherMembers.${index}.dateOfBirth`}
-                            value={member.dateOfBirth}
-                            onChange={handleChange}
-                         />
+                          <Inputbox 
+                             label="Aadhaar No" 
+                             name={`${fieldName}.adhaarNo`} 
+                             value={member.adhaarNo} 
+                             onChange={handleChange} 
+                          />
+
+                          <Inputbox
+                             type="date"
+                             label="DOB"
+                             name={`${fieldName}.dateOfBirth`}
+                             value={member.dateOfBirth}
+                             onChange={handleChange}
+                          />
                       </div>
 
+                      {/* Row 3: Occupation, Phone, Email */}
                       <div className={styles.row}>
                         <Inputbox
                           label="Occupation"
-                          name={`otherMembers.${index}.occupation`}
+                          name={`${fieldName}.occupation`}
                           value={member.occupation}
                           onChange={handleChange}
                           placeholder="Enter Occupation"
                         />
                          <Inputbox
-                          label="Phone"
-                          name={`otherMembers.${index}.phoneNumber`}
+                          label={member.isLate ? "Phone" : "Phone *"}
+                          name={`${fieldName}.phoneNumber`}
                           value={member.phoneNumber}
                           onChange={handleChange}
                           placeholder="Enter Phone Number"
+                          error={memberTouched.phoneNumber && memberErrors.phoneNumber}
+                        />
+                         <Inputbox
+                          label={member.isLate ? "Email" : "Email *"}
+                          name={`${fieldName}.email`}
+                          value={member.email}
+                          onChange={handleChange}
+                          placeholder="abc@xyz.com"
+                          error={memberTouched.email && memberErrors.email}
                         />
                       </div>
                     </div>
                   </AddFieldWidget>
-                ))}
+                )})}
 
                 <div className={styles.addFamilyWrapper}>
                   <button

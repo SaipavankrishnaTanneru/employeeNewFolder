@@ -1,5 +1,3 @@
-// components/EmployeeOnBoardingForms/FormsEmployee/AgreementInfoForm/AgreementInfoForm.jsx
-
 import React, { forwardRef, useImperativeHandle } from "react";
 import { FieldArray, FormikProvider } from "formik";
 import styles from "./AgreementInfoForm.module.css";
@@ -12,7 +10,7 @@ import FormCheckbox from "widgets/FormCheckBox/FormCheckBox";
 import AddFieldWidget from "widgets/AddFieldWidget/AddFieldWidget";
 
 // Logic & API Hooks
-import { useAgreementInfoFormik } from "../../../../hooks/useAgreementInfoFormik";
+import { useAgreementInfoFormik } from "../../../../hooks/useAgreementInfoFormik"; // Adjust path
 import { useActiveOrganizations } from "api/onBoardingForms/postApi/useAgreementQueries";
 
 const AgreementInfoForm = forwardRef(({ tempId, onSuccess }, ref) => {
@@ -32,9 +30,8 @@ const AgreementInfoForm = forwardRef(({ tempId, onSuccess }, ref) => {
   // Handlers
   const handleOrgChange = (e) => {
     const name = e.target.value;
-    // Adjust key if API returns 'organizationName' or just 'name'
-    const item = organizations.find((x) => x.organizationName === name || x.name === name);
-    setFieldValue("agreementOrgId", item ? item.organizationId || item.id : "");
+    const item = organizations.find((x) => (x.organizationName || x.name) === name);
+    setFieldValue("agreementOrgId", item ? (item.organizationId || item.id) : "");
   };
 
   const handleCheckbox = (e) => {
@@ -42,17 +39,14 @@ const AgreementInfoForm = forwardRef(({ tempId, onSuccess }, ref) => {
     setFieldValue("isCheckSubmit", isChecked);
   };
 
-const getOrgName = (id) => {
-  if (!id) return "";
-
-  const normalizedId = Number(id);
-
-  const item = organizations.find(
-    x => Number(x.organizationId ?? x.id) === normalizedId
-  );
-
-  return item ? (item.organizationName || item.name) : "";
-};
+  const getOrgName = (id) => {
+    if (!id) return "";
+    const normalizedId = Number(id);
+    const item = organizations.find(
+      x => Number(x.organizationId || x.id) === normalizedId
+    );
+    return item ? (item.organizationName || item.name) : "";
+  };
 
   return (
     <div className={styles.formContainer}>
@@ -66,12 +60,11 @@ const getOrgName = (id) => {
           </div>
 
           <div className={styles.formGridTwo}>
-             {/* 1. Agreement Company (Organization) */}
+             {/* 1. Agreement Company */}
              <div className={styles.cell}>
                 <Dropdown
                    dropdownname="Agreement Company"
                    name="agreementOrgId"
-                   // Adjust map based on actual API response keys
                    results={organizations.map(x => x.organizationName || x.name)}
                    value={getOrgName(values.agreementOrgId)}
                    onChange={handleOrgChange}
@@ -88,9 +81,6 @@ const getOrgName = (id) => {
                    placeholder="Enter Agreement Type"
                 />
              </div>
-
-             {/* 3. Category */}
-            
           </div>
 
 
@@ -124,7 +114,7 @@ const getOrgName = (id) => {
                     onClear={() => replace(index, initialCheque)}
                   >
                     <div className={styles.formGridThree}>
-                       
+                        
                        <div className={styles.cell}>
                           <Inputbox
                              label="Cheque No"
@@ -132,7 +122,7 @@ const getOrgName = (id) => {
                              value={cheque.chequeNo}
                              onChange={handleChange}
                              placeholder="Enter Cheque No"
-                             type="number"
+                          
                           />
                        </div>
 

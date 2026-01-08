@@ -1,10 +1,8 @@
 import { useFormik } from "formik";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "useAuth";
-import {
-  validateField,
-  addressValidationSchema,
-} from "../utils/validationUtils";
+import * as Yup from "yup";
+import { addressFormSchema } from "utils/OnboardingSchemas"; 
 import {
   usePincodeQuery,
   useCitiesByDistrict,
@@ -12,7 +10,7 @@ import {
   useAddressGetQuery,
 } from "api/onBoardingForms/postApi/useAddressQueries";
 
-const initialAddress = {
+const initialAddressBlock = {
   name: "",
   addressLine1: "",
   addressLine2: "",
@@ -29,66 +27,49 @@ export const useAddressFormik = ({ tempId, onSuccess }) => {
   const { user } = useAuth();
   const hrEmployeeId = user?.employeeId || 5109;
 
+  const { data: savedData, refetch } = useAddressGetQuery(tempId);
+  const [isDataPopulated, setIsDataPopulated] = useState(false);
+
   const formik = useFormik({
     initialValues: {
       permanentAddressSame: false,
-      currentAddress: { ...initialAddress },
-      permanentAddress: { ...initialAddress },
+      currentAddress: { ...initialAddressBlock },
+      permanentAddress: { ...initialAddressBlock },
     },
-
-    validate: (values) => {
-      const errors = {};
-
-      const validateAddr = (addr) => {
-        const e = {};
-        Object.keys(addressValidationSchema).forEach((k) => {
-          const err = validateField(addr[k], addressValidationSchema[k]);
-          if (err) e[k] = err;
-        });
-        return e;
-      };
-
-      const currErrors = validateAddr(values.currentAddress);
-      if (Object.keys(currErrors).length) {
-        errors.currentAddress = currErrors;
-      }
-
-      if (!values.permanentAddressSame) {
-        const permErrors = validateAddr(values.permanentAddress);
-        if (Object.keys(permErrors).length) {
-          errors.permanentAddress = permErrors;
-        }
-      }
-
-      return errors;
-    },
-
+    // 🔴 DEBUG: Comment out validationSchema if "Save" does nothing. 
+    // validationSchema: addressFormSchema, 
+    enableReinitialize: true,
+    
     onSubmit: async (values) => {
+      console.log("🚀 Submitting Address Info...", values);
       const isSame = values.permanentAddressSame;
+      
+      // Helper: Send null if empty, otherwise number
+      const safeNum = (val) => (val && val !== "" ? Number(val) : null);
 
       const payload = {
         permanentAddressSameAsCurrent: isSame,
         currentAddress: {
           ...values.currentAddress,
-          cityId: Number(values.currentAddress.cityId) || 0,
-          districtId: Number(values.currentAddress.districtId) || 0,
-          stateId: Number(values.currentAddress.stateId) || 0,
-          countryId: Number(values.currentAddress.countryId) || 1,
+          cityId: safeNum(values.currentAddress.cityId),
+          districtId: safeNum(values.currentAddress.districtId),
+          stateId: safeNum(values.currentAddress.stateId),
+          countryId: safeNum(values.currentAddress.countryId) || 1,
         },
         permanentAddress: isSame
           ? {
               ...values.currentAddress,
-              cityId: Number(values.currentAddress.cityId) || 0,
-              districtId: Number(values.currentAddress.districtId) || 0,
-              stateId: Number(values.currentAddress.stateId) || 0,
-              countryId: Number(values.currentAddress.countryId) || 1,
+              cityId: safeNum(values.currentAddress.cityId),
+              districtId: safeNum(values.currentAddress.districtId),
+              stateId: safeNum(values.currentAddress.stateId),
+              countryId: safeNum(values.currentAddress.countryId) || 1,
             }
           : {
               ...values.permanentAddress,
-              cityId: Number(values.permanentAddress.cityId) || 0,
-              districtId: Number(values.permanentAddress.districtId) || 0,
-              stateId: Number(values.permanentAddress.stateId) || 0,
-              countryId: Number(values.permanentAddress.countryId) || 1,
+              cityId: safeNum(values.permanentAddress.cityId),
+              districtId: safeNum(values.permanentAddress.districtId),
+              stateId: safeNum(values.permanentAddress.stateId),
+              countryId: safeNum(values.permanentAddress.countryId) || 1,
             },
         createdBy: hrEmployeeId,
         updatedBy: hrEmployeeId,
@@ -96,142 +77,117 @@ export const useAddressFormik = ({ tempId, onSuccess }) => {
 
       try {
         await postAddressInfo(tempId, payload);
+        alert("Address saved successfully!"); // Visual confirmation
         if (onSuccess) onSuccess();
+        refetch();
       } catch (e) {
         console.error("❌ Address submit failed", e);
+        alert("Failed to save address. Check console.");
       }
     },
   });
 
-  const { values, setValues, setFieldValue } = formik;
+  const { values, setFieldValue, setValues, errors } = formik;
 
-  /* ======================================================================
-     1️⃣ FETCH & POPULATE (EDIT MODE)
-     ====================================================================== */
-  const { data: savedData } = useAddressGetQuery(tempId);
-
+  // 🔴 DEBUG: Log errors whenever they change
   useEffect(() => {
-    if (savedData) {
-      console.log("✅ Address Data Fetched:", savedData);
+    if (Object.keys(errors).length > 0) {
+      console.warn("⚠️ Formik Validation Errors:", errors);
+    }
+  }, [errors]);
 
-      // Backend returns arrays CURR: [], PERM: []
-      const curr = Array.isArray(savedData.CURR) ? savedData.CURR[0] : {};
-      const perm = Array.isArray(savedData.PERM) ? savedData.PERM[0] : {};
-      
-      const isSame = !!savedData.permanentAddressSameAsCurrent;
+  // 2. POPULATE FORM FROM API
+  useEffect(() => {
+    if (!isDataPopulated && savedData) {
+      let currData = {};
+      let permData = {};
+      let isSame = false;
+
+      if (savedData.currentAddress) {
+        currData = savedData.currentAddress || {};
+        permData = savedData.permanentAddress || {};
+        isSame = !!savedData.permanentAddressSameAsCurrent;
+      } else if (savedData.CURR || Array.isArray(savedData.CURR)) {
+        currData = Array.isArray(savedData.CURR) && savedData.CURR.length > 0 ? savedData.CURR[0] : {};
+        permData = Array.isArray(savedData.PERM) && savedData.PERM.length > 0 ? savedData.PERM[0] : {};
+        isSame = savedData.permanentAddressSameAsCurrent ?? false;
+      }
 
       const normalize = (addr) => ({
-        ...initialAddress,
-        ...addr,
-        pin: addr.pin || addr.pincode || "", // handle both naming conventions
+        name: addr.name || "",
+        addressLine1: addr.addressLine1 || addr.houseNo || "",
+        addressLine2: addr.addressLine2 || addr.landmark || "",
+        addressLine3: addr.addressLine3 || "",
+        pin: String(addr.pin || addr.postalCode || addr.pincode || ""),
+        phoneNumber: addr.phoneNumber || addr.emrg_contact_no || "",
         cityId: addr.cityId ? Number(addr.cityId) : "",
         districtId: addr.districtId ? Number(addr.districtId) : "",
         stateId: addr.stateId ? Number(addr.stateId) : "",
         countryId: addr.countryId ? Number(addr.countryId) : 1,
       });
 
-      const currentAddress = normalize(curr || {});
-      const permanentAddress = isSame
-        ? { ...currentAddress }
-        : normalize(perm || {});
-
       setValues({
         permanentAddressSame: isSame,
-        currentAddress,
-        permanentAddress,
+        currentAddress: normalize(currData),
+        permanentAddress: isSame ? normalize(currData) : normalize(permData),
       });
+      setIsDataPopulated(true);
     }
-  }, [savedData, setValues]);
+  }, [savedData, isDataPopulated, setValues]);
 
-  /* ======================================================================
-     2️⃣ PINCODE → STATE & DISTRICT (SOURCE OF TRUTH)
-     ====================================================================== */
-  const { data: pinData } = usePincodeQuery(values.currentAddress.pin);
+  // 3. DROPDOWN LOGIC
+  const { data: currPinData } = usePincodeQuery(values.currentAddress.pin);
+  const { data: permPinData } = usePincodeQuery(!values.permanentAddressSame ? values.permanentAddress.pin : null);
 
   useEffect(() => {
-    if (!pinData) return;
-
-    // ✅ Always update CURRENT
-    setFieldValue("currentAddress.stateId", Number(pinData.stateId));
-    setFieldValue("currentAddress.districtId", Number(pinData.districtId));
-
-    // ✅ Sync PERMANENT if same
-    if (values.permanentAddressSame) {
-      setFieldValue("permanentAddress.pin", values.currentAddress.pin);
-      setFieldValue("permanentAddress.stateId", Number(pinData.stateId));
-      setFieldValue("permanentAddress.districtId", Number(pinData.districtId));
-    }
-  }, [
-    pinData,
-    values.permanentAddressSame,
-    values.currentAddress.pin,
-    setFieldValue,
-  ]);
-
-  /* ======================================================================
-     3️⃣ CITIES → AUTO SELECT
-     ====================================================================== */
-  const { data: cities = [] } = useCitiesByDistrict(
-    values.currentAddress.districtId
-  );
-
-  useEffect(() => {
-    if (cities.length === 1 && !values.currentAddress.cityId) {
-      const cityId = Number(cities[0].id);
-      setFieldValue("currentAddress.cityId", cityId);
-
+    if (currPinData) {
+      setFieldValue("currentAddress.stateId", Number(currPinData.stateId));
+      setFieldValue("currentAddress.districtId", Number(currPinData.districtId));
       if (values.permanentAddressSame) {
-        setFieldValue("permanentAddress.cityId", cityId);
+        setFieldValue("permanentAddress.pin", values.currentAddress.pin);
+        setFieldValue("permanentAddress.stateId", Number(currPinData.stateId));
+        setFieldValue("permanentAddress.districtId", Number(currPinData.districtId));
       }
     }
-  }, [
-    cities,
-    values.currentAddress.cityId,
-    values.permanentAddressSame,
-    setFieldValue,
-  ]);
+  }, [currPinData, values.permanentAddressSame, values.currentAddress.pin, setFieldValue]);
 
-  /* ======================================================================
-     4️⃣ HANDLERS
-     ====================================================================== */
-  const handleCheckboxChange = (checked) => {
-    const isChecked = !!checked;
-    setFieldValue("permanentAddressSame", isChecked);
-
-    if (isChecked) {
-      setFieldValue("permanentAddress", {
-        ...values.currentAddress,
-        cityId: Number(values.currentAddress.cityId) || "",
-        districtId: Number(values.currentAddress.districtId) || "",
-        stateId: Number(values.currentAddress.stateId) || "",
-        countryId: Number(values.currentAddress.countryId) || 1,
-        pin: values.currentAddress.pin || "",
-      });
+  useEffect(() => {
+    if (permPinData && !values.permanentAddressSame) {
+      setFieldValue("permanentAddress.stateId", Number(permPinData.stateId));
+      setFieldValue("permanentAddress.districtId", Number(permPinData.districtId));
     }
+  }, [permPinData, values.permanentAddressSame, setFieldValue]);
+
+  const { data: currCities = [] } = useCitiesByDistrict(values.currentAddress.districtId);
+  const { data: permCities = [] } = useCitiesByDistrict(values.permanentAddress.districtId);
+
+  const handleCheckboxChange = (checked) => {
+    setFieldValue("permanentAddressSame", checked);
+    if (checked) setFieldValue("permanentAddress", { ...values.currentAddress });
   };
 
   const handleFieldChange = (section, field, value) => {
     setFieldValue(`${section}.${field}`, value);
-
     if (section === "currentAddress" && values.permanentAddressSame) {
       setFieldValue(`permanentAddress.${field}`, value);
     }
   };
 
   return {
-    values: formik.values,
-    errors: formik.errors,
-    touched: formik.touched,
-    submitForm: formik.submitForm,
-    setFieldTouched: formik.setFieldTouched,
-    handleFieldChange,
+    ...formik,
     handleCheckboxChange,
-    stateOptions: pinData
-      ? [{ id: pinData.stateId, name: pinData.stateName }]
-      : [],
-    districtOptions: pinData
-      ? [{ id: pinData.districtId, name: pinData.districtName }]
-      : [],
-    cityOptions: cities,
+    handleFieldChange,
+    currCities,
+    permCities,
+    currStateName: currPinData?.stateName,
+    currDistrictName: currPinData?.districtName,
+    permStateName: permPinData?.stateName,
+    permDistrictName: permPinData?.districtName,
+    stateOptions: currPinData ? [{ id: currPinData.stateId, name: currPinData.stateName }] : [],
+    districtOptions: currPinData ? [{ id: currPinData.districtId, name: currPinData.districtName }] : [],
+    cityOptions: currCities,
+    permStateOptions: values.permanentAddressSame ? (currPinData ? [{ id: currPinData.stateId, name: currPinData.stateName }] : []) : (permPinData ? [{ id: permPinData.stateId, name: permPinData.stateName }] : []),
+    permDistrictOptions: values.permanentAddressSame ? (currPinData ? [{ id: currPinData.districtId, name: currPinData.districtName }] : []) : (permPinData ? [{ id: permPinData.districtId, name: permPinData.districtName }] : []),
+    permCityOptions: values.permanentAddressSame ? currCities : permCities,
   };
 };

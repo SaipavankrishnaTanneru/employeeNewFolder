@@ -1,67 +1,51 @@
-// hooks/useAgreementInfoFormik.js
-
 import { useFormik } from "formik";
+import { useEffect, useState } from "react";
 import { useAuth } from "useAuth"; 
 import * as Yup from "yup";
 import { postAgreementInfo } from "api/onBoardingForms/postApi/useAgreementQueries";
+import { useAgreementChequeDetails } from "api/do/getpapis/useAgreementQueries"; 
 
-const initialCheque = {
-  chequeNo: "",
-  chequeBankName: "",
-  chequeBankIfscCode: ""
-};
+const initialCheque = { chequeNo: "", chequeBankName: "", chequeBankIfscCode: "" };
+const initialValues = { agreementOrgId: "", agreementType: "", isCheckSubmit: false, chequeDetails: [initialCheque] };
 
-const initialValues = {
-  agreementOrgId: "",
-  agreementType: "",
-  category: "",
-  isCheckSubmit: false,
-  chequeDetails: [initialCheque] 
-};
-
-// Validation Schema
 const validationSchema = Yup.object({
-  agreementOrgId: Yup.string().required("Organization is required"),
   agreementType: Yup.string().required("Agreement Type is required"),
-  // Add validation for cheques if "isCheckSubmit" is true
 });
 
 export const useAgreementInfoFormik = ({ tempId, onSuccess }) => {
   const { user } = useAuth();
   const hrEmployeeId = user?.employeeId || 5109;
 
+  const { data: savedData } = useAgreementChequeDetails(tempId);
+  const [isDataPopulated, setIsDataPopulated] = useState(false);
+
+  useEffect(() => { setIsDataPopulated(false); }, [tempId]);
+
   const formik = useFormik({
     initialValues,
     validationSchema,
+    enableReinitialize: true,
     onSubmit: async (values) => {
-      if (!tempId) {
-        alert("Temporary ID is missing.");
-        return;
-      }
+      console.log("🚀 Submitting Agreement Info...", values);
 
-      console.log("🚀 Submitting Agreement Info...");
-
-      // Filter cheques: Remove empty ones or send all depending on requirement.
-      // Here we clean data to ensure numbers are numbers.
       const formattedCheques = values.chequeDetails.map(chq => ({
         chequeNo: Number(chq.chequeNo) || 0,
-        chequeBankName: chq.chequeBankName || "",
-        chequeBankIfscCode: chq.chequeBankIfscCode || ""
+        chequeBankName: chq.chequeBankName || "",     
+        // 🔴 FIX: Changed key to 'chequeBankIfscCode' to match backend DTO requirement
+        chequeBankIfscCode: chq.chequeBankIfscCode || ""    
       }));
 
-      const apiPayload = {
+      const payload = {
         agreementOrgId: Number(values.agreementOrgId) || 0,
         agreementType: values.agreementType || "",
-        category: values.category || "",
         isCheckSubmit: Boolean(values.isCheckSubmit),
-        chequeDetails: formattedCheques,
+        chequeDetails: values.isCheckSubmit ? formattedCheques : [], 
         createdBy: hrEmployeeId,
         updatedBy: hrEmployeeId
       };
 
       try {
-        const response = await postAgreementInfo(tempId, apiPayload);
-        console.log("✅ Agreement Info Saved:", response);
+        await postAgreementInfo(tempId, payload);
         if (onSuccess) onSuccess();
       } catch (error) {
         console.error("❌ Failed to save Agreement info:", error);
@@ -69,12 +53,32 @@ export const useAgreementInfoFormik = ({ tempId, onSuccess }) => {
     },
   });
 
-  return {
-    formik,
-    values: formik.values,
-    setFieldValue: formik.setFieldValue,
-    handleChange: formik.handleChange,
-    submitForm: formik.submitForm,
-    initialCheque // Export for Add Button
-  };
+  const { setValues } = formik;
+
+  useEffect(() => {
+    if (!isDataPopulated && savedData) {
+      const backendCheques = savedData.cheques || savedData.chequeDetails || [];
+      const hasCheques = backendCheques.length > 0;
+      
+      const mappedCheques = hasCheques
+        ? backendCheques.map(chq => ({
+            chequeNo: chq.chequeNo || "",
+            chequeBankName: chq.chequeBankName || chq.chequeBank || "", 
+            // Map GET response back to Form Field
+            chequeBankIfscCode: chq.chequeBankIfscCode || chq.chequeIfscCode || chq.ifscCode || "" 
+          }))
+        : [initialCheque];
+
+      setValues({
+        agreementOrgId: savedData.agreementOrgId || "", 
+        agreementType: savedData.agreementType || "",
+        isCheckSubmit: hasCheques,
+        chequeDetails: mappedCheques
+      });
+
+      setIsDataPopulated(true);
+    }
+  }, [savedData, setValues, isDataPopulated]);
+
+  return { formik, values: formik.values, setFieldValue: formik.setFieldValue, handleChange: formik.handleChange, submitForm: formik.submitForm, initialCheque };
 };

@@ -4,21 +4,35 @@ import { ReactComponent as UploadIcon } from 'assets/Qualification/UploadCard.sv
 import {ReactComponent as DocIcon} from 'assets/Qualification/DocIcon.svg';
 import popupDocIcon from 'assets/EmployeeOnBoarding/popupDocIcon.svg';
 import CloseIcon from 'assets/EmployeeOnBoarding/closeicon.svg';
- 
- 
+
+// --- MOCK UPLOAD FUNCTION ---
+const mockUpload = (file) => {
+  // 1. Sanitize filename (replace spaces with underscores)
+  const safeName = file.name.replace(/\s+/g, "_");
+  
+  // 2. Generate the URL based on your example
+  const fakeUrl = `https://cdn.varsity123.com/docs/${safeName}`;
+
+  return {
+    name: file.name,
+    size: file.size,
+    type: file.type,
+    url: fakeUrl // <--- This is what gets sent to API as 'docPath'
+  };
+};
+
 const DocumentCard = ({ docType, files, hasFiles, onFileUpload, onRemoveFile }) => {
   const inputRef = useRef(null);
- 
+
   const handleClick = () => {
     inputRef.current?.click();
   };
- 
+
   return (
     <div className={styles.documentCard}>
       <div className={styles.cardHeader}>
       <DocIcon />
       <h4 className={styles.cardTitle}>{docType.title}</h4>
-      {/* <CardBackground className={styles.backgroundSvg} /> */}
       </div>
       {hasFiles && (
         <div className={styles.fileList}>
@@ -35,7 +49,7 @@ const DocumentCard = ({ docType, files, hasFiles, onFileUpload, onRemoveFile }) 
           ))}
         </div>
       )}
- 
+
       <div className={styles.cardFooter}>
         <input
           ref={inputRef}
@@ -44,7 +58,6 @@ const DocumentCard = ({ docType, files, hasFiles, onFileUpload, onRemoveFile }) 
           style={{ display: 'none' }}
           onChange={(e) => {
             onFileUpload(docType.id, e.target.files);
-            // Reset input so same file can be selected again
             e.target.value = '';
           }}
         />
@@ -67,26 +80,23 @@ const DocumentCard = ({ docType, files, hasFiles, onFileUpload, onRemoveFile }) 
     </div>
   );
 };
- 
+
 const DocumentUploadModal = ({ isOpen, onClose, companyName, documents, onDocumentsChange }) => {
   const contentRef = useRef(null);
- 
-  // Close on outside click
+
   useEffect(() => {
     if (!isOpen) return;
- 
     const handleClickOutside = (e) => {
       if (contentRef.current && !contentRef.current.contains(e.target)) {
         onClose();
       }
     };
- 
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen, onClose]);
- 
+
   if (!isOpen) return null;
- 
+
   const documentTypes = [
     { id: 'payslips', title: 'Payslips' },
     { id: 'resignation', title: 'Resignation' },
@@ -95,33 +105,34 @@ const DocumentUploadModal = ({ isOpen, onClose, companyName, documents, onDocume
     { id: 'gratuity', title: 'Gratuity' },
     { id: 'pfMergerLetter', title: 'PF Merger Letter' },
   ];
- 
-  const handleFileUpload = (docType, files) => {
-    if (!files || files.length === 0) return;
- 
-    const fileArray = Array.from(files);
+
+  const handleFileUpload = (docType, fileList) => {
+    if (!fileList || fileList.length === 0) return;
+
+    // Convert FileList to Array and "Upload" them to get the varsify URL
+    const newFiles = Array.from(fileList).map(file => mockUpload(file));
+    
     const existingFiles = documents[docType] || [];
-   
+    
     onDocumentsChange({
       ...documents,
-      [docType]: [...existingFiles, ...fileArray],
+      [docType]: [...existingFiles, ...newFiles],
     });
   };
- 
+
   const handleRemoveFile = (docType, fileIndex) => {
     const existingFiles = documents[docType] || [];
     const updatedFiles = existingFiles.filter((_, index) => index !== fileIndex);
-   
+    
     onDocumentsChange({
       ...documents,
       [docType]: updatedFiles,
     });
   };
- 
+
   return (
     <div className={styles.modalOverlay}>
       <div className={styles.modalContent} ref={contentRef}>
-        {/* Header */}
         <div className={styles.modalHeader}>
           <div>
             <img src={popupDocIcon} alt="popupDocIcon" />
@@ -132,13 +143,12 @@ const DocumentUploadModal = ({ isOpen, onClose, companyName, documents, onDocume
           <img src={CloseIcon} alt="closeIcon" />
           </button>
         </div>
- 
-        {/* Document Cards Grid */}
+
         <div className={styles.documentGrid}>
           {documentTypes.map((docType) => {
             const files = documents[docType.id] || [];
             const hasFiles = files.length > 0;
- 
+
             return (
               <DocumentCard
                 key={docType.id}
@@ -151,22 +161,18 @@ const DocumentUploadModal = ({ isOpen, onClose, companyName, documents, onDocume
             );
           })}
         </div>
- 
-        {/* Footer Buttons */}
+
         <div className={styles.modalFooter}>
           <button className={styles.cancelButton} onClick={onClose}>
             Cancel
           </button>
           <button className={styles.uploadMoreButton} onClick={onClose}>
-            Upload More
+            Done
           </button>
         </div>
       </div>
     </div>
   );
 };
- 
+
 export default DocumentUploadModal;
- 
- 
- 

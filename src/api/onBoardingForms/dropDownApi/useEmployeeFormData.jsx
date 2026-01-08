@@ -4,14 +4,13 @@ import axios from "axios";
 const API_8080 = "http://localhost:8080/api/employeeModule";
 const EMP_8080 = "http://localhost:8080/api/employee/onboarding";
 const API_9000 = "http://localhost:9000/common/get";
-const API_BASE = "http://localhost:8080/api/employee"; // New Base
+const API_BASE = "http://localhost:8080/api/employee"; 
 
-/* ---------------- HELPERS & DROPDOWN QUERIES (Keep existing code here) ---------------- */
+/* ---------------- HELPERS & DROPDOWN QUERIES ---------------- */
 const safeArray = (data) => (Array.isArray(data) ? data : []);
 
 export const useEmployeeFormQueries = (campusId = null, buildingId = null) => {
-  // ... (Keep all your existing dropdown queries exactly as they are)
-  // I am hiding them here for brevity, but DO NOT DELETE THEM in your file.
+  // ... (Your existing dropdown queries remain exactly the same)
   const bloodGroupsQ = useQuery({ queryKey: ["bloodGroups"], queryFn: () => axios.get(`${API_9000}/BloodGroup/all`).then((r) => r.data) });
   const gendersQ = useQuery({ queryKey: ["genders"], queryFn: () => axios.get(`${API_9000}/genders`).then((r) => r.data) });
   const castesQ = useQuery({ queryKey: ["castes"], queryFn: () => axios.get(`${API_9000}/castes`).then((r) => r.data) });
@@ -90,9 +89,11 @@ export const generateTempPayrollId = async (hrEmployeeId, payload) => {
   return response.data;
 };
 
-// 2. UPDATE EXISTING (Uses the Tab URL you provided)
+// 2. UPDATE EXISTING (Different URL as requested)
 export const updateBasicInfo = async (tempPayrollId, payload) => {
+  // Warning: This endpoint will THROW ERROR if tempPayrollId is missing in Skill_Test_Details table
   const url = `${API_BASE}/tab/basic-info`;
+  
   console.log("📡 UPDATING Basic Info URL:", url);
   
   const response = await axios.post(url, payload, {

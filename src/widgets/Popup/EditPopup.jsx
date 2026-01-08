@@ -45,7 +45,7 @@ const EditPopup = ({ isOpen, title, onClose, onSave, children }) => {
         <div className={styles.footer}>
           <Button
             buttonname="Save"
-            onClick={onClose}
+            onClick={onSave}
             type="button"
             variant="primary"
             width="110px"

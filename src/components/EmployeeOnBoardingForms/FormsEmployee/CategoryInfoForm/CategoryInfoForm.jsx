@@ -1,5 +1,3 @@
-// components/EmployeeOnBoardingForms/FormsEmployee/CategoryInfoForm/CategoryInfoForm.jsx
-
 import React, { forwardRef, useImperativeHandle } from "react";
 import { FormikProvider } from "formik";
 import styles from "./CategoryInfo.module.css";
@@ -8,52 +6,41 @@ import styles from "./CategoryInfo.module.css";
 import dividerline from 'assets/Qualification/border.svg';
 import Dropdown from "widgets/Dropdown/Dropdown";
 import Inputbox from "widgets/Inputbox/InputBox";
+import FormValidationAlert from "utils/FormValidationAlert"; 
 
 // Logic Hook
 import { useCategoryInfoFormik } from "../../../../hooks/useCategoryInfoFormik";
 
-// API Hooks
-import {
-  useEmployeeTypes,
-  useDepartmentsByType,
-  useDesignationsByDept,
-  useSubjects,
-  useOrientations,
-} from "api/onBoardingForms/postApi/useCategoryQueries";
-
 const CategoryInfo = forwardRef(({ tempId, onSuccess }, ref) => {
   
-  // 1. Init Formik
-  const { formik } = useCategoryInfoFormik({ tempId, onSuccess });
-  const { values, setFieldValue, handleChange } = formik;
+  const { 
+    formik, 
+    dropdowns, 
+    isTeachSelected,
+    isNonTeachSelected 
+  } = useCategoryInfoFormik({ 
+    tempId, 
+    onSuccess,
+  });
+  
+  const { values, setFieldValue, handleChange, errors, touched } = formik;
+  const { employeeTypes, departments, designations, subjects, orientations } = dropdowns;
 
-  // 2. Expose Submit
   useImperativeHandle(ref, () => ({
     submitForm: () => formik.submitForm(),
   }));
 
-  // 3. Fetch Data (Cascading Logic)
-  
-  // A. Level 1: Independent
-  const { data: employeeTypes = [] } = useEmployeeTypes();
-  const { data: subjects = [] } = useSubjects();
-  const { data: orientations = [] } = useOrientations();
-
-  // B. Level 2: Departments (Depends on Employee Type)
-  const { data: departments = [] } = useDepartmentsByType(values.employeeTypeId);
-
-  // C. Level 3: Designations (Depends on Department)
-  const { data: designations = [] } = useDesignationsByDept(values.departmentId);
-
-
-  // --- HANDLERS (With Reset Logic) ---
+  const getDisplayName = (id, list) => {
+     if (!id || !list) return "";
+     const item = list.find((x) => Number(x.id) === Number(id));
+     return item ? item.name : "";
+  };
 
   const handleEmpTypeChange = (e) => {
     const name = e.target.value;
     const item = employeeTypes.find((x) => x.name === name);
-    
     setFieldValue("employeeTypeId", item ? item.id : "");
-    // Reset downstream fields
+    // Reset dependents
     setFieldValue("departmentId", "");
     setFieldValue("designationId", "");
   };
@@ -61,9 +48,7 @@ const CategoryInfo = forwardRef(({ tempId, onSuccess }, ref) => {
   const handleDeptChange = (e) => {
     const name = e.target.value;
     const item = departments.find((x) => x.name === name);
-    
     setFieldValue("departmentId", item ? item.id : "");
-    // Reset downstream field
     setFieldValue("designationId", "");
   };
 
@@ -73,21 +58,18 @@ const CategoryInfo = forwardRef(({ tempId, onSuccess }, ref) => {
     setFieldValue("designationId", item ? item.id : "");
   };
 
-  // Helper for simple dropdowns (ID lookup)
   const handleSimpleDropdown = (field, list, e) => {
     const name = e.target.value;
     const item = list.find((x) => x.name === name);
     setFieldValue(field, item ? item.id : "");
   };
 
-  const getNameById = (id, list) => list.find((x) => x.id == id)?.name || "";
-
   return (
     <div className={styles.category_form_container}>
       <FormikProvider value={formik}>
+        <FormValidationAlert />
+
         <form>
-          
-          {/* HEADER */}
           <div className={styles.category_header}>
             <span className={styles.category_title}>Category Info</span>
             <img src={dividerline} alt="divider" className={styles.dividerImage} />
@@ -95,61 +77,66 @@ const CategoryInfo = forwardRef(({ tempId, onSuccess }, ref) => {
 
           <div className={styles.category_form_grid}>
             
-            {/* 1. Employee Type */}
             <Dropdown
-              dropdownname="Employee Type"
+              dropdownname="Employee Type *"
               name="employeeTypeId"
               results={employeeTypes.map((x) => x.name)}
-              value={getNameById(values.employeeTypeId, employeeTypes)}
+              value={getDisplayName(values.employeeTypeId, employeeTypes)}
               onChange={handleEmpTypeChange}
+              error={touched.employeeTypeId && errors.employeeTypeId}
             />
 
-            {/* 2. Department (Cascades from Emp Type) */}
             <Dropdown
-              dropdownname="Department"
+              dropdownname="Department *"
               name="departmentId"
               results={departments.map((x) => x.name)}
-              value={getNameById(values.departmentId, departments)}
+              value={getDisplayName(values.departmentId, departments)}
               onChange={handleDeptChange}
-              disabled={!values.employeeTypeId} // Disable if parent not selected
+              disabled={!values.employeeTypeId} 
+              error={touched.departmentId && errors.departmentId}
             />
 
-            {/* 3. Designation (Cascades from Dept) */}
             <Dropdown
-              dropdownname="Designation"
+              dropdownname="Designation *"
               name="designationId"
               results={designations.map((x) => x.name)}
-              value={getNameById(values.designationId, designations)}
+              value={getDisplayName(values.designationId, designations)}
               onChange={handleDesignationChange}
               disabled={!values.departmentId}
+              error={touched.designationId && errors.designationId}
             />
+             
+             {/* Hide Orientation & Subject ONLY for Non-Teach */}
+             {!isNonTeachSelected && (
+               <>
+                 <Dropdown
+                  dropdownname="Orientation *"
+                  name="orientationId"
+                  results={orientations.map((x) => x.name)}
+                  value={getDisplayName(values.orientationId, orientations)}
+                  onChange={(e) => handleSimpleDropdown("orientationId", orientations, e)}
+                  error={touched.orientationId && errors.orientationId}
+                />
 
-            {/* 4. Subject */}
-            <Dropdown
-              dropdownname="Subject"
-              name="subjectId"
-              results={subjects.map((x) => x.name)}
-              value={getNameById(values.subjectId, subjects)}
-              onChange={(e) => handleSimpleDropdown("subjectId", subjects, e)}
-            />
+                <Dropdown
+                  dropdownname={isTeachSelected ? "Subject *" : "Subject"}
+                  name="subjectId"
+                  results={subjects.map((x) => x.name)}
+                  value={getDisplayName(values.subjectId, subjects)}
+                  onChange={(e) => handleSimpleDropdown("subjectId", subjects, e)}
+                  error={touched.subjectId && errors.subjectId}
+                />
+               </>
+             )}
 
-            {/* 5. Orientation */}
-            <Dropdown
-              dropdownname="Orientation"
-              name="orientationId"
-              results={orientations.map((x) => x.name)}
-              value={getNameById(values.orientationId, orientations)}
-              onChange={(e) => handleSimpleDropdown("orientationId", orientations, e)}
-            />
-
-            {/* 6. Agreed Periods */}
+            {/* 🔴 UPDATE: Agreed Periods visible for BOTH (Always shown) */}
             <Inputbox
-              label="Agreed Periods per week"
+              label="Agreed Periods per week *"
               name="agreedPeriodsPerWeek"
               placeholder="Enter Periods"
               value={values.agreedPeriodsPerWeek}
               onChange={handleChange}
-              type="number"
+              error={touched.agreedPeriodsPerWeek && errors.agreedPeriodsPerWeek}
             />
 
           </div>

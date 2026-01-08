@@ -1,12 +1,17 @@
 import React from "react";
 import Inputbox from "widgets/Inputbox/InputBox";
 import Dropdown from "widgets/Dropdown/Dropdown";
-import FormCheckbox from "widgets/Checkbox/Checkbox";
-import styles from "./FatherInfo.module.css";
+import FormCheckbox from "widgets/FormCheckBox/FormCheckBox";
+import styles from "./FatherInfo.module.css"; // Uses its own module, or you can point to FamilyInfo.module.css if preferred
 
 const FatherInfo = ({ formik, prefix = "father", bloodGroupOptions = [] }) => {
-  const { values, handleChange, setFieldValue } = formik;
+  const { values, handleChange, setFieldValue, errors, touched, setFieldTouched } = formik;
+  
   const data = values[prefix] || {};
+  // Access errors for this specific section (father/mother)
+  const sectionErrors = errors[prefix] || {};
+  const sectionTouched = touched[prefix] || {};
+
   const getName = (field) => `${prefix}.${field}`;
 
   const handleCheckbox = (field, e) => {
@@ -17,20 +22,23 @@ const FatherInfo = ({ formik, prefix = "father", bloodGroupOptions = [] }) => {
   return (
     <div className={styles.container}>
       <div className={styles.formGrid}>
-
         {/* Row 1 */}
         <div className={styles.row}>
           <div className={styles.nameField}>
             <Inputbox
-              label="Name *"
+              label="Name"
               name={getName("fullName")}
               placeholder="Enter Name"
               value={data.fullName || ""}
               onChange={handleChange}
+              // 🔴 Validation Error Prop
+              error={sectionTouched.fullName && sectionErrors.fullName}
             />
+
             <div className={styles.checkboxRow}>
-              <span className={styles.checkboxText}>Late</span>
+              <span className={styles.checkboxLabel}>Late</span>
               <FormCheckbox
+                id={`${prefix}-late`}
                 name={getName("isLate")}
                 checked={data.isLate || false}
                 onChange={(e) => handleCheckbox("isLate", e)}
@@ -41,7 +49,7 @@ const FatherInfo = ({ formik, prefix = "father", bloodGroupOptions = [] }) => {
           <Dropdown
             dropdownname="Blood Group"
             name={getName("bloodGroupId")}
-            results={bloodGroupOptions} 
+            results={bloodGroupOptions}
             value={data.bloodGroupId || ""}
             onChange={handleChange}
           />
@@ -49,49 +57,45 @@ const FatherInfo = ({ formik, prefix = "father", bloodGroupOptions = [] }) => {
           <Dropdown
             dropdownname="Nationality"
             name={getName("nationality")}
-            results={["Indian", "American", "Other"]}
+            results={["Indian", "American", "Canadian", "Other"]}
             value={data.nationality || ""}
             onChange={handleChange}
+            error={sectionTouched.nationality && sectionErrors.nationality}
           />
         </div>
 
-        {/* Row 2 - Added DOB */}
+        {/* Row 2 */}
         <div className={styles.row}>
-          <Inputbox
-            type="date"
-            label="Date of Birth *"
-            name={getName("dateOfBirth")}
-            value={data.dateOfBirth || ""}
-            onChange={handleChange}
-          />
-
           <Inputbox
             label="Occupation"
             name={getName("occupation")}
+            placeholder="Enter Occupation"
             value={data.occupation || ""}
             onChange={handleChange}
           />
 
           <Inputbox
-            label="Email"
+            // 🔴 Conditional Label
+            label={data.isLate ? "Email" : "Email *"}
             name={getName("email")}
+            placeholder="Enter email id"
             value={data.email || ""}
             onChange={handleChange}
-            // Logic: Optional if Late? Handled in Validation Schema
+            error={sectionTouched.email && sectionErrors.email}
           />
-        </div>
 
-        {/* Row 3 */}
-        <div className={styles.row}>
-           <Inputbox
-            label="Phone Number *"
+          <Inputbox
+            // 🔴 Conditional Label
+            label={data.isLate ? "Phone Number" : "Phone Number *"}
             name={getName("phoneNumber")}
+            placeholder="Enter phone number"
             value={data.phoneNumber || ""}
             onChange={handleChange}
+            error={sectionTouched.phoneNumber && sectionErrors.phoneNumber}
           />
         </div>
 
-        {/* Row 4 - Employee ID (Conditional) */}
+        {/* Row 3 - Employee ID (Conditional) */}
         {data.isSriChaitanyaEmp && (
           <div className={styles.row}>
             <Inputbox
@@ -103,7 +107,6 @@ const FatherInfo = ({ formik, prefix = "father", bloodGroupOptions = [] }) => {
             />
           </div>
         )}
-
       </div>
     </div>
   );

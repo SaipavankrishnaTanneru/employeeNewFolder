@@ -1,147 +1,115 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import styles from "./PreviousEmpUpdate.module.css";
 import InputBox from "widgets/Inputbox/InputBox";
+import { usePreviousEmployerFormik } from "hooks/usePreviousEmployerFormik"; // Reuse existing hook
+import { usePreviousEmpDetails } from "api/do/getpapis/usePreviousEmpQuery";
 
-const previousEmploymentData = [
-  {
-    companyName: "RankGuru Technologies",
-    designation: "Quality Analyst",
-    fromDate: "2020-08-12",
-    toDate: "2025-08-29",
-    leavingReason: "Health Issue",
-    addressLine1: "Hyderabad",
-    addressLine2: "Telangana",
-    natureOfDuties: "1",
-    grossSalary: "90000",
-    ctc: "9 LPA",
-  },
-  {
-    companyName: "ABC Solutions",
-    designation: "Senior QA",
-    fromDate: "2018-06-01",
-    toDate: "2020-07-31",
-    leavingReason: "Better Opportunity",
-    addressLine1: "Bangalore",
-    addressLine2: "Karnataka",
-    natureOfDuties: "Automation Testing",
-    grossSalary: "75000",
-    ctc: "8 LPA",
-  },
-];
+const PreviousEmpUpdate = ({ tempId, prevEmpId, onSuccess }) => {
+  
+  // 1. Fetch Data to Pre-fill
+  const { data: allEmployers } = usePreviousEmpDetails(tempId);
+  
+  // 2. Initialize Formik
+  const { formik, initialEmployer } = usePreviousEmployerFormik({ tempId, onSuccess });
+  const { values, setFieldValue, submitForm } = formik;
 
-const PreviousEmpUpdate = () => {
-  const [previousEmployments, setPreviousEmployments] = useState(
-    previousEmploymentData
-  );
+  // 3. Pre-fill logic specific to the selected ID
+  useEffect(() => {
+    if (allEmployers && prevEmpId) {
+        const selectedEmp = allEmployers.find(e => (e.prevEmpId || e.id) === prevEmpId);
+        if (selectedEmp) {
+            // We set the whole array with just this one item for editing
+            // Or if your backend supports updating a specific ID, logic might differ.
+            // Assuming we edit one item at a time in this popup:
+            setFieldValue("previousEmployers", [{
+                companyName: selectedEmp.companyName || "",
+                designation: selectedEmp.designation || "",
+                fromDate: selectedEmp.fromDate ? selectedEmp.fromDate.split('T')[0] : "",
+                toDate: selectedEmp.toDate ? selectedEmp.toDate.split('T')[0] : "",
+                leavingReason: selectedEmp.leavingReason || "",
+                companyAddressLine1: selectedEmp.companyAddress || "",
+                natureOfDuties: selectedEmp.natureOfDuties || "",
+                grossSalaryPerMonth: selectedEmp.grossSalaryPerMonth || "",
+                ctc: selectedEmp.ctc || "",
+                // ... map other fields
+            }]);
+        }
+    }
+  }, [allEmployers, prevEmpId, setFieldValue]);
 
-  const handleChange = (index, field, value) => {
-    setPreviousEmployments((prev) =>
-      prev.map((item, i) =>
-        i === index ? { ...item, [field]: value } : item
-      )
-    );
+  // Using the first item in the array since we are editing a specific one
+  const item = values.previousEmployers[0] || initialEmployer;
+  const index = 0; // Fixed index for single edit
+
+  const handleChange = (field, value) => {
+      setFieldValue(`previousEmployers.${index}.${field}`, value);
   };
 
   return (
     <div className={styles.container}>
-      {previousEmployments.map((item, index) => (
-        <div key={index} className={styles.block}>
-          {/* Header */}
-          <div className={styles.block_header}>
-            <span>Previous Employment {index + 1}</span>
-          </div>
-
-          {/* Fields Grid */}
+        <div className={styles.block}>
           <div className={styles.form_grid}>
             <InputBox
               label="Company Name"
               value={item.companyName}
-              onChange={(e) =>
-                handleChange(index, "companyName", e.target.value)
-              }
+              onChange={(e) => handleChange("companyName", e.target.value)}
             />
-
             <InputBox
               label="Designation"
               value={item.designation}
-              onChange={(e) =>
-                handleChange(index, "designation", e.target.value)
-              }
+              onChange={(e) => handleChange("designation", e.target.value)}
             />
-
             <InputBox
               label="From Date"
               type="date"
               value={item.fromDate}
-              onChange={(e) =>
-                handleChange(index, "fromDate", e.target.value)
-              }
+              onChange={(e) => handleChange("fromDate", e.target.value)}
             />
-
             <InputBox
               label="To Date"
               type="date"
               value={item.toDate}
-              onChange={(e) =>
-                handleChange(index, "toDate", e.target.value)
-              }
+              onChange={(e) => handleChange("toDate", e.target.value)}
             />
-
             <InputBox
               label="Leaving Reason"
               value={item.leavingReason}
-              onChange={(e) =>
-                handleChange(index, "leavingReason", e.target.value)
-              }
+              onChange={(e) => handleChange("leavingReason", e.target.value)}
             />
-
             <InputBox
               label="Address Line 1"
-              value={item.addressLine1}
-              onChange={(e) =>
-                handleChange(index, "addressLine1", e.target.value)
-              }
+              value={item.companyAddressLine1}
+              onChange={(e) => handleChange("companyAddressLine1", e.target.value)}
             />
-
-            <InputBox
-              label="Address Line 2"
-              value={item.addressLine2}
-              onChange={(e) =>
-                handleChange(index, "addressLine2", e.target.value)
-              }
-            />
-
             <InputBox
               label="Nature of Duties"
               value={item.natureOfDuties}
-              onChange={(e) =>
-                handleChange(index, "natureOfDuties", e.target.value)
-              }
+              onChange={(e) => handleChange("natureOfDuties", e.target.value)}
             />
-
             <InputBox
               label="Gross Salary (Monthly)"
-              value={item.grossSalary}
-              onChange={(e) =>
-                handleChange(index, "grossSalary", e.target.value)
-              }
+              value={item.grossSalaryPerMonth}
+              onChange={(e) => handleChange("grossSalaryPerMonth", e.target.value)}
+              type="number"
             />
-
             <InputBox
               label="CTC"
               value={item.ctc}
-              onChange={(e) => handleChange(index, "ctc", e.target.value)}
+              onChange={(e) => handleChange("ctc", e.target.value)}
+              type="number"
             />
           </div>
 
-          {/* Upload Document Button - Same as QualificationUpdate */}
           <div className={styles.upload_row}>
             <button type="button" className={styles.upload_btn}>
-              Upload Document
+              Upload Document (Skipped)
             </button>
           </div>
+          
+          <div style={{marginTop: '20px', textAlign: 'right'}}>
+             <button onClick={submitForm} className={styles.save_btn}>Save Changes</button>
+          </div>
         </div>
-      ))}
     </div>
   );
 };

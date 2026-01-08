@@ -90,7 +90,6 @@ const EmployeeDetailLayout = ({ role }) => {
 const EmployeeModuleContainer = ({ role }) => {
   const navigate = useNavigate();
 
-  // Helper to get the current user's base URL
   const getBasePath = () => {
     if (role === "HR") return "/scopes/employee/hr-review";
     if (role === "CO") return "/scopes/employee/co-review";
@@ -98,9 +97,7 @@ const EmployeeModuleContainer = ({ role }) => {
     return "/scopes/employee/do-review";
   };
 
-  // 🔴 HANDLE ROW CLICKS BASED ON STATUS
   const handleEmployeeSelect = (employee) => {
-    // 🔴 CHANGE: Prioritize tempPayroll (Temp ID)
     const empId = employee.tempPayroll || employee.id || employee._id;
     
     if (!empId) {
@@ -122,23 +119,17 @@ const EmployeeModuleContainer = ({ role }) => {
     if (status === "incompleted" || status === "incomplete") {
         navigate(`/scopes/employee/${rolePrefix}-new-employee-onboarding/basic-info`, { 
             state: { 
-                tempId: empId, // Sending tempPayroll
+                tempId: empId, 
                 isEditMode: true 
             } 
         });
         return;
     }
 
-    // 3. "Pending" -> Go to REVIEW SCREENS (DO/CO Screens)
+    // 3. "Pending" -> Go to REVIEW SCREENS
     if (status.includes("pending") || status.includes("pending at do") || status.includes("pending at co")) {
-        // Uses tempPayroll in URL
         navigate(`${basePath}/${empId}/onboarding/working-info`);
         return;
-    }
-
-    // 4. "Completed/Confirm" -> Fallback
-    if (status === "confirm" || status === "completed") {
-        return; 
     }
 
     // Default Fallback
@@ -166,7 +157,8 @@ const EmployeeModuleContainer = ({ role }) => {
         {/* 1. Salary (DO Only - Standalone Step) */}
         <Route 
           path="onboarding/salary" 
-          element={<WrapperSalary />} 
+          // 🔴 UPDATED: Passing 'role' prop to WrapperSalary
+          element={<WrapperSalary role={role} />} 
         />
 
         {/* 2. Checklist */}
@@ -175,7 +167,7 @@ const EmployeeModuleContainer = ({ role }) => {
           element={<EmployeeChecklist role={role} onBack={() => navigate(-1)}/>} 
         />
 
-        {/* 3. Onboarding Flow (Includes 'salary-info' tab for CO/HR) */}
+        {/* 3. Onboarding Flow */}
         <Route 
           path="onboarding/:stepId" 
           element={<WrapperOnboarding role={role} />} 
@@ -205,12 +197,20 @@ const WrapperOnboarding = ({ role }) => {
   );
 };
 
-const WrapperSalary = () => {
+// 🔴 UPDATED: Accepts 'role' prop
+const WrapperSalary = ({ role }) => {
   const navigate = useNavigate();
   return (
     <AddSalaryDetails
+      role={role} // <-- Pass role to AddSalaryDetails
       onBack={() => navigate("../onboarding/account-info")} 
-      onSubmitComplete={() => navigate("../onboarding/checklist")}     
+      
+      // 🚀 Receive data from Salary Form (for DO) and pass to Checklist via state
+      onSubmitComplete={(salaryData) => {
+          console.log("Navigating to Checklist with data:", salaryData);
+          // Only pass state if data exists (DO flow)
+          navigate("../onboarding/checklist", { state: { salaryData } });
+      }}    
     />
   );
 };

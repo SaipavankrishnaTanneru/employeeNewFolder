@@ -8,14 +8,14 @@ import rightarrow from 'assets/onboarding_status_table/rightarrow.svg';
 import uparrow from 'assets/onboarding_status_table/uparrow.svg';
 import downarrow from 'assets/onboarding_status_table/downarrow.svg';
 
-const OnBoardingStatusTable = ({ selectedStatus, role, onEmployeeSelect }) => {
+const OnBoardingStatusTable = ({ selectedStatus, role, onEmployeeSelect, searchValue }) => {
   const navigate = useNavigate();
   const [pageIndex, setPageIndex] = useState(0);
   const pageSize = 20; 
 
   const { data: employeeData = [], isLoading, isError, error } = useOnboardingStatusQuery();
 
-  // ... (Helper: Badge Styles) ...
+  // ... (Helper: Badge Styles - SAME AS BEFORE) ...
   const getStatusBadgeClass = (status) => {
     if (!status) return styles.statusDefault;
     const s = status.toLowerCase().trim();
@@ -28,78 +28,86 @@ const OnBoardingStatusTable = ({ selectedStatus, role, onEmployeeSelect }) => {
     return styles.statusDefault;
   };
 
-  // ... (Logic: Filtering) ...
+  // ... (Logic: Filtering - SAME AS BEFORE) ...
   const filteredData = useMemo(() => {
-    if (!selectedStatus || selectedStatus === "All") return employeeData;
-    const filterKey = selectedStatus.toLowerCase().trim();
-    return employeeData.filter((row) => {
-      const rowStatus = (row.status || "").toLowerCase().trim();
-      if (rowStatus === filterKey) return true;
-      if (filterKey === "pending with do" && rowStatus === "pending at do") return true;
-      if (filterKey === "pending with co" && rowStatus === "pending at co") return true;
-      if (filterKey === "completed" && rowStatus === "confirm") return true;
-      if (filterKey === "incomplete" && rowStatus === "incompleted") return true;
-      if (rowStatus.includes(filterKey)) return true;
-      return false;
-    });
-  }, [selectedStatus, employeeData]);
+    let data = employeeData;
+
+    // 1. Status Filter
+    if (selectedStatus && selectedStatus !== "All") {
+        const filterKey = selectedStatus.toLowerCase().trim();
+        data = data.filter((row) => {
+            const rowStatus = (row.status || "").toLowerCase().trim();
+            if (rowStatus === filterKey) return true;
+            if (filterKey === "pending with do" && rowStatus === "pending at do") return true;
+            if (filterKey === "pending with co" && rowStatus === "pending at co") return true;
+            if (filterKey === "completed" && rowStatus === "confirm") return true;
+            if (filterKey === "incomplete" && rowStatus === "incompleted") return true;
+            if (rowStatus.includes(filterKey)) return true;
+            return false;
+        });
+    }
+
+    // 2. Search Filter
+    if (searchValue) {
+        const lowerSearch = searchValue.toLowerCase();
+        data = data.filter((row) => 
+            (row.name && row.name.toLowerCase().includes(lowerSearch)) ||
+            (row.empNo && row.empNo.toLowerCase().includes(lowerSearch)) ||
+            (row.tempPayroll && row.tempPayroll.toLowerCase().includes(lowerSearch)) ||
+            (row.payroll && row.payroll.toLowerCase().includes(lowerSearch))
+        );
+    }
+
+    return data;
+  }, [selectedStatus, employeeData, searchValue]);
 
   // ... (Logic: Pagination) ...
   const total = filteredData.length;
   const totalPages = Math.max(Math.ceil(total / pageSize), 1);
+  
+  // Ensure pageIndex is valid
   if (pageIndex >= totalPages && totalPages > 0) setPageIndex(0);
+  
   const start = pageIndex * pageSize;
   const end = start + pageSize;
   const pagedData = filteredData.slice(start, end);
+
+  // 🔢 CALCULATION FOR FOOTER TEXT ("Showing 1 to 20 of 50")
+  const startRecord = total === 0 ? 0 : start + 1;
+  const endRecord = Math.min(end, total);
+
   const handlePrevPage = () => { if (pageIndex > 0) setPageIndex(pageIndex - 1); };
   const handleNextPage = () => { if (pageIndex < totalPages - 1) setPageIndex(pageIndex + 1); };
 
-  // 🔴 UPDATED NAVIGATION LOGIC 🔴
+  // ... (Navigation Logic & Row Click - SAME AS BEFORE) ...
   const handleRowClick = (row) => {
     const currentStatus = (row.status || "").toLowerCase().trim();
-    
-    // 🔴 1. Extract TEMP ID specifically
     const activeId = row.tempPayroll; 
 
-    if (!activeId) {
-        console.error("No TempPayroll ID found for row:", row);
-        return;
-    }
+    if (!activeId) { console.error("No TempPayroll ID found"); return; }
 
-    // 2. Determine Role Prefix for URL (do, hr, co, admin)
-    let rolePrefix = "do";
-    if (role === "HR") rolePrefix = "hr";
-    if (role === "CO") rolePrefix = "co";
-    if (role === "ADMIN") rolePrefix = "admin";
+    let userRolePrefix = "do";
+    if (role === "HR") userRolePrefix = "hr";
+    if (role === "CO") userRolePrefix = "co";
+    if (role === "ADMIN") userRolePrefix = "admin";
 
-    // 🔴 CASE A: INCOMPLETE -> Go to FORM WIZARD
     if (currentStatus === "incomplete" || currentStatus === "incompleted") {
-        const targetPath = `/scopes/employee/${rolePrefix}-new-employee-onboarding/basic-info`;
-        navigate(targetPath, { 
-            state: { 
-                tempId: activeId, // Using Temp ID
-                isEditMode: true 
-            } 
-        });
+        navigate(`/scopes/employee/${userRolePrefix}-new-employee-onboarding/basic-info`, { state: { tempId: activeId, isEditMode: true } });
         return;
     }
-
-    // 🔴 CASE B: PENDING (DO/CO) -> Go to REVIEW SCREEN
     if (currentStatus.includes("pending")) {
-        // Navigates to the review module container using TEMP ID in URL
-        const targetPath = `/scopes/employee/${rolePrefix}-review/${activeId}/onboarding/working-info`;
-        navigate(targetPath);
+        let reviewScope = "do-review";
+        if (currentStatus.includes("pending at co") || currentStatus.includes("pending with co")) reviewScope = "co-review";
+        else if (currentStatus.includes("pending at do") || currentStatus.includes("pending with do")) reviewScope = "do-review";
+        
+        navigate(`/scopes/employee/${reviewScope}/${activeId}/onboarding/working-info`);
         return;
     }
   };
 
-  // ... (Logic: Columns) ...
+  // ... (Logic: Columns - SAME AS BEFORE) ...
   const columns = useMemo(() => {
-    const baseColumns = [
-      "EMPLOYEE NAME", "EMPLOYEE NUMBER", "TEMP PAYROLL", "JOIN DATE",
-      "LEFT DATE", "CITY", "CAMPUS", "GENDER", "REMARKS",
-      "JOINING STATUS", "STATUS",
-    ];
+    const baseColumns = ["EMPLOYEE NAME", "EMPLOYEE NUMBER", "TEMP PAYROLL", "PAYROLL", "JOIN DATE", "LEFT DATE", "CITY", "CAMPUS", "GENDER", "REMARKS", "JOINING STATUS", "STATUS"];
     if (role === "CO") {
       const idx = baseColumns.indexOf("JOINING STATUS");
       baseColumns.splice(idx + 1, 0, "REJOINER", "KYC STATUS", "VERIFY KYC");
@@ -134,17 +142,11 @@ const OnBoardingStatusTable = ({ selectedStatus, role, onEmployeeSelect }) => {
             {pagedData.length > 0 ? (
               pagedData.map((row, index) => {
                 const currentStatus = (row.status || "").toLowerCase().trim();
-                
-                // 🔴 LOGIC: Row is clickable if Incomplete OR Pending
-                const isClickable = 
-                    currentStatus === "incomplete" || 
-                    currentStatus === "incompleted" || 
-                    currentStatus.includes("pending"); // e.g., "Pending at DO", "Pending at CO"
+                const isClickable = currentStatus === "incomplete" || currentStatus === "incompleted" || currentStatus.includes("pending");
 
                 return (
                   <tr 
                     key={row.id || index} 
-                    // 🔴 Disable click for Completed/Confirmed rows
                     onClick={isClickable ? () => handleRowClick(row) : undefined}
                     style={{ cursor: isClickable ? "pointer" : "default" }}
                     className={isClickable ? styles.clickableRow : styles.disabledRow}
@@ -152,6 +154,7 @@ const OnBoardingStatusTable = ({ selectedStatus, role, onEmployeeSelect }) => {
                     <td>{row.name}</td>
                     <td>{row.empNo}</td>
                     <td>{row.tempPayroll}</td>
+                    <td>{row.payroll}</td>
                     <td>{row.joinDate}</td>
                     <td>{row.leftDate}</td>
                     <td>{row.city}</td>
@@ -159,47 +162,47 @@ const OnBoardingStatusTable = ({ selectedStatus, role, onEmployeeSelect }) => {
                     <td>{row.gender}</td>
                     <td>{row.remarks}</td>
                     <td>{row.joiningStatus}</td>
-
-                    {role === "CO" && (
-                      <>
-                        <td>{row.rejoiner}</td>
-                        <td>{row.kycStatus}</td>
-                        <td>{row.verifyKyc}</td>
-                      </>
-                    )}
-
-                    <td>
-                      <span className={`${styles.statusBadge} ${getStatusBadgeClass(row.status)}`}>
-                        {row.status}
-                      </span>
-                    </td>
-
-                    <td>
-                      {/* Only show arrow if actionable */}
-                      {isClickable && (
-                        <img src={rightarrow} alt="Arrow" className={styles.arrowIcon} />
-                      )}
-                    </td>
+                    {role === "CO" && (<><td>{row.rejoiner}</td><td>{row.kycStatus}</td><td>{row.verifyKyc}</td></>)}
+                    <td><span className={`${styles.statusBadge} ${getStatusBadgeClass(row.status)}`}>{row.status}</span></td>
+                    <td>{isClickable && (<img src={rightarrow} alt="Arrow" className={styles.arrowIcon} />)}</td>
                   </tr>
                 );
               })
             ) : (
-              <tr>
-                <td colSpan={columns.length + 1} style={{ textAlign: "center", padding: "20px" }}>
-                  No records found.
-                </td>
-              </tr>
+              <tr><td colSpan={columns.length + 1} style={{ textAlign: "center", padding: "20px" }}>No records found.</td></tr>
             )}
           </tbody>
         </table>
       </div>
       
-      {/* Pagination Footer */}
+      {/* 🔴 UPDATED PAGINATION FOOTER STRUCTURE 🔴 */}
       {total > 0 && (
         <div className={styles.paginationFooter}>
-             <button onClick={handlePrevPage} disabled={pageIndex === 0} className={styles.pageBtn}>&lt; Previous</button>
-             <span className={styles.pageNumber}>Page {pageIndex + 1} of {totalPages}</span>
-             <button onClick={handleNextPage} disabled={pageIndex >= totalPages - 1} className={styles.pageBtn}>Next &gt;</button>
+             <span className={styles.showingText}>
+                Showing <b>{startRecord}</b> to <b>{endRecord}</b> of <b>{total}</b> Entries
+             </span>
+             
+             <div className={styles.paginationRight}>
+                <span className={styles.pageCountText}>
+                    {pageIndex + 1}-{totalPages} of {totalPages}
+                </span>
+                <div className={styles.buttonGroup}>
+                    <button 
+                        onClick={handlePrevPage} 
+                        disabled={pageIndex === 0} 
+                        className={styles.prevBtn}
+                    >
+                        Prev
+                    </button>
+                    <button 
+                        onClick={handleNextPage} 
+                        disabled={pageIndex >= totalPages - 1} 
+                        className={styles.nextBtn}
+                    >
+                        Next
+                    </button>
+                </div>
+             </div>
         </div>
       )}
     </div>

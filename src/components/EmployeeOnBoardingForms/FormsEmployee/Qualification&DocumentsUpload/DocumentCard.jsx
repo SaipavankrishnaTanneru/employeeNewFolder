@@ -11,6 +11,11 @@ const CheckIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="no
 const CloseIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>;
 
 const DocumentCard = ({ doc, onFileChange }) => {
+  const handleFileSelect = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      onFileChange(doc.id, e.target.files[0]);
+    }
+  };
   return (
     <div className={styles.card}>
       {/* 2. Place the background SVG here, as a sibling to the content */}
@@ -30,8 +35,9 @@ const DocumentCard = ({ doc, onFileChange }) => {
             <input
               type="file"
               id={`file-upload-${doc.id}`}
+              
               hidden
-              onChange={(e) => onFileChange(doc.id, e.target.files[0])}
+            onChange={handleFileSelect}
             />
             <label htmlFor={`file-upload-${doc.id}`} className={styles.uploadButton}>
               <UploadIcon /> Upload

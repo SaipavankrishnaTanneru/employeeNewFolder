@@ -33,6 +33,8 @@ import CategoryInfo from "../../components/EmployeeOnBoardingForms/FormsEmployee
 import BankInfo from "../../components/EmployeeOnBoardingForms/FormsEmployee/BankInfoForm/BankInfoForm";
 import SalaryInfoForm from "../../components/EmployeeOnBoardingForms/FormsEmployee/SalaryInfo/salaryInfoForm";
 
+import { useCategoryInfo } from "api/do/getpapis/useCategoryInfo";
+
 import { onboardingSteps } from "../../config/onboardingTabs";
 import styles from "./EmployeeFormsContainer.module.css";
 
@@ -40,6 +42,8 @@ const NewEmployeeOnboardingForms = ({ hideSalary = false }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useAuth();
+
+  const [isFresher, setIsFresher] = useState(false);
 
   const role = user?.roles?.[0] || "DO";
   const isHR = role === "HR";
@@ -54,15 +58,21 @@ const NewEmployeeOnboardingForms = ({ hideSalary = false }) => {
   const [showFinalSuccess, setShowFinalSuccess] = useState(false); // full page
 
   const stepRefs = useRef({});
+const activeSteps = useMemo(() => {
+    let steps = onboardingSteps;
 
-  const activeSteps = useMemo(() => {
+    // Filter Salary (Existing logic)
     if (hideSalary) {
-      return onboardingSteps.filter(
-        (step) => step.path !== "salary-info"
-      );
+      steps = steps.filter((step) => step.path !== "salary-info");
     }
-    return onboardingSteps;
-  }, [hideSalary]);
+
+    // 🔴 FILTER PREVIOUS EMPLOYER IF FRESHER
+    if (isFresher) {
+      steps = steps.filter((step) => step.path !== "previous-employer-info");
+    }
+
+    return steps;
+  }, [hideSalary, isFresher]);
 
   const pathParts = location.pathname.replace(/\/$/, "").split("/");
   const lastSegment = pathParts[pathParts.length - 1];
@@ -126,17 +136,25 @@ const NewEmployeeOnboardingForms = ({ hideSalary = false }) => {
   };
 
   // ---------------- TEMP ID GENERATED ----------------
-  const handleTempIdGenerated = (generatedId) => {
+  const handleTempIdGenerated = (generatedId, joiningTypeId) => {
     setTempId(generatedId);
+
+    // Check your Dropdown ID for "New" (e.g., if ID 1 is "New/Fresher")
+    // Replace '1' with the actual ID from your Master table for "New"
+    const NEW_JOINING_ID = 1; 
+    
+    if (Number(joiningTypeId) === NEW_JOINING_ID) {
+        setIsFresher(true);
+    } else {
+        setIsFresher(false);
+    }
 
     if (navStateEditMode || navStateTempId) {
       handleStepSuccess();
     } else {
-      // ✅ TEMP ID → MODAL SUCCESS
       setShowTempSuccess(true);
     }
   };
-
   const goBack = () => {
     if (currentStepIndex > 0) {
       navigate(`${basePath}/${activeSteps[currentStepIndex - 1].path}`);
@@ -148,7 +166,7 @@ const NewEmployeeOnboardingForms = ({ hideSalary = false }) => {
   const getPrimaryButtonLabel = () => {
     if (currentStepIndex === 0) {
       return tempId || navStateEditMode
-        ? "Update & Proceed"
+        ? "Update & Proceed To Address Info"
         : "Create Temp ID and Proceed";
     }
     if (currentStepIndex === totalSteps - 1) {
@@ -339,7 +357,7 @@ const NewEmployeeOnboardingForms = ({ hideSalary = false }) => {
             setShowTempSuccess(false);
             navigate(`${basePath}/address-info`);
           }}
-          proceedLabel="Proceed"
+          proceedLabel="Proceed to Address Info"
         />
       )}
     </div>

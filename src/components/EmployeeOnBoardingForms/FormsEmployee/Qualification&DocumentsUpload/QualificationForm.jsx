@@ -3,8 +3,9 @@ import { FieldArray, FormikProvider } from "formik";
 import styles from "./css/QualificationForm.module.css";
 
 // Assets & Widgets
-import BorderIcon from 'assets/Qualification/border.svg'; // Correct string import
+import BorderIcon from 'assets/Qualification/border.svg';
 import AddFieldWidget from "widgets/AddFieldWidget/AddFieldWidget";
+import FormValidationAlert from "utils/FormValidationAlert"; // 1. IMPORT ALERT
 
 // Hook
 import { useQualificationFormik } from "../../../../hooks/useQualificationFormik";
@@ -30,6 +31,9 @@ const QualificationForm = forwardRef(({ tempId, onSuccess }, ref) => {
   return (
     <div className={styles.formContainer}>
       <FormikProvider value={formik}>
+        {/* 2. ADD ALERT */}
+        <FormValidationAlert />
+
         <form>
           
           <FieldArray name="qualifications">
@@ -48,10 +52,11 @@ const QualificationForm = forwardRef(({ tempId, onSuccess }, ref) => {
                     index={index}
                     title={`Qualification ${index + 1}`}
                     enableFieldset={true}
+                    showSimpleTitle={false}
                     onRemove={() => remove(index)}
                     onClear={() => replace(index, initialQualification)}
                   >
-                    {/* Render the Smart Row */}
+                    {/* 3. Render Row with Validation Logic */}
                     <QualificationRow index={index} formik={formik} />
                   </AddFieldWidget>
                 ))}

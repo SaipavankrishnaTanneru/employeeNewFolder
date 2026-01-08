@@ -7,7 +7,8 @@ import Inputbox from "widgets/Inputbox/InputBox";
 import FormCheckbox from "widgets/FormCheckBox/FormCheckBox";
 import dividerline from "assets/EmployeeOnBoarding/dividerline.svg"; 
 
-import { useSalaryInfoFormik } from "../../../../hooks/useSalaryInfoFormik";
+// 1. Import Logic Hook & API Hooks
+import { useSalaryInfoFormik } from "hooks/useSalaryInfoFormik"; // Adjust path if needed
 import { 
   useGrades, 
   useCostCenters, 
@@ -15,21 +16,24 @@ import {
   useOrganizations 
 } from "api/onBoardingForms/postApi/useSalaryQueries";
 
-const SalaryInfoForm = forwardRef(({ tempId, onSuccess }, ref) => {
+const SalaryInfoForm = forwardRef(({ tempId, onSuccess, role }, ref) => {
   
-  const { formik } = useSalaryInfoFormik({ tempId, onSuccess });
+  // 2. Initialize Logic Hook
+  const { formik } = useSalaryInfoFormik({ tempId, onSuccess, role });
   const { values, setFieldValue, handleChange, submitForm } = formik;
 
+  // 3. Expose submitForm to parent (EditPopup)
   useImperativeHandle(ref, () => ({
     submitForm: () => submitForm(),
   }));
 
+  // 4. Fetch Dropdowns
   const { data: grades = [] } = useGrades();
   const { data: costCenters = [] } = useCostCenters();
   const { data: structures = [] } = useStructures();
   const { data: organizations = [] } = useOrganizations();
 
-  // 🔴 ROBUST ID FINDER
+  // 5. Helper: Handle Dropdown Change (Save ID, Display Name)
   const handleDropdownChange = (field, list, e) => {
     const selectedName = e.target.value;
     const item = list.find((x) => 
@@ -39,11 +43,12 @@ const SalaryInfoForm = forwardRef(({ tempId, onSuccess }, ref) => {
        (x.costCenterName === selectedName) ||
        (x.structureName === selectedName)
     );
-    // Ensure we save the ID (Integer), not the name
+    // Extract correct ID property
     const id = item ? (item.id || item.organizationId || item.gradeId || item.costCenterId || item.structureId) : "";
     setFieldValue(field, id);
   };
 
+  // 6. Helper: Get Name by ID for Dropdown Value
   const getNameById = (id, list) => {
     if (!id) return "";
     const item = list.find((x) => 
@@ -52,7 +57,9 @@ const SalaryInfoForm = forwardRef(({ tempId, onSuccess }, ref) => {
     return item ? (item.name || item.organizationName || item.gradeName || item.costCenterName || item.structureName) : "";
   };
 
+  // 7. Helper: Checkbox Handler
   const handleCheckbox = (field, e) => {
+    // FormCheckBox might return value directly or event
     const val = e?.target ? e.target.checked : e;
     setFieldValue(field, val);
   };
@@ -62,13 +69,13 @@ const SalaryInfoForm = forwardRef(({ tempId, onSuccess }, ref) => {
       <FormikProvider value={formik}>
         <form className={styles.form}>
           
+          {/* --- SALARY INFO --- */}
           <div className={styles.sectionHeader}>
             <h3 className={styles.sectionTitle}>Salary Info</h3>
             <img src={dividerline} alt="divider" className={styles.divider} />
           </div>
 
           <div className={styles.grid}>
-            {/* 🔴 Type="number" ensures clean data for Double DTO fields */}
             <Inputbox
               label="Monthly CTC"
               name="monthlyTakeHome"
@@ -132,31 +139,33 @@ const SalaryInfoForm = forwardRef(({ tempId, onSuccess }, ref) => {
             />
           </div>
 
+          {/* --- PF INFO --- */}
           <div className={styles.sectionHeader}>
             <h3 className={styles.sectionTitle}>PF Info</h3>
             <img src={dividerline} alt="divider" className={styles.divider} />
           </div>
 
           <div className={styles.checkboxRow}>
-            <label className={styles.checkboxItem}>
+            <div className={styles.checkboxItem}>
               <FormCheckbox
                 name="isPfEligible"
                 checked={values.isPfEligible}
                 onChange={(e) => handleCheckbox("isPfEligible", e)}
               />
               <span>Include in PF Scheme</span>
-            </label>
+            </div>
 
-            <label className={styles.checkboxItem}>
+            <div className={styles.checkboxItem}>
               <FormCheckbox
                 name="isEsiEligible"
                 checked={values.isEsiEligible}
                 onChange={(e) => handleCheckbox("isEsiEligible", e)}
               />
               <span>Include in ESI Scheme</span>
-            </label>
+            </div>
           </div>
 
+          {/* Conditional Fields */}
           <div className={styles.grid}>
             <Inputbox
               label="PF Number"
@@ -164,7 +173,7 @@ const SalaryInfoForm = forwardRef(({ tempId, onSuccess }, ref) => {
               placeholder="Enter PF Number"
               value={values.pfNo}
               onChange={handleChange}
-              disabled={!values.isPfEligible}
+              disabled={!values.isPfEligible} // Disable if unchecked
             />
 
             <Inputbox
@@ -173,7 +182,7 @@ const SalaryInfoForm = forwardRef(({ tempId, onSuccess }, ref) => {
               placeholder="Enter ESI Number"
               value={values.esiNo}
               onChange={handleChange}
-              disabled={!values.isEsiEligible}
+              disabled={!values.isEsiEligible} // Disable if unchecked
             />
 
             <Inputbox
@@ -182,7 +191,7 @@ const SalaryInfoForm = forwardRef(({ tempId, onSuccess }, ref) => {
               type="date"
               value={values.pfJoinDate}
               onChange={handleChange}
-              disabled={!values.isPfEligible}
+              disabled={!values.isPfEligible} // Disable if unchecked
             />
           </div>
 
@@ -194,7 +203,7 @@ const SalaryInfoForm = forwardRef(({ tempId, onSuccess }, ref) => {
               value={values.uanNo}
               onChange={handleChange}
               type="number"
-              disabled={!values.isPfEligible}
+              disabled={!values.isPfEligible} // Disable if unchecked
             />
           </div>
 

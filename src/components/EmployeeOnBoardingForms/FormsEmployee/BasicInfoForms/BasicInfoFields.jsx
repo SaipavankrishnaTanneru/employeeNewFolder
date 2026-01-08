@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Inputbox from "widgets/Inputbox/InputBox";
+import FormCheckbox from "widgets/FormCheckBox/FormCheckBox";
 import Dropdown from "widgets/Dropdown/Dropdown";
 import GenderSelection from "../../../GenderSelection.jsx/GenderSelection";
 import NavTabsWidget from "widgets/NavTabs/NavTabsWidget";
@@ -39,7 +40,7 @@ const BasicInfoFields = ({ formik }) => {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0]; if (!file) return;
-    if (file.size > 300 * 1024) { alert("Image must be 300kb or less."); return; }
+    if (file.size > 2 * 1024 *1024) { alert("Image must be 2MB or less."); return; }
     const objectUrl = URL.createObjectURL(file); setPreviewUrl(objectUrl);
     setFieldValue("profilePictureFile", file);
     const reader = new FileReader(); reader.onload = () => setFieldValue("profilePicture", reader.result); reader.readAsDataURL(file);
@@ -48,6 +49,19 @@ const BasicInfoFields = ({ formik }) => {
 
   const handleDeleteImage = () => { setFieldValue("profilePicture", null); setFieldValue("profilePictureFile", null); setPreviewUrl(null); };
 
+  const handleCheckDuplicate = async (field, value) => {
+    if (!value) {
+      alert(`Please enter ${field} number first.`);
+      return;
+    }
+    // Simulate Backend Call - Replace with your `axios.get`
+    console.log(`Checking duplicate for ${field}: ${value}`);
+    // Example: 
+    // const res = await axios.get(`/check-duplicate?type=${field}&val=${value}`);
+    // if(res.exists) alert("Duplicate Found!"); else alert("Available!");
+    alert(`Checking database for ${field}: ${value} (API Check)`);
+  };
+  
   useEffect(() => {
     if (!values.dateOfBirth) { setFieldValue("age", ""); return; }
     const dob = new Date(values.dateOfBirth); const today = new Date(); let age = today.getFullYear() - dob.getFullYear();
@@ -104,6 +118,15 @@ const BasicInfoFields = ({ formik }) => {
       </div>
       <div className={styles.formGrid}>
         <Inputbox label="Aadhaar No *" name="adhaarNo" placeholder="Enter Aadhaar number" value={values.adhaarNo} onChange={handleChange} error={errors.adhaarNo} />
+        <Inputbox label="Aadhaar Enrolment No" name="adhaarEnrolmentNo" placeholder="Enter Aadhaar Enrolment number" value={values.adhaarEnrolmentNo} onChange={handleChange} error={errors.adhaarEnrolmentNo} />
+        <div className={styles.sscWrapper}>
+          <Inputbox label="SSC No" name="sscNo" placeholder="Enter SSC No" value={values.sscNo} onChange={handleChange} error={errors.sscNo} disabled={values.sscNotAvailable} />
+          <div className={styles.sscCheckbox} style={{display:'flex',alignItems:'center',gap:'8px'}}>
+            <span>Check</span>
+            <FormCheckbox name="sscNotAvailable" checked={values.sscNotAvailable} onChange={(v) => { setFieldValue('sscNotAvailable', v); if (v) setFieldValue('sscNo', ''); }} />
+            <span>Not Available</span>
+          </div>
+        </div>
         <Inputbox label="PAN Number" name="pancardNum" placeholder="Enter PAN number" value={values.pancardNum} onChange={handleChange} error={errors.pancardNum} />
         <Inputbox type="date" label="Date of Birth *" name="dateOfBirth" value={values.dateOfBirth} onChange={handleChange} error={errors.dateOfBirth} />
         <Inputbox label="Age" name="age" placeholder="Enter Age" value={values.age} disabled />
@@ -111,6 +134,7 @@ const BasicInfoFields = ({ formik }) => {
         <Inputbox label="Email" name="email" placeholder="Enter email id" value={values.email} onChange={handleChange} error={errors.email} />
         <Inputbox label="Father Name *" name="fatherName" placeholder="Enter father name" value={values.fatherName} onChange={handleChange} error={errors.fatherName} />
         <Inputbox label="UAN No *" name="uanNo" placeholder="Enter UAN number" value={values.uanNo} onChange={handleChange} error={errors.uanNo} />
+        <Inputbox label="Previous Chaitanya ID" name="previousChaitanyaId" placeholder="Enter Chaitanya ID" value={values.previousChaitanyaId} onChange={handleChange} error={errors.previousChaitanyaId} />
         <Inputbox label="Emergency Contact No *" name="emergencyPhNo" placeholder="Enter emergency contact number" value={values.emergencyPhNo} onChange={handleChange} />
         <Dropdown
           dropdownname="Emergency Relation *"

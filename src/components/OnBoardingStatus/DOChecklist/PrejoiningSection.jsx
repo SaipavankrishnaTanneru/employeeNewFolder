@@ -1,39 +1,23 @@
-// src/component/EmployeeChecklist/PrejoiningSection.js
-import React, { useState } from "react";
+import React from "react";
 import styles from "./PrejoiningSection.module.css";
 import dividerline from "assets/EmployeeOnBoarding/dividerline.svg";
-
-// <-- 1. Import the Dropdown component
-// (Adjust this path if your Dropdown folder is located elsewhere)
 import Dropdown from 'widgets/Dropdown/Dropdown';
 
-// <-- 2. Accept the 'role' prop
-const PrejoiningSection = ({ role, noticePeriod, setNoticePeriod }) => {
-  const [prejoinItems, setPrejoinItems] = useState([
-    { id: 1, title: "Hiring Approval Form", done: false },
-    { id: 2, title: "Background Verification Form", done: false },
-    { id: 3, title: "Biodata Form", done: false },
-    {
-      id: 4,
-      title: "Last Drawn Payslip/ Salary Certificate/ 3 Months bank Statement",
-      done: false,
-    },
-  ]);
-  const noticePeriodOptions = [
-    "Select Notice Period",
-    "15 Days",
-    "30 Days",
-    "45 Days",
-    "60 Days",
+const PrejoiningSection = ({ role, noticePeriod, setNoticePeriod, checkedIds, onToggle }) => {
+  
+  // Mapping UI to API IDs
+  const prejoinItems = [
+    { id: 10, displayId: 1, title: "Hiring Approval Form" },
+    { id: 11, displayId: 2, title: "Background Verification Form" },
+    { id: 12, displayId: 3, title: "Biodata Form" },
+    { id: 13, displayId: 4, title: "Last Drawn Payslip/ Salary Certificate/ 3 Months bank Statement" },
   ];
 
-  const togglePrejoin = (id) => {
-    setPrejoinItems((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, done: !item.done } : item
-      )
-    );
-  };
+  const noticePeriodOptions = [
+    "Select Notice Period", "15 Days", "30 Days", "45 Days", "60 Days",
+  ];
+
+  const isChecked = (id) => checkedIds.includes(id);
 
   return (
     <div className={styles.prejoinSection}>
@@ -43,20 +27,18 @@ const PrejoiningSection = ({ role, noticePeriod, setNoticePeriod }) => {
       </div>
 
       <div className={styles.prejoinList}>
-        {/* ... (Your .map() for prejoinItems remains unchanged) ... */}
         {prejoinItems.map((item) => (
           <div
             key={item.id}
-            className={`${styles.prejoinItem} ${item.done ? styles.itemChecked : ""
-              }`}
-            onClick={() => togglePrejoin(item.id)}
+            className={`${styles.prejoinItem} ${isChecked(item.id) ? styles.itemChecked : ""}`}
+            onClick={() => onToggle(item.id)}
           >
             <div className={styles.prejoinText}>
-              {item.id}. {item.title}
+              {item.displayId}. {item.title}
             </div>
             <div className={styles.statusIcon}>
               <div
-                className={item.done ? styles.checked : styles.unchecked}
+                className={isChecked(item.id) ? styles.checked : styles.unchecked}
               ></div>
             </div>
           </div>
@@ -74,7 +56,7 @@ const PrejoiningSection = ({ role, noticePeriod, setNoticePeriod }) => {
         use
       </p>
 
-      {/* <-- 4. Add the conditional dropdown for the 'CO' role --> */}
+      {/* Conditional Dropdown for CO Role - Exact structure as your original */}
       {role === "CO" && (
         <div className={styles.noticePeriodContainer}>
           <Dropdown
@@ -87,7 +69,6 @@ const PrejoiningSection = ({ role, noticePeriod, setNoticePeriod }) => {
           />
         </div>
       )}
-
     </div>
   );
 };

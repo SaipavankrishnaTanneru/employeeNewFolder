@@ -1,116 +1,144 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import styles from "./QualificationUpdate.module.css";
 import Dropdown from "widgets/Dropdown/Dropdown";
 import InputBox from "widgets/Inputbox/InputBox";
+import { useQualificationFormik } from "hooks/useQualificationFormik"; // Reuse existing hook
+import { 
+    useQualificationDetails, 
+    useQualificationsList, 
+    useDegreesByQualId 
+} from "api/onBoardingForms/postApi/useQualificationQueries";
 
-/**
- * This array represents what you "got from backend".
- * For now, it is STATIC.
- * Tomorrow, it can come from API.
- */
-const qualificationDataFromBackend = [
-  {
-    qualification: "UG",
-    degree: "B.Tech",
-    specialization: "CSE",
-    university: "JNTU",
-    institute: "ABC College",
-    passedOutYear: "2019",
-  },
-  {
-    qualification: "PG",
-    degree: "M.Tech",
-    specialization: "AI",
-    university: "OU",
-    institute: "XYZ University",
-    passedOutYear: "2021",
-  },
-];
+// Helper Component for a Single Row to manage its own dropdowns
+const QualificationRow = ({ item, index, formik, qualList }) => {
+    const { setFieldValue, handleChange } = formik;
+    
+    // Fetch Degrees based on selected Qualification ID
+    const { data: degreeList = [] } = useDegreesByQualId(item.qualificationId);
 
-const QualificationUpdate = () => {
-  const [qualifications, setQualifications] = useState(
-    qualificationDataFromBackend
-  );
+    const handleDropdownChange = (field, list, e) => {
+        const selectedName = e.target.value;
+        const selectedObj = list.find((opt) => opt.name === selectedName);
+        setFieldValue(`qualifications.${index}.${field}`, selectedObj ? selectedObj.id : "");
+        
+        // Reset Degree if Qualification changes
+        if(field === "qualificationId") {
+            setFieldValue(`qualifications.${index}.qualificationDegreeId`, "");
+        }
+    };
 
-  const handleChange = (index, field, value) => {
-    setQualifications((prev) =>
-      prev.map((item, i) =>
-        i === index ? { ...item, [field]: value } : item
-      )
-    );
-  };
+    const getName = (id, list) => list.find(x => x.id === Number(id))?.name || "";
 
-  return (
-    <div className={styles.container}>
-      {qualifications.map((item, index) => (
-        <div key={index} className={styles.block}>
-          {/* Header */}
+    return (
+        <div className={styles.block}>
           <div className={styles.block_header}>
             <span>Qualification {index + 1}</span>
           </div>
 
-          {/* Fields */}
           <div className={styles.form_grid}>
             <Dropdown
               dropdownname="Qualification"
-              value={item.qualification}
-              results={["SSC", "Intermediate", "UG", "PG"]}
-              onChange={(e) =>
-                handleChange(index, "qualification", e.target.value)
-              }
+              name={`qualifications.${index}.qualificationId`}
+              results={qualList.map(q => q.name)}
+              value={getName(item.qualificationId, qualList)}
+              onChange={(e) => handleDropdownChange("qualificationId", qualList, e)}
             />
 
             <Dropdown
               dropdownname="Degree"
-              value={item.degree}
-              results={["B.Tech", "M.Tech", "B.Sc", "M.Sc"]}
-              onChange={(e) =>
-                handleChange(index, "degree", e.target.value)
-              }
+              name={`qualifications.${index}.qualificationDegreeId`}
+              results={degreeList.map(d => d.name)}
+              value={getName(item.qualificationDegreeId, degreeList)}
+              onChange={(e) => handleDropdownChange("qualificationDegreeId", degreeList, e)}
+              disabled={!item.qualificationId}
             />
 
             <InputBox
               label="Specialization"
+              name={`qualifications.${index}.specialization`}
               value={item.specialization}
-              onChange={(e) =>
-                handleChange(index, "specialization", e.target.value)
-              }
+              onChange={handleChange}
             />
 
             <InputBox
               label="University"
+              name={`qualifications.${index}.university`}
               value={item.university}
-              onChange={(e) =>
-                handleChange(index, "university", e.target.value)
-              }
+              onChange={handleChange}
             />
 
             <InputBox
               label="Institute"
+              name={`qualifications.${index}.institute`}
               value={item.institute}
-              onChange={(e) =>
-                handleChange(index, "institute", e.target.value)
-              }
+              onChange={handleChange}
             />
 
             <InputBox
               label="Passed Out Year"
-              placeholder="YYYY"
+              name={`qualifications.${index}.passedOutYear`}
               value={item.passedOutYear}
-              onChange={(e) =>
-                handleChange(index, "passedOutYear", e.target.value)
-              }
+              onChange={handleChange}
+              type="number"
             />
           </div>
 
-          {/* Upload (still per qualification) */}
           <div className={styles.upload_row}>
-            <button className={styles.upload_btn}>
-              Upload Certificate
+            <button type="button" className={styles.upload_btn}>
+              Upload Certificate 
             </button>
           </div>
         </div>
+    );
+};
+
+const QualificationUpdate = ({ tempId, onSuccess }) => {
+  
+  // 1. Init Formik
+  const { formik, initialQualification } = useQualificationFormik({ tempId, onSuccess });
+  const { values, setFieldValue, submitForm } = formik;
+
+  // 2. Fetch Data to Pre-fill
+  const { data: savedData } = useQualificationDetails(tempId);
+  const { data: qualList = [] } = useQualificationsList();
+
+  useEffect(() => {
+    if (savedData) {
+        let list = [];
+        if (Array.isArray(savedData)) list = savedData;
+        else if (savedData.qualifications) list = savedData.qualifications;
+
+        if (list.length > 0) {
+            // Map API response to Formik structure
+            const mapped = list.map(q => ({
+                qualificationId: q.qualificationId || "",
+                qualificationDegreeId: q.qualificationDegreeId || "",
+                specialization: q.specialization || "",
+                university: q.university || "",
+                institute: q.institute || "",
+                passedOutYear: q.passedOutYear || "",
+                // ... other fields
+            }));
+            setFieldValue("qualifications", mapped);
+        }
+    }
+  }, [savedData, setFieldValue]);
+
+  return (
+    <div className={styles.container}>
+      {values.qualifications.map((item, index) => (
+        <QualificationRow 
+            key={index} 
+            index={index} 
+            item={item} 
+            formik={formik}
+            qualList={qualList} 
+        />
       ))}
+      
+      <div style={{marginTop: '20px', textAlign: 'right'}}>
+         <button onClick={submitForm} className={styles.save_btn}>Save Changes</button>
+      </div>
     </div>
   );
 };

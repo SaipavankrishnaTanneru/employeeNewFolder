@@ -1,23 +1,21 @@
-import React, { useState, useMemo } from "react";
-import { useParams } from "react-router-dom"; // Import useParams
+import React, { useState, useMemo, useRef } from "react";
+import { useParams } from "react-router-dom"; 
 import BankInfoWidget from 'widgets/InfoCard/BankInfoWidget';
 import styles from "./WorkingInfoContainer.module.css";
 import EditPopup from "widgets/Popup/EditPopup";
 import WorkinginfoUpdate from "../CoDoUpdatePopup/WorkingInfoUpdate";
-// Import the new hook
-import { useWorkingInfo } from "../../../api/do/getpapis/useWorkingInfo";
+import { useWorkingInfo } from "api/do/getpapis/useWorkingInfo"; // Or useEmployeeProfileView if preferred
 
-const WorkingInfoContainer = () => {
+const WorkingInfoContainer = ({ activeId: propId }) => {
+  const { employeeId } = useParams();
+  const activeId = propId || employeeId; 
+
   const [showEdit, setShowEdit] = useState(false);
+  const saveRef = useRef(null);
 
-  // 1. Get ID from URL
-  const params = useParams();
-  const activeId = params.tempId || params.id || params.employeeId;
+  // 2. Fetch Data (View Mode)
+  const { data, isLoading } = useWorkingInfo(activeId);
 
-  // 2. Fetch Data
-  const { data, isLoading, isError } = useWorkingInfo(activeId);
-
-  // 3. Helper to format Date (YYYY-MM-DD -> DD-MM-YYYY)
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
     const date = new Date(dateString);
@@ -25,7 +23,6 @@ const WorkingInfoContainer = () => {
     return date.toLocaleDateString("en-GB").replace(/\//g, "-");
   };
 
-  // 4. Map API Data to Widget Format
   const workingInfo = useMemo(() => {
     const safeData = data || {};
     return [
@@ -45,7 +42,6 @@ const WorkingInfoContainer = () => {
   }, [data]);
 
   if (isLoading) return <div className={styles.loading}>Loading Working Info...</div>;
-  if (isError) return <div className={styles.error}>Failed to load data</div>;
 
   return (
     <div className={styles.working_Info_Container}>
@@ -56,16 +52,20 @@ const WorkingInfoContainer = () => {
           onEdit={() => setShowEdit(true)}
         />
       </div>
+      
       <EditPopup
         isOpen={showEdit}
         title="Edit Working Information"
         onClose={() => setShowEdit(false)}
         onSave={() => {
-          console.log("Save Working Info");
-          setShowEdit(false);
+          if (saveRef.current) saveRef.current(); // Trigger Form Submit
         }}
       >
-        <WorkinginfoUpdate data={data} /> {/* Pass data to update form if needed */}
+        <WorkinginfoUpdate 
+            activeId={activeId} 
+            onSaveRef={saveRef}
+            onSuccess={() => setShowEdit(false)}
+        />
       </EditPopup>
     </div>
   );

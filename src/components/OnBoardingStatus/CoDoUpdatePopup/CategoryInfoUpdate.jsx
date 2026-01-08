@@ -1,102 +1,89 @@
-import React, { useState } from "react";
-import styles from "./WorkingInfoUpdate.module.css";
- 
+import React, { useEffect } from "react";
+import styles from "./WorkingInfoUpdate.module.css"; 
+
+// Custom Widgets
 import Dropdown from "widgets/Dropdown/Dropdown";
 import InputBox from "widgets/Inputbox/InputBox";
- 
-const CategoryInfoUpdate = () => {
-  const [categoryData, setCategoryData] = useState({
-    employeeType: "Teaching",
-    department: "Mathematics",
-    designation: "Senior Teacher",
-    orientation: "Online",
-    subjects: "Algebra, Geometry",
-    agreedNoOfPeriods: "24",
+
+// Logic Hook
+import { useCategoryInfoFormik } from "hooks/useCategoryInfoFormik"; // Check path
+
+const CategoryInfoUpdate = ({ activeId, data, onSaveRef, onSuccess }) => {
+
+  // 1. Initialize Hook (Using activeId passed from Parent)
+  const { 
+    values, 
+    setFieldValue, 
+    dropdowns, 
+    submitForm 
+  } = useCategoryInfoFormik({
+    tempId: activeId, // 👈 CRITICAL: Use the prop, not useParams
+    existingData: data,
+    onSuccess: onSuccess 
   });
- 
-  const handleChange = (key, value) => {
-    setCategoryData((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
+
+  // 2. Connect the Save Button Ref
+  useEffect(() => {
+    if (onSaveRef) {
+      onSaveRef.current = submitForm;
+    }
+  }, [submitForm, onSaveRef]);
+
+  // --- ID <-> Name Translation Helpers ---
+  const getName = (list, id) => list?.find((item) => item.id == id)?.name || "";
+  const getNamesList = (list) => list?.map((item) => item.name) || [];
+
+  const handleDropdownChange = (fieldName, selectedName, list) => {
+    const found = list?.find((item) => item.name === selectedName);
+    setFieldValue(fieldName, found ? found.id : 0);
   };
- 
+
   return (
     <div className={styles.form_grid}>
-      {/* Employee Type */}
+      
       <Dropdown
         dropdownname="Employee Type"
-        value={categoryData.employeeType}
-        results={["Teaching", "Non-Teaching", "Administrative"]}
-        onChange={(e) =>
-          handleChange("employeeType", e.target.value)
-        }
+        value={getName(dropdowns.employeeTypes, values.employeeTypeId)} 
+        results={getNamesList(dropdowns.employeeTypes)} 
+        onChange={(e) => handleDropdownChange("employeeTypeId", e.target.value, dropdowns.employeeTypes)}
       />
- 
-      {/* Department */}
+
       <Dropdown
         dropdownname="Department"
-        value={categoryData.department}
-        results={["Mathematics", "Science", "English", "Social"]}
-        onChange={(e) =>
-          handleChange("department", e.target.value)
-        }
+        value={getName(dropdowns.departments, values.departmentId)}
+        results={getNamesList(dropdowns.departments)}
+        onChange={(e) => handleDropdownChange("departmentId", e.target.value, dropdowns.departments)}
       />
- 
-      {/* Designation */}
+
       <Dropdown
         dropdownname="Designation"
-        value={categoryData.designation}
-        results={[
-          "Junior Teacher",
-          "Senior Teacher",
-          "HOD",
-          "Principal",
-        ]}
-        onChange={(e) =>
-          handleChange("designation", e.target.value)
-        }
+        value={getName(dropdowns.designations, values.designationId)}
+        results={getNamesList(dropdowns.designations)}
+        onChange={(e) => handleDropdownChange("designationId", e.target.value, dropdowns.designations)}
       />
- 
-      {/* Orientation */}
+
       <Dropdown
         dropdownname="Orientation"
-        value={categoryData.orientation}
-        results={["Online", "Offline", "Hybrid"]}
-        onChange={(e) =>
-          handleChange("orientation", e.target.value)
-        }
+        value={getName(dropdowns.orientations, values.orientationId)}
+        results={getNamesList(dropdowns.orientations)}
+        onChange={(e) => handleDropdownChange("orientationId", e.target.value, dropdowns.orientations)}
       />
- 
-      {/* Subjects */}
+
       <Dropdown
         dropdownname="Subjects"
-        value={categoryData.subjects}
-        results={[
-          "Mathematics",
-          "Physics",
-          "Chemistry",
-          "Biology",
-          "English",
-        ]}
-        onChange={(e) =>
-          handleChange("subjects", e.target.value)
-        }
+        value={getName(dropdowns.subjects, values.subjectId)}
+        results={getNamesList(dropdowns.subjects)}
+        onChange={(e) => handleDropdownChange("subjectId", e.target.value, dropdowns.subjects)}
       />
- 
-      {/* Agreed No of Periods */}
+
       <InputBox
         label="Agreed No. of Periods"
         type="number"
-        value={categoryData.agreedNoOfPeriods}
-        onChange={(e) =>
-          handleChange("agreedNoOfPeriods", e.target.value)
-        }
+        value={values.agreedPeriodsPerWeek}
+        onChange={(e) => setFieldValue("agreedPeriodsPerWeek", e.target.value)}
       />
     </div>
   );
 };
- 
+
 export default CategoryInfoUpdate;
- 
- 

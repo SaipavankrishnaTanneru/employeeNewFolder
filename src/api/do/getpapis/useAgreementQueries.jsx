@@ -1,16 +1,20 @@
-// modules/employeeModule/api/useAgreementQueries.js
-import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
+// Base URL
 const API_BASE_URL = "http://localhost:8080/api/EmpDetailsFORCODO";
 
-export const useAgreementChequeDetails = (tempId) => {
-  return useQuery({
+export const useAgreementChequeDetails = (tempId) =>
+  useQuery({
     queryKey: ["agreementCheque", tempId],
     queryFn: async () => {
-      const response = await axios.get(`${API_BASE_URL}/agreement-cheque/${tempId}`);
-      return response.data;
+      if (!tempId) return null;
+
+      // Calls: .../agreement-cheque/TEMP12345
+      const { data } = await axios.get(`${API_BASE_URL}/agreement-cheque/${tempId}`);
+      return data || null;
     },
-    enabled: !!tempId, // Only fetch if tempId exists
+    enabled: !!tempId,
+    refetchOnWindowFocus: false,
+    retry: 1,
   });
-};

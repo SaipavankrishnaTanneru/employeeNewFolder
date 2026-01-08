@@ -23,6 +23,7 @@ export const useOnboardingStatusQuery = () => {
         name: item.employee_name || "--",
         empNo: item.emp_id || "--",
         tempPayroll: item.temp_payroll_id || item.payroll_id || "N/A",
+        payroll: item.payroll_id || "N/A",
         
         // Dates & Location
         joinDate: item.date_of_join || "--",
